@@ -1,35 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, Wishlist
-import stripe 
-from django.conf import settings
-from django.contrib import messages
-from django.db.models import Q  # Import Q for complex queries
-
-# Home Page View
-def home(request):
-    exercise_plans = ExercisePlan.objects.all()
-    nutrition_plans = NutritionPlan.objects.all()
-    products = Product.objects.all()
-    community_updates = CommunityUpdate.objects.order_by('-date')[:5]
-    return render(request, 'fitness/home.html', {
-        'exercise_plans': exercise_plans,
-        'nutrition_plans': nutrition_plans,
-        'products': products,
-        'community_updates': community_updates,
-    })
-
-
-def products(request):
-    query = request.GET.get('search', '')  # Get search query from URL
-    sort_by = request.GET.get('sort', 'name')  # Default sorting by name
-    products = Product.objects.all()
-
     # Search functionality
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, Wishlist
-import stripe 
+#import stripe 
 from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q  # Import Q for complex queries
@@ -117,7 +90,7 @@ def update_profile(request):
 
 # No delete_product view needed since CRUD is only in admin panel
 
-        products = products.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    products = products.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
     # Sorting functionality
     products = products.order_by(sort_by)  # Order products based on sort parameter
