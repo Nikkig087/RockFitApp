@@ -1,0 +1,23 @@
+{% extends 'fitness/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1>Welcome to Our Fitness Center</h1>
+    <p>Your journey to health and fitness starts here.</p>
+    <a class="cta-button" href="{% url 'products' %}">Shop Now</a>
+</div>
+
+<div class="product-grid">
+    {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p>${{ product.price }}</p>
+            <a class="product-link" href="{% url 'product_detail' product.id %}">View Details</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
