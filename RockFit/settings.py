@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "compressor",
     'fitness',
     'RockFit',
+    'cart',
 ]
 
 MIDDLEWARE = [
