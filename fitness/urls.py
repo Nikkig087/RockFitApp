@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 from .views import (
     home, 
     products, 
@@ -19,5 +20,8 @@ urlpatterns = [
     path('wishlist/', wishlist, name='wishlist'),  # Wishlist page
     path('community-updates/', community_updates, name='community_updates'),  # Community updates page
     path('post-update/', post_update, name='post_update'),  # Page to post updates
+     path('profile/', views.profile_view, name='profile'),  # Profile page view
     path('update-profile/', update_profile, name='update_profile'),  # User profile update page
+    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),  # Add to Cart view
+    # other product-related URLs...
 ]
