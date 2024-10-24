@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Update Profile</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.profile_picture.id_for_label }}">{{ form.profile_picture.label }}</label>
+            {{ form.profile_picture }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.fitness_goal.id_for_label }}">{{ form.fitness_goal.label }}</label>
+            {{ form.fitness_goal }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+    <a href="{% url 'profile' %}" class="btn btn-secondary">Back to Profile</a>
+</div>
+{% endblock %}

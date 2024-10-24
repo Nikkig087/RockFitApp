@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Subscription Plans{% endblock %}
+
+{% block content %}
+<h2>Subscription Plans</h2>
+<div class="row">
+    {% for plan in plans %}
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ plan.name }}</h5>
+                <p class="card-text">${{ plan.price }} for {{ plan.duration }} days</p>
+                <p class="card-text">{{ plan.benefits }}</p>
+                <a href="{% url 'subscribe' plan.id %}" class="btn btn-primary">Subscribe</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
