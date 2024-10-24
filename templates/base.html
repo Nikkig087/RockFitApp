@@ -1,9 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
     <title>{% block title %}RockFit{% endblock %}</title>
 </head>
 <body>
@@ -11,12 +15,12 @@
     <a class="navbar-brand" href="{% url 'home' %}">Fitness App</a>
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="{% url 'product-list' %}">Products</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'products' %}">Products</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'subscription' %}">Subscriptions</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'community_updates' %}">Community Updates</a></li>
 <li class="nav-item"> <a class="nav-link" href="{% url 'cart:view_cart' %}"> Cart ({{ request.user.cart.items.count }}) </a> </li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Profile</a></li>
         </ul>
     </div>
 </nav>

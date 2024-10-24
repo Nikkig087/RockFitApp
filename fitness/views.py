@@ -42,6 +42,39 @@ def products(request):
         'query': query
     })
 
+
+# View for displaying a single product and its reviews
+def product_detail(request, product_id):
+    # Fetch the product based on its ID
+    product = get_object_or_404(Product, id=product_id)
+    
+    # Get all reviews related to this product
+    reviews = Review.objects.filter(product=product)
+    
+    # Calculate average rating if there are reviews
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    
+    # If a user is logged in, allow adding to cart or wishlist
+    if request.method == 'POST':
+        if 'add_to_cart' in request.POST:
+            # Logic to add product to cart
+            # This could involve session-based carts or database-based cart functionality
+            # cart.add(product, quantity=1) 
+            return redirect('cart:cart_detail')  # Redirect to cart page or refresh the page
+        
+        elif 'add_to_wishlist' in request.POST:
+            # Logic to add product to the wishlist
+            if request.user.is_authenticated:
+                Wishlist.objects.get_or_create(user=request.user, product=product)
+                return redirect('wishlist')  # Redirect to the wishlist page
+
+    return render(request, 'fitness/product_detail.html', {
+        'product': product,
+        'reviews': reviews,
+        'average_rating': average_rating,
+    })
+
+
 # View for subscriptions
 @login_required
 def subscription(request):
