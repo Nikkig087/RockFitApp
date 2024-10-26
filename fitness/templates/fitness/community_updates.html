@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Community Updates{% endblock %}
+
+{% block content %}
+<h1>Community Updates</h1>
+<div class="updates-list">
+    {% for update in updates %}
+        <div class="update">
+            <strong>{{ update.user.username }}</strong>
+            <p>{{ update.update_text }}</p>
+            <p><small>{{ update.date }}</small></p>
+        </div>
+    {% empty %}
+        <p>No updates available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

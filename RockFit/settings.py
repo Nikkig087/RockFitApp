@@ -16,7 +16,7 @@ import dj_database_url
 if os.path.isfile("env.py"):
     import env
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
@@ -68,6 +68,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net',
+]
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 ROOT_URLCONF = 'RockFit.urls'
 
@@ -135,14 +141,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+LOGIN_URL = 'accounts/login/'  # Default path for login if authentication fails
+LOGIN_REDIRECT_URL = '/'  # Redirect path after successful login
+LOGOUT_REDIRECT_URL = '/'  # Redirect path after successful logout
+
 
 
 STATICFILES_STORAGE = 'compressor.storage.CompressorFileStorage'
 COMPRESS_ENABLED = True  # Enable compression
-COMPRESS_URL = '/static/'  # Set this to your static files URL
-COMPRESS_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Adjust if necessary
+COMPRESS_URL = '/static/'  
+COMPRESS_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
-COMPRESS_OFFLINE = True  # Use this to pre-compress files
+COMPRESS_OFFLINE = True  #  pre-compress files
 COMPRESS_PRECOMPILERS = [
     ('text/x-scss', 'sass {infile} {outfile}'),
 ]

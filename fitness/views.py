@@ -121,8 +121,6 @@ def update_profile(request):
         form = ProfileForm(instance=user_profile)
     return render(request, 'fitness/update_profile.html', {'form': form})
 
-# No delete_product view needed since CRUD is only in admin panel
-
     products = products.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
     # Sorting functionality
@@ -133,11 +131,13 @@ def update_profile(request):
 
     return render(request, 'fitness/products.html', {'products': products, 'product_count': product_count, 'query': query})
 
+'''
 # View for subscriptions
 @login_required
 def subscription(request):
     plans = SubscriptionPlan.objects.all()
     return render(request, 'fitness/subscription.html', {'plans': plans})
+
 
 # Add product to wishlist
 @login_required
@@ -178,12 +178,12 @@ def update_profile(request):
     else:
         form = ProfileForm(instance=user_profile)
     return render(request, 'fitness/update_profile.html', {'form': form})
-
+'''
 def add_to_cart(request, product_id):
     # Get the product from the database, or return 404 if it doesn't exist
     product = get_object_or_404(Product, id=product_id)
 
-    # Assuming you're using session to store the cart items
+    # Session to store the cart items
     cart = request.session.get('cart', {})
 
     # Add product to cart
@@ -205,8 +205,8 @@ def add_to_cart(request, product_id):
 
 @login_required
 def profile_view(request):
-    # You can pass user details to the template
+    # Pass user details to the template
     context = {
         'user': request.user,
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'fitness/profile.html', context)

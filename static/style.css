@@ -30,7 +30,7 @@ nav .logo a {
 }
 
 .hero-section {
-    background-image: url('/static/images/hero.jpg'); /* Ensure you have this image */
+    background-image: url('/static/images/hero.jpg'); 
     background-size: cover;
     text-align: center;
     padding: 100px 20px;
