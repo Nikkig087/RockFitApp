@@ -74,6 +74,10 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 ROOT_URLCONF = 'RockFit.urls'
 
@@ -127,6 +131,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -143,8 +149,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 LOGIN_URL = 'accounts/login/'  # Default path for login if authentication fails
-LOGIN_REDIRECT_URL = '/'  # Redirect path after successful login
+LOGIN_REDIRECT_URL = '/'  # Home page or your desired page
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
 LOGOUT_REDIRECT_URL = '/'  # Redirect path after successful logout
 
 

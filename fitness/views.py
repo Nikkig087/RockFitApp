@@ -6,6 +6,19 @@ from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdat
 from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q  # Import Q for complex queries
+from .models import UserProfile  # Assuming you have this model
+
+
+from .models import SubscriptionPlan
+
+def subscription_plans(request):
+    plans = SubscriptionPlan.objects.all()
+    return render(request, 'fitness/subscription.html', {'plans': plans})
+
+def subscribe(request, plan_id):
+    plan = get_object_or_404(SubscriptionPlan, id=plan_id)
+    # Subscription logic (like adding the plan to the user’s profile) goes here
+    return redirect('subscription')
 
 # Home Page View
 def home(request):
@@ -76,10 +89,10 @@ def product_detail(request, product_id):
 
 
 # View for subscriptions
-@login_required
-def subscription(request):
-    plans = SubscriptionPlan.objects.all()
-    return render(request, 'fitness/subscription.html', {'plans': plans})
+#@login_required
+#def subscription(request):
+   # plans = SubscriptionPlan.objects.all()
+    #return render(request, 'fitness/subscription.html', {'plans': plans})
 
 # Add product to wishlist
 @login_required
@@ -109,8 +122,7 @@ def community_updates(request):
     return render(request, 'fitness/community_updates.html', {'updates': updates})
 
 # Update Profile View
-@login_required
-def update_profile(request):
+'''
     user_profile = request.user.userprofile
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=user_profile)
@@ -131,7 +143,7 @@ def update_profile(request):
 
     return render(request, 'fitness/products.html', {'products': products, 'product_count': product_count, 'query': query})
 
-'''
+
 # View for subscriptions
 @login_required
 def subscription(request):
@@ -201,12 +213,15 @@ def add_to_cart(request, product_id):
     # Redirect back to the product detail page or wherever you want
     return redirect('fitness:product_detail', pk=product_id)
 
-
-
 @login_required
 def profile_view(request):
     # Pass user details to the template
-    context = {
-        'user': request.user,
-    }
-    return render(request, 'fitness/profile.html', context)
+    return render(request, 'fitness/profile.html', {'user': request.user})
+
+@login_required
+def update_profile(request):
+    # Logic for updating the user profile goes here
+    if request.method == 'POST':
+        # Handle form submission to update profile
+        pass
+    return render(request, 'fitness/update_profile.html')  # Create this template
