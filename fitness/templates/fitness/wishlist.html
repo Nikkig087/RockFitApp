@@ -10,7 +10,15 @@
             <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
             <h2>{{ item.product.name }}</h2>
             <p>${{ item.product.price }}</p>
+            
+            <!-- Link to product details page -->
             <a class="product-link" href="{% url 'product_detail' item.product.id %}">View Details</a>
+            
+            <!-- Form to remove item from wishlist -->
+            <form action="{% url 'remove_from_wishlist' item.product.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Remove</button>
+            </form>
         </div>
     {% empty %}
         <p>Your wishlist is empty.</p>

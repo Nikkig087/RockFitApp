@@ -15,13 +15,18 @@ def add_to_cart(request, product_id):
 
     return redirect('cart:view_cart')
 
-@login_required
+
 def view_cart(request):
-    cart, created = Cart.objects.get_or_create(user=request.user)
-    cart_items = cart.items.all()
-    total_cost = cart.get_total_cost()
-    
-    return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost})
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_items = cart.items.all()
+        total_cost = cart.get_total_cost()
+        return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost})
+    else:
+        # Redirect to login page if the user is not authenticated
+        return redirect('login') 
+
+
 
 @login_required
 def remove_from_cart(request, cart_item_id):
