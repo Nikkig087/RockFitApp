@@ -1,4 +1,3 @@
-<!-- fitness/templates/fitness/profile.html -->
 {% extends "base.html" %}
 
 {% block title %}Profile{% endblock %}
@@ -8,6 +7,8 @@
     <h2>Profile</h2>
     <p><strong>Username:</strong> {{ user.username }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Subscription Status:</strong> {{ user.userprofile.subscription_status }}</p>
+    <p><strong>Subscription plan:</strong> {{ user.userprofile.subscription_plan }}</p>
     <a href="{% url 'update_profile' %}" class="btn btn-primary">Edit Profile</a>
 </div>
 {% endblock %}

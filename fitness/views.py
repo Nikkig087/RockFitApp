@@ -2,11 +2,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, Wishlist
+from .forms import ProfileForm
 #import stripe 
 from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q  # Import Q for complex queries
-from .models import UserProfile  # Assuming you have this model
+from .models import UserProfile  
+from django.db.models import Avg
+
 
 
 from .models import SubscriptionPlan
@@ -17,7 +20,7 @@ def subscription_plans(request):
 
 def subscribe(request, plan_id):
     plan = get_object_or_404(SubscriptionPlan, id=plan_id)
-    # Subscription logic (like adding the plan to the user’s profile) goes here
+    
     return redirect('subscription')
 
 # Home Page View
@@ -25,7 +28,7 @@ def home(request):
     exercise_plans = ExercisePlan.objects.all()
     nutrition_plans = NutritionPlan.objects.all()
     products = Product.objects.all()
-    community_updates = CommunityUpdate.objects.order_by('-date')[:5]
+    community_updates = CommunityUpdate.objects.order_by('-created_at')[:5]
     return render(request, 'fitness/home.html', {
         'exercise_plans': exercise_plans,
         'nutrition_plans': nutrition_plans,
@@ -71,7 +74,7 @@ def product_detail(request, product_id):
     if request.method == 'POST':
         if 'add_to_cart' in request.POST:
             # Logic to add product to cart
-            # This could involve session-based carts or database-based cart functionality
+            
             # cart.add(product, quantity=1) 
             return redirect('cart:cart_detail')  # Redirect to cart page or refresh the page
         
@@ -102,10 +105,25 @@ def add_to_wishlist(request, product_id):
     return redirect('wishlist')
 
 # View wishlist
-@login_required
+
 def wishlist(request):
-    wishlist_items = Wishlist.objects.filter(user=request.user)
-    return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
+    if request.user.is_authenticated:
+        wishlist_items = Wishlist.objects.filter(user=request.user)  # Fetch only the current user's wishlist items
+        return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
+    else:
+        # Redirect to login page if the user is not authenticated
+        return redirect('login')  
+
+@login_required
+def remove_from_wishlist(request, product_id):
+    # Get the wishlist item for the specific user and product
+    wishlist_item = get_object_or_404(Wishlist, user=request.user, product_id=product_id)
+    
+    # Delete the item from the wishlist
+    wishlist_item.delete()
+    
+    # Redirect back to the wishlist page
+    return redirect('wishlist')
 
 # Post community update
 @login_required
@@ -118,7 +136,7 @@ def post_update(request):
 
 # View community updates
 def community_updates(request):
-    updates = CommunityUpdate.objects.order_by('-date')
+    updates = CommunityUpdate.objects.order_by('-created_at')
     return render(request, 'fitness/community_updates.html', {'updates': updates})
 
 # Update Profile View
@@ -213,15 +231,29 @@ def add_to_cart(request, product_id):
     # Redirect back to the product detail page or wherever you want
     return redirect('fitness:product_detail', pk=product_id)
 
-@login_required
+#@login_required
+#def profile(request):
+    # Your profile view code
+ #   return render(request, 'fitness/profile.html')
+
 def profile_view(request):
-    # Pass user details to the template
-    return render(request, 'fitness/profile.html', {'user': request.user})
+    if request.user.is_authenticated:
+        return render(request, 'fitness/profile.html', {'user': request.user})
+    else:
+        # Redirect to login page if the user is not authenticated
+        return redirect('login') 
+
 
 @login_required
 def update_profile(request):
-    # Logic for updating the user profile goes here
+    user_profile = request.user.userprofile  # Get the user's profile
+    
     if request.method == 'POST':
-        # Handle form submission to update profile
-        pass
-    return render(request, 'fitness/update_profile.html')  # Create this template
+        form = ProfileForm(request.POST, request.FILES, instance=user_profile)  # Pass the instance
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page after saving
+    else:
+        form = ProfileForm(instance=user_profile)  # Populate form with current user's data
+    
+    return render(request, 'fitness/update_profile.html', {'form': form})
