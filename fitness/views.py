@@ -1,7 +1,7 @@
-    # Search functionality
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, Wishlist
+from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan
+
 from .forms import ProfileForm
 #import stripe 
 from django.conf import settings
@@ -9,8 +9,9 @@ from django.contrib import messages
 from django.db.models import Q  # Import Q for complex queries
 from .models import UserProfile  
 from django.db.models import Avg
+from django.views import View
 
-
+from .models import Wishlist, WishlistItem, Product 
 
 from .models import SubscriptionPlan
 
@@ -55,9 +56,39 @@ def products(request):
     return render(request, 'fitness/product_list.html', {
         'products': products, 
         'product_count': product_count, 
-        'query': query
+        'query': query,
     })
 
+
+
+def view_cart(request):
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_items = cart.items.all()
+        total_cost = cart.get_total_cost()
+        return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost})
+    else:
+        # Redirect to login page if the user is not authenticated
+        return redirect('login') 
+
+
+
+@login_required
+def remove_from_cart(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id, cart__user=request.user)
+    cart_item.delete()
+    return redirect('cart:view_cart')
+
+@login_required
+def update_cart_item(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id, cart__user=request.user)
+    
+    if request.method == 'POST':
+        new_quantity = int(request.POST.get('quantity'))
+        cart_item.quantity = new_quantity
+        cart_item.save()
+    
+    return redirect('cart:view_cart')
 
 # View for displaying a single product and its reviews
 def product_detail(request, product_id):
@@ -98,32 +129,41 @@ def product_detail(request, product_id):
     #return render(request, 'fitness/subscription.html', {'plans': plans})
 
 # Add product to wishlist
-@login_required
 def add_to_wishlist(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
-    wishlist, created = Wishlist.objects.get_or_create(user=request.user, product=product)
-    return redirect('wishlist')
+    product = get_object_or_404(Product, id=product_id)
+    wishlist, created = Wishlist.objects.get_or_create(user=request.user)
 
-# View wishlist
+    # Add the product to the wishlist
+    WishlistItem.objects.get_or_create(wishlist=wishlist, product=product)
+    
+    return redirect('view_wishlist')
 
-def wishlist(request):
-    if request.user.is_authenticated:
-        wishlist_items = Wishlist.objects.filter(user=request.user)  # Fetch only the current user's wishlist items
-        return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
-    else:
-        # Redirect to login page if the user is not authenticated
-        return redirect('login')  
+def view_wishlist(request):
+    wishlist_items = WishlistItem.objects.filter(wishlist__user=request.user)  # Correct filtering
+    return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
 
-@login_required
+
 def remove_from_wishlist(request, product_id):
-    # Get the wishlist item for the specific user and product
-    wishlist_item = get_object_or_404(Wishlist, user=request.user, product_id=product_id)
+    # Get the wishlist for the current user
+    wishlist = get_object_or_404(Wishlist, user=request.user)  
     
-    # Delete the item from the wishlist
-    wishlist_item.delete()
+    try:
+        
+        wishlist_item = wishlist.items.get(product_id=product_id)  # Now using 'items'
+        wishlist_item.delete()  # Delete the item from the wishlist
+    except WishlistItem.DoesNotExist:
+        print(f"No WishlistItem found for product_id: {product_id} and user: {request.user.id}")
+        return redirect('view_wishlist')  # Redirect back to the wishlist page if not found
     
-    # Redirect back to the wishlist page
-    return redirect('wishlist')
+    return redirect('view_wishlist')  # Redirect back to the wishlist page
+
+def wishlist_count(request):
+    if request.user.is_authenticated:
+        wishlist, created = Wishlist.objects.get_or_create(user=request.user)
+        count = wishlist.wishlistitem_set.count()  # Get count of wishlist items
+    else:
+        count = 0
+    return {'wishlist_count': count}
 
 # Post community update
 @login_required
@@ -209,28 +249,41 @@ def update_profile(request):
         form = ProfileForm(instance=user_profile)
     return render(request, 'fitness/update_profile.html', {'form': form})
 '''
+
 def add_to_cart(request, product_id):
-    # Get the product from the database, or return 404 if it doesn't exist
     product = get_object_or_404(Product, id=product_id)
 
-    # Session to store the cart items
-    cart = request.session.get('cart', {})
+    if request.user.is_authenticated:
+        # Get or create a cart for the user
+        cart, created = Cart.objects.get_or_create(user=request.user)
 
-    # Add product to cart
-    if str(product_id) in cart:
-        cart[str(product_id)] += 1  # Increment quantity if already in cart
+        # Check if the product already exists in the cart
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+
+        if not created:
+            # If item already exists, increment the quantity
+            cart_item.quantity += 1
+            cart_item.save()
+        else:
+            # New item, set quantity to 1
+            cart_item.quantity = 1
+            cart_item.save()
+
+        messages.success(request, f"{product.name} has been added to your cart!")
+
     else:
-        cart[str(product_id)] = 1  # Add new item to cart with quantity 1
+        # For unauthenticated users, continue using session
+        cart = request.session.get('cart', {})
+        if str(product_id) in cart:
+            cart[str(product_id)] += 1
+        else:
+            cart[str(product_id)] = 1
 
-    # Save the cart back into the session
-    request.session['cart'] = cart
+        request.session['cart'] = cart
+        request.session.modified = True
+        messages.success(request, "Item added to your cart!")
 
-    # Add a success message
-    messages.success(request, f"{product.name} has been added to your cart.")
-
-    # Redirect back to the product detail page or wherever you want
-    return redirect('fitness:product_detail', pk=product_id)
-
+    return redirect('product_list')  # Ensure this is the correct URL name
 #@login_required
 #def profile(request):
     # Your profile view code

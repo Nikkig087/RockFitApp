@@ -134,3 +134,14 @@ footer .social-media a {
     padding: 20px;
 }
 
+.page-content {
+    padding-top: 80px; 
+}
+
+.fixed-top {
+    height: 70px; 
+}
+.content-wrapper {
+    padding-top: 70px; 
+}
+

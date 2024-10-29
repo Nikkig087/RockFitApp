@@ -55,7 +55,7 @@ class SubscriptionPlanAdmin(admin.ModelAdmin):
 
 @admin.register(Wishlist)
 class WishlistAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product', 'created_at')  
+    list_display = ('user', 'created_at')  
     search_fields = ('user__username', 'product__name')  #  searchable fields
 
 #@admin.register(UserProfile)

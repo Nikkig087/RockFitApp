@@ -5,24 +5,30 @@ from .views import (
     home, 
     products, 
     product_detail, 
-    wishlist, 
-    community_updates, 
+    community_updates,
     post_update, 
     
 )
 from .views import subscription_plans,subscribe, profile_view, update_profile#, subscription_viewnames
 
+from .views import (
+    add_to_wishlist,
+    view_wishlist,
+    remove_from_wishlist,
+    wishlist_count
+)
 
 urlpatterns = [
-    path('', home, name='home'),  # Home page as root
+    path('', views.home, name='home'),  # Home page as root
     path('products/', products, name='products'),  # Products list page
-    path('product-list/', products, name='product-list'),  # product-list URL
+    path('product_list/', products, name='product_list'),  # product-list URL
     path('product/<int:product_id>/', product_detail, name='product_detail'),  # Product detail page
-     path('subscription/', subscription_plans, name='subscription'),
+    path('subscription/', subscription_plans, name='subscription'),
     path('subscription/subscribe/<int:plan_id>/', subscribe, name='subscribe'),
-    path('wishlist/', views.wishlist, name='wishlist'),  # Wishlist page
-    path('wishlist/remove/<int:product_id>/', views.remove_from_wishlist, name='remove_from_wishlist'),
-    path('wishlist/add/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('wishlist/', view_wishlist, name='view_wishlist'),  # Ensure this name is correct
+    path('wishlist/add/<int:product_id>/', add_to_wishlist, name='add_to_wishlist'),
+    path('wishlist/remove/<int:product_id>/', remove_from_wishlist, name='remove_from_wishlist'),
+  
     path('community-updates/', community_updates, name='community_updates'),  # Community updates page
     path('post-update/', post_update, name='post_update'),  # Page to post updates
     path('profile/', views.profile_view, name='profile'),
