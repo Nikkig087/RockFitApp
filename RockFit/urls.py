@@ -6,4 +6,5 @@ urlpatterns = [
     path('', include('fitness.urls')),  # Include fitness app URLs
     path('cart/', include('cart.urls', namespace='cart')),  # Include cart app URLs
     path('accounts/', include('allauth.urls')),  # Include allauth's URLs
+    #path('wishlist/', include('fitness.urls')),
 ]

@@ -1,8 +1,7 @@
-
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Product List{% endblock %}
+{% block extra_title %} - Product List{% endblock %}
 
 {% block content %}
 <h2>Products (Total: {{ product_count }})</h2>
@@ -28,20 +27,16 @@
     {% for product in products %}
     <div class="col-md-4">
         <div class="card">
-            {% if product.image %}
-                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-            {% else %}
-                <img src="{% static 'path/to/default/image.jpg' %}" class="card-img-top" alt="Default Image">
-            {% endif %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
             <div class="card-body">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
                 <p class="card-text">${{ product.price }}</p>
                 <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View Details</a>
 
-                <!-- Add to Cart Form -->
-                <form action="{% url 'cart:add_to_cart' product.id %}" method="post">
-                    {% csrf_token %}
+                
+                <form action="{% url 'cart:add_to_cart' product.id %}" method="post"> 
+                    {% csrf_token %} 
                     <button type="submit" class="btn btn-success">Add to Cart</button>
                 </form>
             </div>

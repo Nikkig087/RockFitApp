@@ -95,13 +95,12 @@ class CommunityUpdate(models.Model):
     def __str__(self):
         return f"Update by {self.user.username}"
 
-
-# Wishlist model
 class Wishlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class WishlistItem(models.Model):
+    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='items')  # Use a related name here
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)  
-    def __str__(self):
-        return f"{self.user.username}'s Wishlist"
 
 

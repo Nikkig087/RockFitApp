@@ -1,13 +1,13 @@
-from django.urls import path
-from . import views
+# cart/urls.py
 
-app_name = 'cart'  # Namespacing the app
+from django.urls import path
+from .views import add_to_cart, view_cart, remove_from_cart, update_cart_item
+
+app_name = 'cart'  # Use this namespace to avoid conflicts with other apps
 
 urlpatterns = [
-    path('', views.view_cart, name='view_cart'),  # Cart view
-    path('add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),  # Add product to cart
-    path('remove/<int:cart_item_id>/', views.remove_from_cart, name='remove_from_cart'),  # Remove item from cart
-    path('update/<int:cart_item_id>/', views.update_cart_item, name='update_cart_item'),  # Update cart item
+    path('add/<int:product_id>/', add_to_cart, name='add_to_cart'),
+    path('', view_cart, name='view_cart'),  # Cart view
+    path('remove/<int:cart_item_id>/', remove_from_cart, name='remove_from_cart'),
+    path('update/<int:cart_item_id>/', update_cart_item, name='update_cart_item'),
 ]
-
-
