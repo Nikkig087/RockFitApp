@@ -35,7 +35,7 @@ urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(template_name='account/login.html'), name='login'),
     path('update-profile/', update_profile, name='update_profile'),  # Correct function name
   # path('subscription/', subscription_viewnames, name='subscription'),  
-#    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),  # Add to Cart view
+    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),  # Add to Cart view
      
 
 ]

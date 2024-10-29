@@ -54,6 +54,7 @@ def add_to_cart(request, product_id):
 def remove_from_cart(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, id=cart_item_id, cart__user=request.user)
     cart_item.delete()
+    messages.success(request, "Item removed from your cart!")
     return redirect('cart:view_cart')
 
 @login_required
@@ -64,6 +65,6 @@ def update_cart_item(request, cart_item_id):
         new_quantity = int(request.POST.get('quantity'))
         cart_item.quantity = new_quantity
         cart_item.save()
-    
+        messages.success(request, "Items updated in your cart!")
     return redirect('cart:view_cart')
 
