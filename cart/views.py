@@ -3,6 +3,11 @@ from .models import Cart, CartItem
 from fitness.models import Product
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import stripe
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
+from django.urls import reverse
 
 
 def view_cart(request):
@@ -67,4 +72,40 @@ def update_cart_item(request, cart_item_id):
         cart_item.save()
         messages.success(request, "Items updated in your cart!")
     return redirect('cart:view_cart')
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+def create_checkout_session(request):
+    cart = Cart.objects.get(user=request.user)
+    line_items = []
+    for item in cart.items.all():
+        line_items.append({
+            'price_data': {
+                'currency': 'usd',
+                'product_data': {
+                    'name': item.product.name,
+                },
+                'unit_amount': int(item.product.price * 100),  # Stripe expects cents
+            },
+            'quantity': item.quantity,
+        })
+    checkout_session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=line_items,
+        mode='payment',
+        success_url=request.build_absolute_uri(reverse('cart:payment_success')),
+        cancel_url=request.build_absolute_uri(reverse('cart:payment_cancel')),
+
+    )
+    return redirect(checkout_session.url)
+
+
+def payment_success(request):
+    # Clear the user's cart after successful payment
+    cart = Cart.objects.get(user=request.user)
+    cart.items.all().delete()
+    return render(request, 'cart/payment_success.html')
+
+def payment_cancel(request):
+    return render(request, 'cart/payment_cancel.html')
 

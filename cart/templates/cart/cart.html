@@ -34,6 +34,11 @@
                     {% csrf_token %}
                     <button type="submit">Remove</button>
                 </form>
+
+                <form action="{% url 'cart:checkout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Checkout with Stripe</button>
+                </form>
             </td>
         </tr>
         {% endfor %}
