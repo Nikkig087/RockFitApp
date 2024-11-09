@@ -36,6 +36,10 @@ urlpatterns = [
     path('update-profile/', update_profile, name='update_profile'),  # Correct function name
   # path('subscription/', subscription_viewnames, name='subscription'),  
 #    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),  # Add to Cart view
-     
-
+    path('product/<int:product_id>/review/create/', views.create_review, name='create_review'),
+    path('review/<int:review_id>/edit/', views.edit_review, name='edit_review'),
+    path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
+    path('product/<int:product_id>/add_review/', views.add_review, name='add_review'),
 ]
+
+

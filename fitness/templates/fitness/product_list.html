@@ -4,46 +4,59 @@
 {% block extra_title %} - Product List{% endblock %}
 
 {% block content %}
-<h2>Products (Total: {{ product_count }})</h2>
+<!-- Add margin below the navbar -->
+<div class="container mt-5"> <!-- Adjusted container with top margin -->
 
-<!-- Search Form -->
-<form method="get" action="{% url 'products' %}">
-    <input type="text" name="search" value="{{ query }}" placeholder="Search products...">
-    <button type="submit">Search</button>
-</form>
+    <h2 class="mb-4">Products <small class="text-muted">(Total: {{ product_count }})</small></h2>
 
-<!-- Sorting Options -->
-<form method="get" action="{% url 'products' %}">
-    <select name="sort" onchange="this.form.submit()">
-        <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
-        <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Sort by Price</option>
-        <option value="-price" {% if request.GET.sort == '-price' %}selected{% endif %}>Sort by Price (High to Low)</option>
-        <option value="created_at" {% if request.GET.sort == 'created_at' %}selected{% endif %}>Sort by Date Added</option>
-    </select>
-    <button type="submit">Sort</button>
-</form>
+    <!-- Search Form (inline with sort form) -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" action="{% url 'products' %}" class="input-group">
+                <input type="text" name="search" value="{{ query }}" placeholder="Search products..." class="form-control">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </form>
+        </div>
 
-<div class="row">
-    {% for product in products %}
-    <div class="col-md-4">
-        <div class="card">
-            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">{{ product.description }}</p>
-                <p class="card-text">${{ product.price }}</p>
-                <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View Details</a>
-
-                
-                <form action="{% url 'cart:add_to_cart' product.id %}" method="post"> 
-                    {% csrf_token %} 
-                    <button type="submit" class="btn btn-success">Add to Cart</button>
-                </form>
-            </div>
+        <!-- Sorting Options -->
+        <div class="col-md-6">
+            <form method="get" action="{% url 'products' %}">
+                <div class="input-group">
+                    <select name="sort" onchange="this.form.submit()" class="form-select">
+                        <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
+                        <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Sort by Price</option>
+                        <option value="-price" {% if request.GET.sort == '-price' %}selected{% endif %}>Sort by Price (High to Low)</option>
+                        <option value="created_at" {% if request.GET.sort == 'created_at' %}selected{% endif %}>Sort by Date Added</option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-secondary">Sort</button>
+                </div>
+            </form>
         </div>
     </div>
-    {% empty %}
-    <p>No products found.</p>
-    {% endfor %}
+
+    <!-- Product Grid -->
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-muted">{{ product.description|truncatewords:15 }}</p>
+                    <p class="card-text text-primary fw-bold">${{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary mt-auto">View Details</a>
+
+                    <!-- Add to Cart Button -->
+                    <form action="{% url 'cart:add_to_cart' product.id %}" method="post" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success w-100">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No products found.</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

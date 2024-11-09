@@ -1,21 +1,23 @@
 {% extends "base.html" %}
-{% block extra_title %} - Subscription Plans{% endblock %}
-
 
 {% block content %}
-<h2>Subscription Plans</h2>
-<div class="row">
-    {% for plan in plans %}
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ plan.name }}</h5>
-                <p class="card-text">${{ plan.price }} for {{ plan.duration }} days</p>
-                <p class="card-text">{{ plan.benefits }}</p>
-                <a href="{% url 'subscribe' plan.id %}" class="btn btn-primary">Subscribe</a>
+<div class="container">
+    <h2 class="page-header">Your Subscriptions</h2>
+    <div class="page-content">
+        {% for subscription in subscriptions %}
+        <div class="subscription-item">
+            <h5>{{ subscription.product.name }}</h5>
+            <div>
+                <a href="{% url 'product_detail' subscription.product.id %}" class="btn btn-primary">View Product</a>
+                <form action="{% url 'unsubscribe' subscription.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Unsubscribe</button>
+                </form>
             </div>
         </div>
+        {% empty %}
+        <p>You have no active subscriptions.</p>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
