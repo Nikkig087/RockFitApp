@@ -7,11 +7,12 @@ from django import forms
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Link to User model
     name = models.CharField(max_length=100, blank=True)  # Add name field
+    username = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(blank=True)  # Add email field
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     fitness_goal = models.CharField(max_length=255, blank=True)
-    age = models.PositiveIntegerField(blank=True, null=True)  # Optional field
-    phone = models.CharField(max_length=15, blank=True, null=True)  # Optional field
+    age = models.PositiveIntegerField(blank=True, null=True) 
+    phone = models.CharField(max_length=15, blank=True, null=True) 
     subscription_status = models.CharField(max_length=50, choices=[('active', 'Active'), ('inactive', 'Inactive')], default='inactive')
     subscription_plan = models.ForeignKey('SubscriptionPlan', on_delete=models.SET_NULL, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True)  
@@ -47,9 +48,9 @@ class ExercisePlan(models.Model):
 class NutritionPlan(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    diet_type = models.CharField(max_length=100)  # e.g. Vegan, Keto
+    diet_type = models.CharField(max_length=100)  
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
-    calories = models.CharField(max_length=100)  # e.g. 360kcal
+    calories = models.CharField(max_length=100)  
     created_at = models.DateTimeField(auto_now_add=True) 
     def __str__(self):
         return self.title
@@ -76,15 +77,19 @@ class Order(models.Model):
 
 # Review model for plans and products
 class Review(models.Model):
+    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.CASCADE)
-    exercise_plan = models.ForeignKey(ExercisePlan, null=True, blank=True, on_delete=models.CASCADE)
-    nutrition_plan = models.ForeignKey(NutritionPlan, null=True, blank=True, on_delete=models.CASCADE)
-    rating = models.IntegerField()
+    rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)])  # Rating from 1 to 5
     comment = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)  
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    
     def __str__(self):
-        return f"Review by {self.user.username}"
+        return f'Review for {self.product.name} by {self.user.username}'
+
+    def get_absolute_url(self):
+        return reverse('product_detail', args=[str(self.product.id)])
 
 # Community Update model
 class CommunityUpdate(models.Model):
@@ -100,7 +105,7 @@ class Wishlist(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class WishlistItem(models.Model):
-    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='items')  # Use a related name here
+    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='items')  
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 

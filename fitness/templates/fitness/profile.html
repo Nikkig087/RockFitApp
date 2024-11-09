@@ -4,11 +4,33 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Profile</h2>
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Subscription Status:</strong> {{ user.userprofile.subscription_status }}</p>
-    <p><strong>Subscription plan:</strong> {{ user.userprofile.subscription_plan }}</p>
-    <a href="{% url 'update_profile' %}" class="btn btn-primary">Edit Profile</a>
+    <h2 class="text-center">Your Profile</h2>
+
+    <!-- View-only profile -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Profile Information</h5>
+            <p><strong>Username:</strong> {{ user.username }}</p>  <!-- Display username -->
+            <p><strong>Name:</strong> {{ user.userprofile.name }}</p>  <!-- Display name -->
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Fitness Goal:</strong> {{ user.userprofile.fitness_goal }}</p>
+            <p><strong>Age:</strong> {{ user.userprofile.age }}</p>
+            <p><strong>Phone:</strong> {{ user.userprofile.phone }}</p>
+
+            <div class="mb-3">
+                <strong>Profile Picture:</strong><br>
+                {% if user.userprofile.profile_picture %}
+                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="img-fluid" style="max-height: 200px; max-width: 200px;">
+                {% else %}
+                    <p>No profile picture</p>
+                {% endif %}
+            </div>
+
+            <!-- Button to go to the update profile page -->
+            <a href="{% url 'update_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
+        </div>
+    </div>
+
+    <!-- Add additional profile sections here if needed -->
 </div>
 {% endblock %}

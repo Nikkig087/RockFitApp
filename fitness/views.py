@@ -1,19 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan
+from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, UserProfile, Wishlist, WishlistItem, Product 
 
-from .forms import ProfileForm
+from .forms import UserProfileForm
 #import stripe 
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Q  # Import Q for complex queries
-from .models import UserProfile  
+from django.db.models import Q  
+
 from django.db.models import Avg
 from django.views import View
 
-from .models import Wishlist, WishlistItem, Product 
 
-from .models import SubscriptionPlan
 
 def subscription_plans(request):
     plans = SubscriptionPlan.objects.all()
@@ -287,27 +285,99 @@ def update_profile(request):
  #   return redirect('product_list')  # Ensure this is the correct URL name
 #@login_required
 #def profile(request):
-    # Your profile view code
+   
  #   return render(request, 'fitness/profile.html')
 
+@login_required
 def profile_view(request):
-    if request.user.is_authenticated:
-        return render(request, 'fitness/profile.html', {'user': request.user})
-    else:
-        # Redirect to login page if the user is not authenticated
-        return redirect('login') 
+    # Get the user's profile
+    user_profile = request.user.userprofile
+    return render(request, 'fitness/profile.html', {'user_profile': user_profile})
 
+@login_required
+def profile(request):
+    user_profile = request.user.userprofile
+    return render(request, 'fitness/profile.html', {'user': request.user})
 
 @login_required
 def update_profile(request):
-    user_profile = request.user.userprofile  # Get the user's profile
+    user_profile = request.user.userprofile
+    form = UserProfileForm(instance=user_profile)
     
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=user_profile)  # Pass the instance
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('profile')  # Redirect to the profile page after saving
-    else:
-        form = ProfileForm(instance=user_profile)  # Populate form with current user's data
-    
+            return redirect('fitness/profile.html')  # Redirect to the profile view after update
+
     return render(request, 'fitness/update_profile.html', {'form': form})
+
+# Create Review
+@login_required
+def create_review(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            return redirect('product_detail', product_id=product.id)
+    else:
+        form = ReviewForm()
+
+    return render(request, 'product_create_review.html', {'form': form, 'product': product})
+
+# Edit Review
+@login_required
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    
+    if review.user != request.user:
+        return redirect('product_detail', product_id=review.product.id)  # Prevent others from editing
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('product_detail', product_id=review.product.id)
+    else:
+        form = ReviewForm(instance=review)
+    
+    return render(request, 'product_edit_review.html', {'form': form, 'review': review})
+
+# Delete Review
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    
+    if review.user != request.user:
+        return redirect('product_detail', product_id=review.product.id)  # Prevent others from deleting
+    
+    if request.method == 'POST':
+        review.delete()
+        return redirect('product_detail', product_id=review.product.id)
+    
+    return render(request, 'product_delete_review.html', {'review': review})
+
+    # Add Review view
+def add_review(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == 'POST':
+        comment = request.POST.get('comment')
+        rating = request.POST.get('rating')
+
+        # Create the review
+        review = Review.objects.create(
+            user=request.user,
+            product=product,
+            comment=comment,
+            rating=rating
+        )
+        messages.success(request, 'Your review has been added successfully!')
+        return redirect('product_detail', product_id=product.id)
+
+    return redirect('product_detail', product_id=product.id)
