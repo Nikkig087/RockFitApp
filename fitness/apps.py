@@ -7,3 +7,10 @@ class FitnessConfig(AppConfig):
 
     def ready(self):
         import fitness.signals  # to import the signals module
+
+
+class FitnessConfig(AppConfig):
+    name = 'fitness'
+
+    def ready(self):
+        import fitness.signals

@@ -3,6 +3,15 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django import forms
 
+class SubscriptionPlan(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    duration = models.IntegerField(help_text="Duration in days")
+    benefits = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 # Extending the User model with profile details
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Link to User model
@@ -14,22 +23,12 @@ class UserProfile(models.Model):
     age = models.PositiveIntegerField(blank=True, null=True) 
     phone = models.CharField(max_length=15, blank=True, null=True) 
     subscription_status = models.CharField(max_length=50, choices=[('active', 'Active'), ('inactive', 'Inactive')], default='inactive')
-    subscription_plan = models.ForeignKey('SubscriptionPlan', on_delete=models.SET_NULL, null=True, blank=True)  
+    subscription_plan = models.ForeignKey(SubscriptionPlan, null=True, blank=True, on_delete=models.SET_NULL)  
     created_at = models.DateTimeField(auto_now_add=True)  
 
     def __str__(self):
         return self.user.username
 
-# Subscription Plan model
-class SubscriptionPlan(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    duration = models.IntegerField(help_text="Duration in days")
-    benefits = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)  
-
-    def __str__(self):
-        return self.name
 
 # Exercise Plan model
 class ExercisePlan(models.Model):

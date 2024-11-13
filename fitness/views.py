@@ -1,26 +1,91 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, UserProfile, Wishlist, WishlistItem, Product 
-
+from django.views.decorators.csrf import csrf_exempt
 from .forms import UserProfileForm
 #import stripe 
 from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q  
+from django.http import JsonResponse
 
 from django.db.models import Avg
 from django.views import View
+from django.views.decorators.csrf import csrf_protect  # Use CSRF protection in production
+from django.views.decorators.http import require_POST  # Ensure only POST requests are allowed
+
+import json
 
 
+
+# views.py
+from django.shortcuts import render, get_object_or_404
+from .models import SubscriptionPlan
 
 def subscription_plans(request):
+    # Fetch all subscription plans from the database
     plans = SubscriptionPlan.objects.all()
+
+    # Render the subscription plans to the subscription.html template
     return render(request, 'fitness/subscription.html', {'plans': plans})
 
 def subscribe(request, plan_id):
     plan = get_object_or_404(SubscriptionPlan, id=plan_id)
     
-    return redirect('subscription')
+    # Assuming you have a user and a UserProfile that holds subscription
+    if request.user.is_authenticated:
+        # Add the subscription to the user profile
+        user_profile = request.user.userprofile
+        user_profile.subscription_plan = plan
+        user_profile.save()
+
+        # Provide a success message
+        messages.success(request, f"You've successfully subscribed to the {plan.name} plan!")
+        
+        # Redirect the user to their profile page, for example
+        return redirect('profile')  # Replace with your actual profile view name
+    else:
+        # If the user is not authenticated, show an error
+        messages.error(request, "You need to be logged in to subscribe.")
+        return redirect('login')  # Redirect to login page if not logged in
+
+
+@csrf_protect  # This ensures CSRF protection is enforced
+@require_POST  # This decorator ensures only POST requests are accepted
+def add_subscription_plans(request):
+    try:
+        # Load JSON data from the request
+        data = json.loads(request.body)
+        
+        # Check if 'plans' key exists in the data
+        if 'plans' not in data:
+            return JsonResponse({"status": "error", "message": "No plans data provided"}, status=400)
+        
+        # Iterate through the list of plans and create each subscription plan
+        for plan in data['plans']:
+            # Validate that all required fields are in the plan data
+            if not all(key in plan for key in ('name', 'price', 'duration', 'benefits')):
+                return JsonResponse({"status": "error", "message": "Missing required plan fields"}, status=400)
+            
+            # Create SubscriptionPlan objects
+            SubscriptionPlan.objects.create(
+                name=plan['name'],
+                price=plan['price'],
+                duration=plan['duration'],
+                benefits=plan['benefits']
+            )
+        
+        # If successful, return a success message
+        return JsonResponse({"status": "success", "message": "Plans added successfully"})
+
+    except json.JSONDecodeError:
+        # Handle JSON decoding errors
+        return JsonResponse({"status": "error", "message": "Invalid JSON format"}, status=400)
+    
+    except Exception as e:
+        # Handle other exceptions
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
 
 # Home Page View
 def home(request):
@@ -288,27 +353,19 @@ def update_profile(request):
    
  #   return render(request, 'fitness/profile.html')
 
-@login_required
 def profile_view(request):
-    # Get the user's profile
-    user_profile = request.user.userprofile
+    user_profile = request.user.userprofile  # Get the logged-in user's profile
     return render(request, 'fitness/profile.html', {'user_profile': user_profile})
 
-@login_required
-def profile(request):
-    user_profile = request.user.userprofile
-    return render(request, 'fitness/profile.html', {'user': request.user})
-
-@login_required
 def update_profile(request):
-    user_profile = request.user.userprofile
-    form = UserProfileForm(instance=user_profile)
-    
+    user_profile = request.user.userprofile  # Get the logged-in user's profile
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('fitness/profile.html')  # Redirect to the profile view after update
+            return redirect('profile')  # Redirect to the profile page after updating
+    else:
+        form = UserProfileForm(instance=user_profile)
 
     return render(request, 'fitness/update_profile.html', {'form': form})
 

@@ -1,23 +1,29 @@
+
 {% extends "base.html" %}
+{% load static %}
+<script src="/static/fitness/js/functions.js"></script>
 
 {% block content %}
-<div class="container">
-    <h2 class="page-header">Your Subscriptions</h2>
-    <div class="page-content">
-        {% for subscription in subscriptions %}
-        <div class="subscription-item">
-            <h5>{{ subscription.product.name }}</h5>
+  <h2>Our Subscription Plans</h2>
+  <div class="subscription-plans">
+    {% if plans %}
+      <ul>
+        {% for plan in plans %}
+          <li class="subscription-plan {{ plan.name|lower }}">  <!-- Class based on the plan name -->
+            <h3>{{ plan.name }}</h3>
+            <p>Price: ${{ plan.price }}</p>
+            <p>Duration: {{ plan.duration }} days</p>
             <div>
-                <a href="{% url 'product_detail' subscription.product.id %}" class="btn btn-primary">View Product</a>
-                <form action="{% url 'unsubscribe' subscription.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Unsubscribe</button>
-                </form>
+              {{ plan.benefits|safe }}
             </div>
-        </div>
-        {% empty %}
-        <p>You have no active subscriptions.</p>
+            <!-- Subscribe button linking to the subscribe view -->
+            <a href="{% url 'subscribe' plan.id %}" class="btn btn-primary">Subscribe</a>
+          </li>
         {% endfor %}
-    </div>
-</div>
+      </ul>
+    {% else %}
+      <p>No subscription plans available.</p>
+    {% endif %}
+  </div>
+
 {% endblock %}
