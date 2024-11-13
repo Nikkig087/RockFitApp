@@ -3,7 +3,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f9f9f9;
     color: #333;
-    padding-top: 80px; /* Create this based on the navbar height */
+    padding-top: 80px; /* Based on the navbar height */
 }
 
 /* Navbar colors */
@@ -59,7 +59,7 @@ body {
     margin-top: 60px; /* Adjust based on navbar height */
 }
 
-/* Profile page styling */
+/* Profile page */
 .container {
     max-width: 800px;
     margin-top: 100px; /* Adjust for spacing under navbar */
@@ -98,7 +98,7 @@ h2 {
     outline: none;
 }
 
-/* For file inputs */
+/*  file inputs */
 .form-control-file {
     border: 1px solid #ccc;
     padding: 5px;
@@ -134,6 +134,82 @@ h2 {
     background-color: #5a6268;
     border-color: #545b62;
 }
+
+.subscription-plans{
+    margin-bottom: 30px;
+}
+
+/* Styles for all subscription plans */
+.subscription-plan {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  /*  Basic plan */
+  .subscription-plan.basic {
+    background-color: #f5f5f5; 
+    border: 1px solid #ccc;
+  }
+  
+  /*  Premium plan */
+  .subscription-plan.premium {
+    background-color: #ffd700; 
+    border: 1px solid #ffcc00;
+  }
+  
+  /* Gold plan */
+  .subscription-plan.gold {
+    background-color: #ffcc00;
+    border: 1px solid #ff9900;
+  }
+  
+  /* Button styles  */
+  .subscription-plan .btn {
+    margin-top: 20px;
+  }
+  
+  /*  space between the subscription plans and the button */
+  .subscription-plan .btn {
+    margin-top: 30px;
+  }
+
+  /* Removing bullet points from the list */
+  .subscription-plans ul {
+    list-style-type: none;  /* Remove the bullets */
+    padding-left: 0;        /* Remove left padding */
+  }
+  
+  .subscription-plans li {
+    margin-bottom: 30px;    /* Space between plans */
+    padding: 10px;          /* Padding inside the plan card */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Background color for each plan */
+  }
+  /* Space between the different plans */
+.subscription-plans .plan {
+    margin-bottom: 40px;    /* space between different types of plans */
+    padding: 20px;          /* Padding inside each plan box */
+    border: 1px solid #ccc; /* Border around each plan */
+    border-radius: 5px;
+    background-color: #f9f9f9; /*  Background color for each plan */
+  }
+  
+ 
+  .subscription-plans .plan p {
+    margin-bottom: 5px;     /* space between each detail (price, duration, etc.) */
+  }
+  
+  
+  .subscription-plans .plan .benefits {
+    margin-top: 5px;       /* space above benefits */
+    padding-left: 20px;     /* Indent  benefits */
+  }
+  
+  
 
 /* Mobile responsiveness */
 @media (max-width: 576px) {

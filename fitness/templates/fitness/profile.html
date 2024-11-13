@@ -4,33 +4,28 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="text-center">Your Profile</h2>
+    <h2>{{ user_profile.user.username }}'s Profile</h2>
 
-    <!-- View-only profile -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Profile Information</h5>
-            <p><strong>Username:</strong> {{ user.username }}</p>  <!-- Display username -->
-            <p><strong>Name:</strong> {{ user.userprofile.name }}</p>  <!-- Display name -->
-            <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Fitness Goal:</strong> {{ user.userprofile.fitness_goal }}</p>
-            <p><strong>Age:</strong> {{ user.userprofile.age }}</p>
-            <p><strong>Phone:</strong> {{ user.userprofile.phone }}</p>
+    <p><strong>Name:</strong> {{ user_profile.name }}</p>
+    <p><strong>Email:</strong> {{ user_profile.email }}</p>
+    <p><strong>Fitness Goal:</strong> {{ user_profile.fitness_goal }}</p>
+    <p><strong>Age:</strong> {{ user_profile.age }}</p>
+    <p><strong>Phone:</strong> {{ user_profile.phone }}</p>
+    
+    {% if user_profile.profile_picture %}
+        <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" class="img-fluid">
+    {% endif %}
 
-            <div class="mb-3">
-                <strong>Profile Picture:</strong><br>
-                {% if user.userprofile.profile_picture %}
-                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="img-fluid" style="max-height: 200px; max-width: 200px;">
-                {% else %}
-                    <p>No profile picture</p>
-                {% endif %}
-            </div>
+        <!-- Display Subscription Plan -->
+        <p><strong>Subscription Plan:</strong> 
+            {% if user_profile.subscription_plan %}
+                {{ user_profile.subscription_plan.name }}
+            {% else %}
+                Not Subscribed
+            {% endif %}
+        </p>
+        
 
-            <!-- Button to go to the update profile page -->
-            <a href="{% url 'update_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
-        </div>
-    </div>
-
-    <!-- Add additional profile sections here if needed -->
+    <a href="{% url 'update_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
 </div>
 {% endblock %}

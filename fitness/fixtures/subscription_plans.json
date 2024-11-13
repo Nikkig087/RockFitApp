@@ -1,0 +1,35 @@
+[
+    {
+        "model": "fitness.subscriptionplan",
+        "pk": 1,
+        "fields": {
+            "name": "Basic Plan",
+            "price": "10.00",
+            "duration": 30,
+            "benefits": "<ul><li>Access to basic workouts</li><li>5 class credits per month</li><li>Email support</li><li>24/7 access to workout library</li><li>Community events</li></ul>",
+            "created_at": "2024-11-13T12:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.subscriptionplan",
+        "pk": 2,
+        "fields": {
+            "name": "Premium Plan",
+            "price": "20.00",
+            "duration": 60,
+            "benefits": "<ul><li>All features of Basic Plan plus:</li><li>Personalized workout plans</li><li>10 class credits per month</li><li>Access to premium classes</li><li>Priority customer support</li><li>Fitness tracking</li></ul>",
+            "created_at": "2024-11-13T12:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.subscriptionplan",
+        "pk": 3,
+        "fields": {
+            "name": "Gold Plan",
+            "price": "40.00",
+            "duration": 60,
+            "benefits": "<ul><li>All features of Premium Plan plus:</li><li>Unlimited class credits</li><li>1-on-1 coaching</li><li>Access to exclusive workshops</li><li>Wellness app</li><li>VIP customer support</li></ul>",
+            "created_at": "2024-11-13T12:00:00Z"
+        }
+    }
+]

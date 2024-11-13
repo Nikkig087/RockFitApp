@@ -31,15 +31,20 @@ urlpatterns = [
   
     path('community-updates/', community_updates, name='community_updates'),  # Community updates page
     path('post-update/', post_update, name='post_update'),  # Page to post updates
-    path('profile/', views.profile_view, name='profile'),
+    
     path('accounts/login/', auth_views.LoginView.as_view(template_name='account/login.html'), name='login'),
-    path('update-profile/', update_profile, name='update_profile'),  # Correct function name
-  # path('subscription/', subscription_viewnames, name='subscription'),  
-#    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),  # Add to Cart view
+    path('profile/', views.profile_view, name='profile'),  # Profile page
+    path('update-profile/', views.update_profile, name='update_profile'),
+
+
+
     path('product/<int:product_id>/review/create/', views.create_review, name='create_review'),
     path('review/<int:review_id>/edit/', views.edit_review, name='edit_review'),
     path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
     path('product/<int:product_id>/add_review/', views.add_review, name='add_review'),
+    
+    path('subscription/', views.subscription_plans, name='subscription'),  # Correct URL
+    path('subscribe/<int:plan_id>/', views.subscribe, name='subscribe'),  # Subscribe to a plan
 ]
 
 
