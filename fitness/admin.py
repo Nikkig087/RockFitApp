@@ -4,6 +4,8 @@ from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdat
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
+
+
 # Inline admin for UserProfile
 
 class UserProfileInline(admin.StackedInline):  # Or admin.TabularInline
@@ -37,6 +39,7 @@ class NutritionPlanAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'stock_quantity', 'created_at')  
     search_fields = ('name', 'description')  #  searchable fields
+    list_filter = ('is_spotlight',)  # Add filter option for spotlight products
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):

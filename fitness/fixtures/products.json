@@ -1,0 +1,188 @@
+[
+    {
+        "model": "fitness.Product",
+        "pk": 1,
+        "fields": {
+            "name": "Yoga Mat",
+            "description": "Durable, non-slip yoga mat suitable for all exercises.",
+            "price": "29.99",
+            "image": "products/yoga_mat.jpg",
+            "stock_quantity": 100,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 2,
+        "fields": {
+            "name": "Dumbbells Set",
+            "description": "Adjustable dumbbells for strength training.",
+            "price": "59.99",
+            "image": "products/dumbbells_set.jpg",
+            "stock_quantity": 50,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 3,
+        "fields": {
+            "name": "Resistance Bands",
+            "description": "Set of resistance bands for varied workouts.",
+            "price": "19.99",
+            "image": "products/resistance_bands.jpg",
+            "stock_quantity": 150,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 4,
+        "fields": {
+            "name": "Exercise Ball",
+            "description": "Ball for core, balance, and flexibility workouts.",
+            "price": "14.99",
+            "image": "products/exercise_ball.jpg",
+            "stock_quantity": 75,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 5,
+        "fields": {
+            "name": "Jump Rope",
+            "description": "Speed jump rope for endurance training.",
+            "price": "9.99",
+            "image": "products/jump_rope.jpg",
+            "stock_quantity": 200,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 6,
+        "fields": {
+            "name": "Kettlebell",
+            "description": "20 lb kettlebell for strength and cardio training.",
+            "price": "34.99",
+            "image": "products/kettlebell.jpg",
+            "stock_quantity": 30,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 7,
+        "fields": {
+            "name": "Foam Roller",
+            "description": "Foam roller for muscle recovery and massage.",
+            "price": "12.99",
+            "image": "products/foam_roller.jpg",
+            "stock_quantity": 120,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 8,
+        "fields": {
+            "name": "Pull-Up Bar",
+            "description": "Doorway pull-up bar for upper body strength training.",
+            "price": "25.99",
+            "image": "products/pull_up_bar.jpg",
+            "stock_quantity": 40,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 9,
+        "fields": {
+            "name": "Treadmill",
+            "description": "Compact treadmill for at-home cardio.",
+            "price": "299.99",
+            "image": "products/treadmill.jpg",
+            "stock_quantity": 10,
+            "created_at": "2024-11-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 10,
+        "fields": {
+            "name": "Exercise Bike",
+            "description": "Stationary exercise bike for indoor cycling.",
+            "price": "249.99",
+            "image": "products/exercise_bike.jpg",
+            "stock_quantity": 15,
+            "created_at": "2024-11-01T00:00:00Z",
+            "is_spotlight": true
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 11,
+        "fields": {
+            "name": "Ab Roller",
+            "description": "Ab roller for core strength training.",
+            "price": "18.99",
+            "image": "products/ab_roller.jpg",
+            "stock_quantity": 80,
+            "created_at": "2024-11-01T00:00:00Z",
+            "is_spotlight": true
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 12,
+        "fields": {
+            "name": "Medicine Ball",
+            "description": "10 lb medicine ball for functional strength exercises.",
+            "price": "22.99",
+            "image": "products/medicine_ball.jpg",
+            "stock_quantity": 60,
+            "created_at": "2024-11-01T00:00:00Z",
+            "is_spotlight": true
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 13,
+        "fields": {
+            "name": "Boxing Gloves",
+            "description": "16 oz boxing gloves for training and sparring.",
+            "price": "39.99",
+            "image": "products/boxing_gloves.jpg",
+            "stock_quantity": 45,
+            "created_at": "2024-11-01T00:00:00Z",
+            "is_spotlight": true
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 14,
+        "fields": {
+            "name": "Weightlifting Belt",
+            "description": "Supportive weightlifting belt for heavy lifting.",
+            "price": "27.99",
+            "image": "products/weightlifting_belt.jpg",
+            "stock_quantity": 25,
+            "created_at": "2024-11-01T00:00:00Z",
+            "is_spotlight": true
+        }
+    },
+    {
+        "model": "fitness.Product",
+        "pk": 15,
+        "fields": {
+            "name": "Workout Gloves",
+            "description": "Grip-enhancing workout gloves for lifting.",
+            "price": "15.99",
+            "image": "products/workout_gloves.jpg",
+            "stock_quantity": 90,
+            "created_at": "2024-11-01T00:00:00Z",
+            "is_spotlight": true
+        }
+    }
+]
