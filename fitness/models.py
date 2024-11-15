@@ -9,6 +9,7 @@ class SubscriptionPlan(models.Model):
     duration = models.IntegerField(help_text="Duration in days")
     benefits = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    is_spotlight = models.BooleanField(default=False)  # New field for spotlight products
 
     def __str__(self):
         return self.name
@@ -62,6 +63,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/')
     stock_quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)  
+    is_spotlight = models.BooleanField(default=False)  # New field for spotlight products
     def __str__(self):
         return self.name
 

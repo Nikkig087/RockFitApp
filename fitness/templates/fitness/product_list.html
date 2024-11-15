@@ -4,12 +4,11 @@
 {% block extra_title %} - Product List{% endblock %}
 
 {% block content %}
-<!-- Add margin below the navbar -->
-<div class="container mt-5"> <!-- Adjusted container with top margin -->
+<div class="container mt-5">
 
-    <h2 class="mb-4">Products <small class="text-muted">(Total: {{ product_count }})</small></h2>
+    <h2 class="mb-4">Products <small class="text-muted">(Total: {{ page_obj.paginator.count }})</small></h2>
 
-    <!-- Search Form (inline with sort form) -->
+    <!-- Search and Sort -->
     <div class="row mb-4">
         <div class="col-md-6">
             <form method="get" action="{% url 'products' %}" class="input-group">
@@ -18,7 +17,6 @@
             </form>
         </div>
 
-        <!-- Sorting Options -->
         <div class="col-md-6">
             <form method="get" action="{% url 'products' %}">
                 <div class="input-group">
@@ -36,14 +34,14 @@
 
     <!-- Product Grid -->
     <div class="row">
-        {% for product in products %}
+        {% for product in page_obj %}
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
                 <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text text-muted">{{ product.description|truncatewords:15 }}</p>
-                    <p class="card-text text-primary fw-bold">${{ product.price }}</p>
+                    <p class="card-text text-primary fw-bold">€{{ product.price }}</p>
                     <a href="{% url 'product_detail' product.id %}" class="btn btn-primary mt-auto">View Details</a>
 
                     <!-- Add to Cart Button -->
@@ -58,5 +56,19 @@
         <p class="text-center">No products found.</p>
         {% endfor %}
     </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination mt-4 d-flex justify-content-center">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary me-2">Previous</a>
+        {% endif %}
+
+        <span class="me-2">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">Next</a>
+        {% endif %}
+    </div>
+
 </div>
 {% endblock %}

@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q  
 from django.http import JsonResponse
-
+from django.core.paginator import Paginator
 from django.db.models import Avg
 from django.views import View
 from django.views.decorators.csrf import csrf_protect  # Use CSRF protection in production
@@ -16,9 +16,6 @@ from django.views.decorators.http import require_POST  # Ensure only POST reques
 
 import json
 
-
-
-# views.py
 from django.shortcuts import render, get_object_or_404
 from .models import SubscriptionPlan
 
@@ -86,25 +83,34 @@ def add_subscription_plans(request):
         # Handle other exceptions
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
-
-# Home Page View
+# In views.py
 def home(request):
     exercise_plans = ExercisePlan.objects.all()
     nutrition_plans = NutritionPlan.objects.all()
-    products = Product.objects.all()
+    products = Product.objects.all()[:6]  # Limit to the first 6 products
+    spotlight_products = Product.objects.filter(is_spotlight=True)[:6]  # Ensure only 6 spotlight products
     community_updates = CommunityUpdate.objects.order_by('-created_at')[:5]
+    spotlight_subscriptions = SubscriptionPlan.objects.filter(is_spotlight=True)[:3]
+
     return render(request, 'fitness/home.html', {
         'exercise_plans': exercise_plans,
         'nutrition_plans': nutrition_plans,
         'products': products,
+        'spotlight_products': spotlight_products,
         'community_updates': community_updates,
+        'spotlight_subscriptions': spotlight_subscriptions,
     })
+
 
 # View to display all products (read-only for regular users)
 def products(request):
     query = request.GET.get('search', '')  # Get search query from URL
     sort_by = request.GET.get('sort', 'name')  # Default sorting by name
     products = Product.objects.all()
+    paginator = Paginator(products, 6)  # Show 6 products per page
+
+    page_number = request.GET.get('page')  # Get the page number from the query string
+    page_obj = paginator.get_page(page_number)  # Get products for the requested page
 
     # Search functionality
     if query:
@@ -120,6 +126,7 @@ def products(request):
         'products': products, 
         'product_count': product_count, 
         'query': query,
+        'page_obj': page_obj,
     })
 
 
