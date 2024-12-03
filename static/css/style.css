@@ -1,250 +1,265 @@
 /* Global font style */
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    padding-top: 80px; /* Based on the navbar height */
+  font-family: 'Montserrat', sans-serif;
+  background-color: black;
+  color: #333;
+  padding-top: 80px; /* Based on the navbar height */
 }
 
 /* Navbar colors */
 .navbar {
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 .navbar-brand {
-    color: #333;
-    font-weight: bold;
+  color: #333;
+  font-weight: bold;
 }
 .navbar-nav .nav-link {
-    color: #555;
-    font-size: 1rem;
+  color: #555;
+  font-size: 1rem;
 }
 .navbar-nav .nav-link:hover {
-    color: #007bff;
+  color: #007bff;
+}
+
+/* Optional: Center the burger icon vertically */
+.navbar-toggler {
+  border: none;  /* Removes the button border */
+}
+
+/* Container */
+.container {
+  margin-top: 60px; /* Adjust based on navbar height */
+  max-width: 1200px;
+  margin-top: 100px; /* Adjust for spacing under navbar */
+  padding: 20px;
+ /* background-color: #ffffff;*/
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  display: list-item;
+  text-align: justify;
+  unicode-bidi: isolate;
+}
+
+/* Styling for the subscription cards */
+
+
+.card-body {
+  padding: 20px; /* More padding for better spacing */
+}
+
+.card-title {
+  font-size: 1.5rem; /* Larger font size for plan name */
+}
+
+.card-text {
+  font-size: 1rem; /* Standard font size for text */
+}
+
+.btn {
+  font-size: 1.1rem; /* Slightly larger button text */
+}
+
+.mt-3 {
+  margin-top: 15px; /* Space between the benefits and actions */
+}
+
+.mb-4 {
+  margin-bottom: 30px; /* Larger bottom margin for cards */
 }
 
 /* Card & Button Styling */
 .card {
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-}
-.btn-primary {
-    background-color: #007bff;
-    border: none;
-}
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-/* Card hover effect */
-.card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+  list-style-type: none;
+  border-radius: 8px; /* Rounded corners */
 }
 .card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
-
-/* Transparent Navbar */
-.navbar {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-.container {
-    margin-top: 60px; /* Adjust based on navbar height */
-}
-
-/* Profile page */
-.container {
-    max-width: 800px;
-    margin-top: 100px; /* Adjust for spacing under navbar */
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    font-size: 2rem;
-    color: #333;
-}
-
-.form-group label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    margin-bottom: 10px;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-/* styles.css */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .pagination a {
-    margin: 0 10px;
-    padding: 10px 15px;
-    text-decoration: none;
-    color: white;
-    background-color: #007bff;
-    border-radius: 5px;
-  }
-  
-  .pagination span {
-    margin: 0 10px;
-    font-weight: bold;
-  }
-  
-
-/*  file inputs */
-.form-control-file {
-    border: 1px solid #ccc;
-    padding: 5px;
-    background-color: #f8f8f8;
-}
-
-/* Button Styling */
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    font-size: 1rem;
-    padding: 12px;
-    border-radius: 5px;
-    width: 100%;
+  background-color: #007bff;
+  border: none;
 }
-
 .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004b9a;
+  background-color: #0056b3;
 }
 
-.btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    font-size: 1rem;
-    padding: 12px;
-    border-radius: 5px;
-    width: 100%;
-    text-align: center;
+/*Spotlights */
+.spotlight, .subscription, .products, .wish, .community, .profile, .signout, .signin{
+  color: #fff;
+}
+/*review area */
+.review {
+  color: #fff;
+  padding-top: 10px;
+}
+.form-label {
+  margin-bottom: .5rem;
+  color: #fff;
 }
 
-.btn-secondary:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
+/* Shopping Cart Container */
+.cart-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.subscription-plans{
-    margin-bottom: 30px;
+/* Heading Style */
+.cart-heading {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-/* Styles for all subscription plans */
-.subscription-plan {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    text-align: center;
-  }
-  
-  /*  Basic plan */
-  .subscription-plan.basic {
-    background-color: #f5f5f5; 
-    border: 1px solid #ccc;
-  }
-  
-  /*  Premium plan */
-  .subscription-plan.premium {
-    background-color: #ffd700; 
-    border: 1px solid #ffcc00;
-  }
-  
-  /* Gold plan */
-  .subscription-plan.gold {
-    background-color: #ffcc00;
-    border: 1px solid #ff9900;
-  }
-  
-  /* Button styles  */
-  .subscription-plan .btn {
-    margin-top: 20px;
-  }
-  
-  /*  space between the subscription plans and the button */
-  .subscription-plan .btn {
-    margin-top: 30px;
-  }
-
-  /* Removing bullet points from the list */
-  .subscription-plans ul {
-    list-style-type: none;  /* Remove the bullets */
-    padding-left: 0;        /* Remove left padding */
-  }
-  
-  .subscription-plans li {
-    margin-bottom: 30px;    /* Space between plans */
-    padding: 10px;          /* Padding inside the plan card */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9; /* Background color for each plan */
-  }
-  /* Space between the different plans */
-.subscription-plans .plan {
-    margin-bottom: 40px;    /* space between different types of plans */
-    padding: 20px;          /* Padding inside each plan box */
-    border: 1px solid #ccc; /* Border around each plan */
-    border-radius: 5px;
-    background-color: #f9f9f9; /*  Background color for each plan */
-  }
-  
- 
-  .subscription-plans .plan p {
-    margin-bottom: 5px;     /* space between each detail (price, duration, etc.) */
-  }
-  
-  
-  .subscription-plans .plan .benefits {
-    margin-top: 5px;       /* space above benefits */
-    padding-left: 20px;     /* Indent  benefits */
-  }
-  
-  .no-bullets {
-    list-style-type: none; /* Removes the bullet points */
-    padding: 0;            /* Removes default padding */
-    margin: 0;             /* Removes default margin */
+/* Cart Table */
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
 }
+
+.cart-table th,
+.cart-table td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.cart-table th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+.cart-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Quantity Input and Buttons */
+.quantity-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-input {
+  width: 60px;
+  padding: 8px;
+  text-align: center;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Buttons */
+.button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  text-decoration: none; /* For the anchor buttons */
+  display: inline-block;
+}
+
+.button.remove {
+  background-color: #dc3545;
+}
+
+.button.update:hover,
+.button.remove:hover {
+  background-color: #0056b3;
+}
+
+.button.remove:hover {
+  background-color: #c82333;
+}
+
+.btn-signup {
+  background-color: #fff;
+}
+
+/* Total Cost */
+.total-cost {
+  font-size: 1.5rem;
+  margin: 20px 0;
+  color: #333;
+}
+
+/* Checkout Button */
+.checkout-btn-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.stripe-button {
+  background-color: #28a745;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+
+.stripe-button:hover {
+  background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cart-container {
+      padding: 20px;
+  }
+  .cart-table th,
+  .cart-table td {
+      padding: 10px;
+      font-size: 0.9rem;
+  }
+  .quantity-column {
+      flex-direction: column;
+  }
+  .quantity-input {
+      margin-bottom: 5px;
+  }
+}
+
+
 
 /* Mobile responsiveness */
 @media (max-width: 576px) {
-    .container {
-        margin-top: 80px;
-    }
+  .container {
+      margin-top: 80px;
+  }
 
-    .btn {
-        width: 100%;
-    }
+  .btn {
+      width: 100%;
+  }
 }

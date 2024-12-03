@@ -1,3 +1,11 @@
+"""
+URL configuration for the fitness application.
+
+This module defines URL patterns for various views in the fitness application, 
+including home, products, subscriptions, community updates, wishlists, and user profiles. 
+It maps URLs to their corresponding view functions or classes.
+"""
+
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
@@ -25,6 +33,7 @@ urlpatterns = [
     path('product/<int:product_id>/', product_detail, name='product_detail'),  # Product detail page
     path('subscription/', subscription_plans, name='subscription'),
     path('subscription/subscribe/<int:plan_id>/', subscribe, name='subscribe'),
+    path('cancel-subscription/', views.cancel_subscription, name='cancel_subscription'),
     path('wishlist/', view_wishlist, name='view_wishlist'),  # Ensure this name is correct
     path('wishlist/add/<int:product_id>/', add_to_wishlist, name='add_to_wishlist'),
     path('wishlist/remove/<int:product_id>/', remove_from_wishlist, name='remove_from_wishlist'),

@@ -1,3 +1,9 @@
+"""
+Admin configuration for the cart application.
+
+This module defines the admin interfaces for managing Cart and CartItem models 
+in the Django admin site. It specifies how these models are displayed and listed.
+"""
 from django.contrib import admin
 from .models import Cart, CartItem
 

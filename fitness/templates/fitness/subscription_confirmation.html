@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load static %}
+<script src="/static/fitness/js/functions.js"></script>
+
+{% block content %}
+<h2>Your subscription has been successfully updated!</h2>
+<p>You are now subscribed to the {{ request.user.userprofile.subscription_plan.name }} plan.</p>
+
+{% endblock %}

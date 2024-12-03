@@ -15,7 +15,7 @@
 <!-- Spotlight Products Section -->
 {% if spotlight_products %}
 <div class="container my-5">
-    <h2 class="text-center mb-4">Spotlight Products</h2>
+    <h2 class="text-center mb-4 spotlight">Spotlight Products</h2>
     <div class="row">
         {% for product in spotlight_products %}
             <div class="col-md-4 mb-4">
@@ -36,26 +36,33 @@
 
 
 <div class="container my-5">
-    <h2 class="text-center mb-4">Spotlight Subscriptions</h2>
-    <div class="row">
-        {% for subscription in spotlight_subscriptions %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 text-center shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ subscription.name }}</h5>
-                        <p class="card-price text-primary fw-bold">€{{ subscription.price }} / {{ subscription.duration }} days</p>
-                        <div class="card-text text-muted">{{ subscription.benefits|safe}}</div> 
-                        
-                        <a href="{% url 'subscription' %}" class="btn btn-outline-primary mt-3">Learn More</a>
+    <h2 class="text-center mb-4 spotlight"  >Spotlight Subscriptions</h2>
+    {% if spotlight_subscriptions %}
+        <div class="row" style="list-style-type: none;">
+            
+            {% for subscription in spotlight_subscriptions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ subscription.name }}</h5>
+                            <p class="card-price text-primary fw-bold">€{{ subscription.price }} / {{ subscription.duration }} days</p>
+                            <div class="card-text text-muted">{{ subscription.benefits|safe }}</div> 
+                            <a href="{% url 'subscription' %}" class="btn btn-outline-primary mt-3">Learn More</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+            
+        </div>
+    {% else %}
+        <p class="text-center text-muted">No spotlight subscriptions available at the moment.</p>
+    {% endif %}
+    
 </div>
+
 <!-- General Product Grid Section -->
 <div class="container my-5">
-    <h2 class="text-center mb-4">Our Products</h2>
+    <h2 class="text-center mb-4 spotlight">Our Products</h2>
     <div class="row">
         {% for product in products %}
             <div class="col-md-4 mb-4">

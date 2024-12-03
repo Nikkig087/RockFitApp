@@ -4,7 +4,7 @@
 {% block extra_title %} - Product List{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 products">
 
     <h2 class="mb-4">Products <small class="text-muted">(Total: {{ page_obj.paginator.count }})</small></h2>
 
@@ -42,13 +42,20 @@
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text text-muted">{{ product.description|truncatewords:15 }}</p>
                     <p class="card-text text-primary fw-bold">€{{ product.price }}</p>
-                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary mt-auto">View Details</a>
 
-                    <!-- Add to Cart Button -->
+                    <!-- View Details Button -->
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary mt-auto mb-2">View Details</a>
+
+                    <!-- Add to Cart Button (only for logged-in users) -->
+                    {% if user.is_authenticated %}
                     <form action="{% url 'cart:add_to_cart' product.id %}" method="post" class="mt-2">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-success w-100">Add to Cart</button>
+                        <button type="submit" class="btn btn-success w-100 mb-2">Add to Cart</button>
                     </form>
+                    {% else %}
+                    <!-- Button for non-logged-in users to log in -->
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-warning w-100 mb-2">Login to Add to Cart</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
