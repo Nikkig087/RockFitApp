@@ -1,29 +1,69 @@
-
 {% extends "base.html" %}
 {% load static %}
 <script src="/static/fitness/js/functions.js"></script>
 
 {% block content %}
-  <h2>Our Subscription Plans</h2>
-  <div class="subscription-plans">
-    {% if plans %}
-      <ul>
-        {% for plan in plans %}
-          <li class="subscription-plan {{ plan.name|lower }}">  <!-- Class based on the plan name -->
-            <h3>{{ plan.name }}</h3>
-            <p>Price: ${{ plan.price }}</p>
-            <p>Duration: {{ plan.duration }} days</p>
-            <div>
-              {{ plan.benefits|safe }}
-            </div>
-            <!-- Subscribe button linking to the subscribe view -->
-            <a href="{% url 'subscribe' plan.id %}" class="btn btn-primary">Subscribe</a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No subscription plans available.</p>
-    {% endif %}
-  </div>
+<!-- Main Container for the subscription plans -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4 subscription">Our Subscription Plans</h2>
 
+    {% if plans %}
+        <div class="row">
+            {% for plan in plans %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <!-- Plan Name -->
+                            <h3 class="card-title">{{ plan.name }}</h3>
+
+                            <!-- Plan Price -->
+                            <p class="card-text">Price: ${{ plan.price }}</p>
+
+                            <!-- Plan Duration -->
+                            <p class="card-text">Duration: {{ plan.duration }} days</p>
+
+                            <!-- Plan Benefits -->
+                            <div class="card-text">
+                                {{ plan.benefits|safe }}
+                            </div>
+
+                            <!-- Subscription Actions -->
+                            <div class="mt-3">
+                                {% if user.is_authenticated %}
+                                    {% if user.userprofile.subscription_plan %}
+                                        {% if user.userprofile.subscription_plan.is_active %}
+                                            {% if user.userprofile.subscription_plan == plan %}
+                                                <!-- Cancel current subscription -->
+                                                <form action="{% url 'cancel_subscription' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger w-100">Cancel Current Subscription</button>
+                                                </form>
+                                            {% else %}
+                                                <!-- Alert for already having an active subscription -->
+                                                <div class="alert alert-warning">
+                                                    You already have an active subscription with the <strong>{{ user.userprofile.subscription_plan.name }}</strong> plan.
+                                                </div>
+                                            {% endif %}
+                                        {% else %}
+                                            <!-- Choose a plan if the current subscription is canceled -->
+                                            <a href="{% url 'subscribe' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <!-- Choose a plan if the user has no active subscription -->
+                                        <a href="{% url 'subscribe' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
+                                    {% endif %}
+                                {% else %}
+                                    <!-- Login option for non-authenticated users -->
+                                    <a href="{% url 'login' %}" class="btn btn-primary w-100">Login to Subscribe</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No subscription plans available.</p>
+    {% endif %}
+</div>
 {% endblock %}

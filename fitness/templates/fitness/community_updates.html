@@ -3,8 +3,8 @@
 
 
 {% block content %}
-<h1>Community Updates</h1>
-<div class="updates-list">
+<h1 class="community">Community Updates</h1>
+<div class="updates-list community">
     {% for update in updates %}
         <div class="update">
             <strong>{{ update.user.username }}</strong>

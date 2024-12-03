@@ -7,7 +7,9 @@ from django.contrib.auth.models import User
 
 
 # Inline admin for UserProfile
-
+'''
+This module customizes the Django admin site for the models specified below
+'''
 class UserProfileInline(admin.StackedInline):  # Or admin.TabularInline
     model = UserProfile
     can_delete = False
@@ -61,8 +63,3 @@ class WishlistAdmin(admin.ModelAdmin):
     list_display = ('user', 'created_at')  
     search_fields = ('user__username', 'product__name')  #  searchable fields
 
-#@admin.register(UserProfile)
-#class UserProfileAdmin(admin.ModelAdmin):
- #   list_display = ('user', 'name', 'email', 'profile_picture','fitness_goal','age','subscription_status')  # Adjust fields as necessary
-  #  search_fields = ('user', 'name', 'email', 'profile_picture','fitness_goal','age','subscription_status')  # Add searchable fields
- 
