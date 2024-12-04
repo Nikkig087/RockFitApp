@@ -257,23 +257,19 @@ def wishlist_view(request):
     # Now you can access each wishlist item and its associated product
     return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
 
-
-
-
-
+@login_required
 def remove_from_wishlist(request, product_id):
-    # Get the wishlist for the current user
-    wishlist = get_object_or_404(Wishlist, user=request.user)  
-    
+    wishlist = get_object_or_404(Wishlist, user=request.user)
     try:
-        
-        wishlist_item = wishlist.items.get(product_id=product_id)  # Now using 'items'
-        wishlist_item.delete()  # Delete the item from the wishlist
+        wishlist_item = wishlist.items.get(product_id=product_id)
+        wishlist_item.delete()
+        messages.success(request, "Item removed from your wishlist.")
     except WishlistItem.DoesNotExist:
-        print(f"No WishlistItem found for product_id: {product_id} and user: {request.user.id}")
-        return redirect('view_wishlist')  # Redirect back to the wishlist page if not found
-    
-    return redirect('view_wishlist')  # Redirect back to the wishlist page
+        messages.error(request, "Item not found in your wishlist.")
+
+    # Redirect to the wishlist view, without any template path being added.
+    return redirect('wishlist_view')  # This is the correct view name
+
 
 def wishlist_count(request):
     if request.user.is_authenticated:

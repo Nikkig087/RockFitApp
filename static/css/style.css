@@ -108,10 +108,12 @@ li {
   color: #fff;
 }
 /*review area */
-.review {
+.review_rule {
   color: #fff;
   padding-top: 10px;
 }
+
+
 .form-label {
   margin-bottom: .5rem;
   color: #fff;
