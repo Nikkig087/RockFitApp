@@ -55,5 +55,3 @@ urlpatterns = [
     path('subscription/', views.subscription_plans, name='subscription'),  # Correct URL
     path('subscribe/<int:plan_id>/', views.subscribe, name='subscribe'),  # Subscribe to a plan
 ]
-
-

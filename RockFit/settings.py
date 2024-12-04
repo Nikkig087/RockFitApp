@@ -32,7 +32,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net','.herokuapp.com',]
+CSRF_TRUSTED_ORIGINS = [
+    "https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net",
+    "https://*.codeanyapp.com",
+    "https://*.herokuapp.com",
 
+
+]
 
 # Application definition
 
@@ -115,15 +121,15 @@ WSGI_APPLICATION = 'RockFit.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-#DATABASES = {
-  #  'default': {
-   #     'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': BASE_DIR / 'db.sqlite3',
-    #}
-#}
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+# }
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
@@ -166,7 +172,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-LOGIN_URL = 'accounts/login/'  # Default path for login if authentication fails
+LOGIN_URL = '/accounts/login/'  # Default path for login if authentication fails
 LOGIN_REDIRECT_URL = '/'  # Home page or your desired page
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
 LOGOUT_REDIRECT_URL = '/'  # Redirect path after successful logout

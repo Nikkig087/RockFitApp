@@ -144,7 +144,7 @@ def add_subscription_plans(request):
 
 
 def home(request):
-     """
+    """
     Display the home page with featured content.
 
     Retrieves exercise plans, nutrition plans, spotlight products, and community updates to display on the home page.
@@ -208,7 +208,7 @@ def products(request):
 
 
 def product_detail(request, product_id):
-     """
+    """
     Display detailed information about a specific product.
 
     Retrieves product details, associated reviews, and calculates the average rating.
@@ -237,82 +237,39 @@ def product_detail(request, product_id):
         'product': product,
         'reviews': reviews,
         'average_rating': average_rating,
-    })
-
+    }) 
 def add_to_wishlist(request, product_id):
-     """
-    Add a product to the user's wishlist.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        product_id (int): The ID of the product to add to the wishlist.
-
-    Returns:
-        HttpResponse: Redirects to the wishlist view.
-    """
     product = get_object_or_404(Product, id=product_id)
     wishlist, created = Wishlist.objects.get_or_create(user=request.user)
+
+    # Add the product to the wishlist
     WishlistItem.objects.get_or_create(wishlist=wishlist, product=product)
     
     return redirect('view_wishlist')
 
 def view_wishlist(request):
-    """
-    Display the user's wishlist.
-
-    Retrieves all items in the user's wishlist and renders them on the wishlist page.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'wishlist.html' template with the wishlist items.
-    """
-    wishlist_items = WishlistItem.objects.filter(wishlist__user=request.user)  #
+    wishlist_items = WishlistItem.objects.filter(wishlist__user=request.user)  # Correct filtering
     return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
 
 
 def remove_from_wishlist(request, product_id):
-    """
-    Remove a product from the user's wishlist.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        product_id (int): The ID of the product to remove from the wishlist.
-
-    Returns:
-        HttpResponse: Redirects to the wishlist view.
-    """
-
-    
+    # Get the wishlist for the current user
     wishlist = get_object_or_404(Wishlist, user=request.user)  
     
     try:
         
-        wishlist_item = wishlist.items.get(product_id=product_id)  
-        wishlist_item.delete()  
+        wishlist_item = wishlist.items.get(product_id=product_id)  # Now using 'items'
+        wishlist_item.delete()  # Delete the item from the wishlist
     except WishlistItem.DoesNotExist:
         print(f"No WishlistItem found for product_id: {product_id} and user: {request.user.id}")
-        return redirect('view_wishlist')  
+        return redirect('view_wishlist')  # Redirect back to the wishlist page if not found
     
-    return redirect('view_wishlist')  
+    return redirect('view_wishlist')  # Redirect back to the wishlist page
 
 def wishlist_count(request):
-     """
-    Retrieve the count of items in the user's wishlist.
-
-    Checks if the user is authenticated and retrieves the wishlist count. 
-    If the user is not authenticated, the count is set to zero.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        dict: A dictionary containing the wishlist item count with the key 'wishlist_count'.
-    """
     if request.user.is_authenticated:
         wishlist, created = Wishlist.objects.get_or_create(user=request.user)
-        count = wishlist.wishlistitem_set.count()  
+        count = wishlist.wishlistitem_set.count()  # Get count of wishlist items
     else:
         count = 0
     return {'wishlist_count': count}
@@ -340,7 +297,7 @@ def post_update(request):
 
 
 def community_updates(request):
-     """
+    """
     Display a list of community updates.
 
     Retrieves all community updates from the database, ordered by the 
@@ -399,7 +356,7 @@ def update_profile(request):
 
 @login_required
 def create_review(request, product_id):
-     """
+    """
     Allow users to create a review for a product.
 
     Handles POST requests to create a new review for a specified product. 
@@ -490,7 +447,7 @@ def delete_review(request, review_id):
 
     
 def add_review(request, product_id):
-     """
+    """
     Add a review for a specified product.
 
     Handles POST requests to create a review with user-provided rating and comment.

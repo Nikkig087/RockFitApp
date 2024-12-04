@@ -17,7 +17,7 @@ from django.urls import reverse
 
 
 def view_cart(request):
-        """
+    """
     Display the user's cart with all cart items and the total cost.
 
     Retrieves the cart for the authenticated user, including all items and the total cost.
@@ -108,7 +108,7 @@ def remove_from_cart(request, cart_item_id):
 
 @login_required
 def update_cart_item(request, cart_item_id):
- """
+    """
     Update the quantity of an item in the user's cart.
 
     Handles POST requests to update the quantity of a specified cart item. The new quantity 
@@ -170,7 +170,7 @@ def create_checkout_session(request):
 
 
 def payment_success(request):
-     """
+    """
     Handle the successful payment response from Stripe.
 
     This view is triggered after a successful payment and clears the user's cart by 
@@ -187,7 +187,7 @@ def payment_success(request):
     return render(request, 'cart/payment_success.html')
 
 def payment_cancel(request):
-     """
+    """
     Handle the canceled payment response from Stripe.
 
     This view is triggered when the user cancels the payment. It renders a cancelation 

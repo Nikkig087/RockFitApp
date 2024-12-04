@@ -11,9 +11,8 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django.apps import AppConfig
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-      """
+
+"""
     Signal handler to create a UserProfile when a new User is created.
 
     Args:
@@ -24,14 +23,17 @@ def create_user_profile(sender, instance, created, **kwargs):
 
     This function checks if a new User instance has been created, and if so,
     it creates an associated UserProfile instance.
-    """
+"""
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    
     if created:
         UserProfile.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     def save_user_profile(sender, instance, **kwargs):
-    """
+        """
     Signal handler to save the UserProfile when the User instance is saved.
 
     Args:
@@ -42,34 +44,31 @@ def save_user_profile(sender, instance, **kwargs):
     This function ensures that the associated UserProfile instance is saved
     whenever the User instance is updated.
     """
-    instance.userpro
-    instance.userprofile.save()
+        #instance.userpro
+        instance.userprofile.save()
 
 
-class FitnessConfig(AppConfig):
-     """
+#class FitnessConfig(AppConfig):
+"""
     Configuration class for the 'fitness' application.
 
     This class is used to configure the fitness app and ensures that signals
     are imported and registered when the application is ready.
     """
-    name = 'fitness'
+name = 'fitness'
 
-    def ready(self):
+def ready(self):
          """
         Imports the signals module to register signal handlers.
 
         This method is called when the application is ready. Importing the signals
         here ensures that the signal handlers are connected and active.
         """
-        import fitness.signals
+import fitness.signals
 
 
-
-@receiver(post_save, sender='auth.User')
-def create_user_profile(sender, instance, created, **kwargs):
-       """
-    Alternative signal handler to create a UserProfile when a new User is created.
+"""
+Alternative signal handler to create a UserProfile when a new User is created.
 
     Args:
         sender (str): The model class that sent the signal ('auth.User').
@@ -79,21 +78,23 @@ def create_user_profile(sender, instance, created, **kwargs):
 
     This function performs the same task as the earlier create_user_profile function,
     ensuring that a UserProfile is created for new User instances.
-    """
+""
+@receiver(post_save, sender='auth.User')
+def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
 
 @receiver(post_save, sender='auth.User')
 def save_user_profile(sender, instance, **kwargs):
     """
-    Alternative signal handler to save the UserProfile when the User instance is saved.
+  #  Alternative signal handler to save the UserProfile when the User instance is saved.
+#
+ #   Args:
+  #      sender (str): The model class that sent the signal ('auth.User').
+   #     instance (User): The actual instance being saved.
+    #    **kwargs: Additional keyword arguments.
+#
+#    This function performs the same task as the earlier save_user_profile function,
+ #   ensuring that the UserProfile is saved whenever the User instance is updated.
 
-    Args:
-        sender (str): The model class that sent the signal ('auth.User').
-        instance (User): The actual instance being saved.
-        **kwargs: Additional keyword arguments.
-
-    This function performs the same task as the earlier save_user_profile function,
-    ensuring that the UserProfile is saved whenever the User instance is updated.
-    """
-    instance.userprofile.save()
+#    instance.userprofile.save()
