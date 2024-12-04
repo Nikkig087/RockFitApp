@@ -36,8 +36,7 @@ urlpatterns = [
     path('cancel-subscription/', views.cancel_subscription, name='cancel_subscription'),
     path('wishlist/', views.wishlist_view, name='wishlist_view'),  # <-- Ensure this matches
     path('wishlist/add/<int:product_id>/', add_to_wishlist, name='add_to_wishlist'),
-    path('wishlist/remove/<int:product_id>/', remove_from_wishlist, name='remove_from_wishlist'),
-  
+    path('wishlist/remove/<int:product_id>/', views.remove_from_wishlist, name='remove_from_wishlist'),  
     path('community-updates/', community_updates, name='community_updates'),  # Community updates page
     path('post-update/', post_update, name='post_update'),  # Page to post updates
     

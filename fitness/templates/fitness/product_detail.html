@@ -40,7 +40,7 @@
 
 <!-- Review Form (Visible if user is logged in) -->
 {% if user.is_authenticated %}
-<h3 class="review">Write a Review</h3>
+<h3 class="review_rule">Write a Review</h3>
 <form method="post" action="{% url 'add_review' product.id %}">
     {% csrf_token %}
     <div class="mb-3">
@@ -60,10 +60,10 @@
     <button type="submit" class="btn btn-primary">Submit Review</button>
 </form>
 {% else %}
-<p>Please <a href="{% url 'account_login' %}">log in</a> to leave a review.</p>
+<p class="review_rule">Please <a href="{% url 'account_login' %}">log in</a> to leave a review.</p>
 {% endif %}
 
-<h3>Reviews:</h3>
+<h3 class="review_rule">Reviews:</h3>
 {% for review in reviews %}
 <div>
     <strong>{{ review.user.username }}</strong> (Rating: {{ review.rating }}):
