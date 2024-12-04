@@ -25,6 +25,8 @@
             <!-- Add to Wishlist Button (only for logged-in users) -->
             {% if user.is_authenticated %}
             <form action="{% url 'add_to_wishlist' product.id %}" method="post">
+
+
                 {% csrf_token %}
                 <button type="submit" class="btn btn-secondary">Add to Wishlist</button>
             </form>

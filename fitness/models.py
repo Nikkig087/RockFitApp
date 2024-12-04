@@ -6,13 +6,14 @@ subscription plans, exercise plans, nutrition plans, products, orders, reviews,
 community updates, and wishlists. These models represent the structure of the 
 application's data and include fields, relationships, and methods.
 """
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django import forms
 
 class SubscriptionPlan(models.Model):
-     """
+    """
     Represents a subscription plan available for users.
 
     Attributes:
@@ -32,15 +33,14 @@ class SubscriptionPlan(models.Model):
     is_spotlight = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)  # Import timezone
 
-
     def __str__(self):
-         """Returns the name of the subscription plan."""
+        """Returns the name of the subscription plan."""
         return self.name
 
-        
+
 # Extending the User model with profile details
 class UserProfile(models.Model):
-        """
+    """
     Extends the default User model to include additional profile information.
 
     Attributes:
@@ -90,7 +90,7 @@ class ExercisePlan(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     difficulty = models.CharField(max_length=50)
-    duration = price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    duration = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     category = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)  
@@ -98,9 +98,10 @@ class ExercisePlan(models.Model):
     def __str__(self):
         return self.title
 
+
 # Nutrition Plan model
 class NutritionPlan(models.Model):
- """
+    """
     Represents a nutrition plan available for users.
 
     Attributes:
@@ -117,12 +118,14 @@ class NutritionPlan(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     calories = models.CharField(max_length=100)  
     created_at = models.DateTimeField(auto_now_add=True) 
+
     def __str__(self):
         return self.title
 
+
 # Product model for merchandise and nutrition products
 class Product(models.Model):
-        """
+    """
     Represents a product available for purchase, such as merchandise or nutrition products.
 
     Attributes:
@@ -141,9 +144,11 @@ class Product(models.Model):
     stock_quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)  
     is_spotlight = models.BooleanField(default=False)  # New field for spotlight products
+
     def __str__(self):
-            """Returns the name of the product."""
+        """Returns the name of the product."""
         return self.name
+
 
 # Order model for purchases
 class Order(models.Model):
@@ -160,13 +165,13 @@ class Order(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
  
     def __str__(self):
-    """Returns a string representation of the order."""
-
+        """Returns a string representation of the order."""
         return f"Order {self.id} by {self.user.username}"
+
 
 # Review model for plans and products
 class Review(models.Model):
-     """
+    """
     Represents a review for a product, submitted by a user.
 
     Attributes:
@@ -183,19 +188,18 @@ class Review(models.Model):
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-    
-    def __str__(self):
-     """Returns a string representation of the review."""
 
+    def __str__(self):
+        """Returns a string representation of the review."""
         return f'Review for {self.product.name} by {self.user.username}'
 
     def get_absolute_url(self):
         return reverse('product_detail', args=[str(self.product.id)])
 
+
 # Community Update model
 class CommunityUpdate(models.Model):
-  """
+    """
     Represents a community update posted by a user.
 
     Attributes:
@@ -208,12 +212,11 @@ class CommunityUpdate(models.Model):
     created_at = models.DateTimeField(default=timezone.now) 
 
     def __str__(self):
-    """Returns a string representation of the community update."""
-
+        """Returns a string representation of the community update."""
         return f"Update by {self.user.username}"
 
 class Wishlist(models.Model):
-"""
+    """
     Represents a wishlist associated with a user.
 
     Attributes:
@@ -223,8 +226,11 @@ class Wishlist(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        # Make sure a user can only have one wishlist
+        unique_together = ('user',)
+
     def __str__(self):
-        """Returns a string representation of the wishlist."""
         return f"{self.user.username}'s Wishlist"
 
 
@@ -236,7 +242,11 @@ class WishlistItem(models.Model):
         wishlist (Wishlist): The wishlist to which the item belongs.
         product (Product): The product added to the wishlist.
     """
-    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='items')  
+    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('wishlist', 'product')  # Ensure no duplicates
 
+    def __str__(self):
+        return f"{self.product.name} in {self.wishlist.user.username}'s wishlist"

@@ -8,7 +8,7 @@ from cart.models import Cart
 from .models import Wishlist
 
 def cart_count(request):
- """
+    """
     Adds the total number of items in the user's cart to the template context.
 
     This context processor checks if the user is authenticated, then retrieves 
@@ -20,7 +20,7 @@ def cart_count(request):
 
     Returns:
         dict: A dictionary containing the cart count with the key 'cart_count'.
-"""
+    """
     count = 0
     if request.user.is_authenticated:
         try:
@@ -31,7 +31,7 @@ def cart_count(request):
     return {'cart_count': count}
 
 def wishlist_count(request):
- """
+    """
     Adds the total number of items in the user's wishlist to the template context.
 
     This context processor checks if the user is authenticated, then retrieves 

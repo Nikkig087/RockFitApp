@@ -15,12 +15,12 @@ class UserProfileForm(forms.ModelForm):
     
     #  CSS classes directly to form fields
     def __init__(self, *args, **kwargs):
-      """
+        """
         Initializes the form with custom CSS classes for each field.
 
         This method updates the widget attributes to add Bootstrap-compatible 
         CSS classes, ensuring a consistent and user-friendly appearance.
-    """
+        """
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'class': 'form-control'})
         self.fields['name'].widget.attrs.update({'class': 'form-control'})
@@ -52,7 +52,7 @@ class UserProfileForm(forms.ModelForm):
         return username
 
 class ReviewForm(forms.ModelForm):
-        """
+    """
     Form for submitting product reviews.
 
     This form allows users to provide a rating and comment for products. 
@@ -70,7 +70,7 @@ class ReviewForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-        """
+    """
     Form for creating and updating user profiles (alternate version).
 
     This version of the form manages user information without the username field. 
@@ -85,7 +85,7 @@ class UserProfileForm(forms.ModelForm):
     
     #  CSS classes directly to form fields
     def __init__(self, *args, **kwargs):
-         """
+        """
         Initializes the form with custom CSS classes for each field.
 
         This method updates the widget attributes to add Bootstrap-compatible 
