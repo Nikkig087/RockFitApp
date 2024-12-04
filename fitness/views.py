@@ -247,9 +247,18 @@ def add_to_wishlist(request, product_id):
     
     return redirect('view_wishlist')
 
-def view_wishlist(request):
-    wishlist_items = WishlistItem.objects.filter(wishlist__user=request.user)  # Correct filtering
+def wishlist_view(request):
+    # Fetch the wishlist for the current user
+    wishlist = Wishlist.objects.filter(user=request.user).first()  # Ensure we get the first (or only) matching Wishlist
+    
+    # Fetch all WishlistItem objects for this wishlist
+    wishlist_items = wishlist.items.all() if wishlist else []  # Get all wishlist items for the user
+    
+    # Now you can access each wishlist item and its associated product
     return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
+
+
+
 
 
 def remove_from_wishlist(request, product_id):
