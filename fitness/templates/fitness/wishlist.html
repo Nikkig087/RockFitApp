@@ -4,9 +4,9 @@
 <div class="container wish">
     <h2 class="page-header">Your Wishlist</h2>
     <div class="page-content">
-        {% for item in wishlist %}
+        {% for item in wishlist_items %}
         <div class="wishlist-item">
-            <h5>{{ item.product.name }}</h5>
+            <h5>{{ item.product.name }}</h5>  <!-- Accessing the product name -->
             <div>
                 <a href="{% url 'product_detail' item.product.id %}" class="btn btn-primary">View Product</a>
                 <form action="{% url 'remove_from_wishlist' item.id %}" method="post">

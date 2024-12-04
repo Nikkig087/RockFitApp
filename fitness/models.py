@@ -214,35 +214,19 @@ class CommunityUpdate(models.Model):
     def __str__(self):
         """Returns a string representation of the community update."""
         return f"Update by {self.user.username}"
+from django.db import models
 
+# Define the Wishlist model
 class Wishlist(models.Model):
-    """
-    Represents a wishlist associated with a user.
-
-    Attributes:
-        user (User): The user who owns the wishlist.
-        created_at (datetime): The date and time when the wishlist was created.
-    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        # Make sure a user can only have one wishlist
-        unique_together = ('user',)
 
     def __str__(self):
         return f"{self.user.username}'s Wishlist"
 
-
+# Define the WishlistItem model (which references Wishlist)
 class WishlistItem(models.Model):
-    """
-    Represents an item in a user's wishlist.
-
-    Attributes:
-        wishlist (Wishlist): The wishlist to which the item belongs.
-        product (Product): The product added to the wishlist.
-    """
-    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='items')
+    wishlist = models.ForeignKey('Wishlist', on_delete=models.CASCADE, related_name='items')  # 'Wishlist' as a string
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     class Meta:

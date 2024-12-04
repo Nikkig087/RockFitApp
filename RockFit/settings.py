@@ -172,7 +172,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-LOGIN_URL = '/accounts/login/'  # Default path for login if authentication fails
+LOGIN_URL = 'accounts/login/'  # Default path for login if authentication fails
 LOGIN_REDIRECT_URL = '/'  # Home page or your desired page
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
 LOGOUT_REDIRECT_URL = '/'  # Redirect path after successful logout
