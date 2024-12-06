@@ -78,7 +78,14 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net',
 ]
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+
+ACCOUNT_PASSWORD_RESET_REDIRECT_URL = '/accounts/password_reset_done/'
+ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = '/accounts/password_change_done/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
