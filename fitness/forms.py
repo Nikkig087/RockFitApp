@@ -7,6 +7,15 @@ include custom initialization for CSS classes and validation logic to ensure dat
 from django import forms
 from .models import UserProfile, SubscriptionPlan, Review
 
+from .models import NewsletterSubscription
+
+class NewsletterSignupForm(forms.ModelForm):
+    class Meta:
+        model = NewsletterSubscription
+        fields = ['email']
+        widgets = {
+            'email': forms.EmailInput(attrs={'placeholder': 'Enter your email to subscribe'}),
+        }
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

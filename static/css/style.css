@@ -56,6 +56,10 @@ li {
   unicode-bidi: isolate;
 }
 
+ol, ul {
+  padding-left: 0;
+}
+
 /* Styling for the subscription cards */
 
 
@@ -69,6 +73,7 @@ li {
 
 .card-text {
   font-size: 1rem; /* Standard font size for text */
+  color: black;
 }
 
 .btn {
@@ -158,6 +163,51 @@ li {
 .btn-primary:hover {
   background-color:silver;
   color: black;
+}
+/* Newsletter */
+.newsletter-signup {
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+.newsletter-signup h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.newsletter-signup p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: black;
+  text-align: center;
+}
+
+.newsletter-signup form {
+  display: flex;
+  flex-direction: column;
+}
+
+.newsletter-signup input[type="email"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.newsletter-signup button {
+  padding: 10px;
+  background-color: silver;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.newsletter-signup button:hover {
+  background-color: gold;
 }
 
 /*Spotlights */
@@ -329,6 +379,18 @@ pp
   border-radius: 5px;
 }
 
+/* Style for the buttons container */
+.button-container {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 10px; /* Adds space between buttons */
+}
+
+.button-container-detail {
+  display: flex;
+  flex-direction: row; /* Arrange buttons in a row by default */
+  gap: 10px; /* Adds space between buttons */
+}
 /* Buttons */
 .button {
   padding: 10px 15px;
@@ -400,7 +462,10 @@ pp
   .quantity-input {
       margin-bottom: 5px;
   }
+
+
 }
+
 
 
 
@@ -409,8 +474,32 @@ pp
   .container {
       margin-top: 80px;
   }
+  .button-container-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds space between buttons */
+  }
 
   .btn {
       width: 100%;
   }
+
+  .btn-outline-primary {
+    color: black;
+    background-color: gold;
+    border-color: none;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  
+  }
+
+  .btn-outline-secondary {
+    color: black;
+    background-color: #FF5722;
+    border-color: none;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  }
+
+  
 }
