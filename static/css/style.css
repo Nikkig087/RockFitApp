@@ -95,12 +95,69 @@ li {
   transform: scale(1.02);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
-.btn-primary {
-  background-color: #007bff;
-  border: none;
+.btn-outline-primary {
+  color: black;
+  background-color: gold;
+  border-color: none;
+
 }
+
+.btn-outline-primary:hover {
+  color: black;
+  background-color: silver;
+  border-color: none;
+
+}
+
+.btn-outline-secondary {
+  color: black;
+  background-color: #FF5722;
+  border-color: none;
+}
+
+.btn-outline-secondary:hover {
+  color: black;
+  background-color: silver;
+  border-color: none;
+
+}
+
+.btn-secondary {
+  color: black;
+  background-color: gold;
+  border-color: none;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #5c636a;
+  border-color: #565e64;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #FF5722;
+  border:none;
+  color: white;
+}
+
+.btn-success:hover {
+  color: silver;
+  background-color: silver;
+  border:none;
+  color: black;
+}
+
+.btn-primary {
+  background-color: gold;
+  border: none;
+  margin-right: 0px;
+  color: black;
+}
+
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color:silver;
+  color: black;
 }
 
 /*Spotlights */
@@ -113,6 +170,94 @@ li {
   padding-top: 10px;
 }
 
+p {
+  margin-bottom: 10px;
+  color: #fff;
+}
+.modal-header {
+  background-color: black;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  color: #fff;
+}
+.modal-body {
+  background-color: black;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+.modal-footer {
+  background-color: black;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+/*
+.review {
+  font-size: 14px;
+  color: #fff;
+  padding: 0px 0px;
+}
+
+.review p:last-child {
+  font-size: 12px;
+  color: #aaa;
+}
+pp 
+
+/* The popup container */
+.popup {
+  display: none; /* Hidden by default */
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 9999;
+  text-align: center;
+}
+
+/* Popup content */
+.popup-content {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 20%;
+  display: inline-block;
+  min-width: 300px;
+}
+
+.toast-body {
+  padding: .75rem;
+  word-wrap: break-word;
+  background-color: rgba(255, 217, 0, 0.732);
+  color: black;
+}
+
+.pop {
+  background-color: gold;
+  color: black;
+
+}
+
+/* Close button */
+.close-btn {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 
 .form-label {
   margin-bottom: .5rem;
@@ -128,6 +273,10 @@ li {
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+}
+
+.cart_status {
+  color: black;
 }
 
 /* Heading Style */

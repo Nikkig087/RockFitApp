@@ -18,4 +18,4 @@ class FitnessConfig(AppConfig):
         the 'signals' module to ensure that signal handlers are connected
         and ready to handle events such as model changes.
         """
-        import fitness.signals  # Ensure this import is inside the method
+        import fitness.signals  

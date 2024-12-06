@@ -20,7 +20,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_protect 
 from django.views.decorators.http import require_POST  
 from django.utils import timezone
-
+from .forms import ReviewForm
 import json
 
 from django.shortcuts import render, get_object_or_404
@@ -205,8 +205,6 @@ def products(request):
         'page_obj': page_obj,
     })
 
-
-
 def product_detail(request, product_id):
     """
     Display detailed information about a specific product.
@@ -221,14 +219,14 @@ def product_detail(request, product_id):
         HttpResponse: Renders the 'product_detail.html' template with product details and reviews.
     """
     product = get_object_or_404(Product, id=product_id)
-    reviews = Review.objects.filter(product=product)
+    reviews = Review.objects.filter(product=product, approved=True) 
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    
     if request.method == 'POST':
         if 'add_to_cart' in request.POST: 
             return redirect('cart:cart_detail')
         
         elif 'add_to_wishlist' in request.POST:
-            
             if request.user.is_authenticated:
                 Wishlist.objects.get_or_create(user=request.user, product=product)
                 return redirect('wishlist') 
@@ -237,28 +235,66 @@ def product_detail(request, product_id):
         'product': product,
         'reviews': reviews,
         'average_rating': average_rating,
-    }) 
+    })
+
 def add_to_wishlist(request, product_id):
+    """
+    Adds a product to the user's wishlist.
+
+    This view handles the logic for adding a product to a user's wishlist. It first
+    checks if a wishlist exists for the current user, and if not, it creates one. Then,
+    it creates a WishlistItem for the specific product, adding it to the user's wishlist.
+
+    Args:
+        request (HttpRequest): The HTTP request object, which contains metadata about
+                               the request and user.
+        product_id (int): The ID of the product to be added to the wishlist.
+
+    Returns:
+        HttpResponseRedirect: Redirects to the wishlist view after successfully adding
+                               the product.
+    """
     product = get_object_or_404(Product, id=product_id)
     wishlist, created = Wishlist.objects.get_or_create(user=request.user)
-
-    # Add the product to the wishlist
     WishlistItem.objects.get_or_create(wishlist=wishlist, product=product)
     
-    return redirect('view_wishlist')
+    return redirect('wishlist_view')
 
 def wishlist_view(request):
-    # Fetch the wishlist for the current user
-    wishlist = Wishlist.objects.filter(user=request.user).first()  # Ensure we get the first (or only) matching Wishlist
-    
-    # Fetch all WishlistItem objects for this wishlist
-    wishlist_items = wishlist.items.all() if wishlist else []  # Get all wishlist items for the user
-    
-    # Now you can access each wishlist item and its associated product
+    """
+    Displays the user's wishlist.
+
+    This view retrieves the wishlist for the authenticated user and displays all the 
+    products currently in the wishlist. If no wishlist exists, it will display an empty 
+    wishlist.
+
+    Args:
+        request (HttpRequest): The HTTP request object, containing user information.
+
+    Returns:
+        HttpResponse: Renders the 'wishlist.html' template, passing in the wishlist items.
+    """
+    wishlist = Wishlist.objects.filter(user=request.user).first()  
+    wishlist_items = wishlist.items.all() if wishlist else []  
     return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
 
 @login_required
 def remove_from_wishlist(request, product_id):
+    """
+    Removes a product from the user's wishlist.
+
+    This view allows the user to remove a specific product from their wishlist. If the 
+    product exists in the wishlist, it is deleted. A success or error message is displayed 
+    depending on the result.
+
+    Args:
+        request (HttpRequest): The HTTP request object, containing user information.
+        product_id (int): The ID of the product to be removed from the wishlist.
+
+    Returns:
+        HttpResponseRedirect: Redirects to the wishlist view after attempting to remove
+                               the product.
+    """
     wishlist = get_object_or_404(Wishlist, user=request.user)
     try:
         wishlist_item = wishlist.items.get(product_id=product_id)
@@ -266,18 +302,30 @@ def remove_from_wishlist(request, product_id):
         messages.success(request, "Item removed from your wishlist.")
     except WishlistItem.DoesNotExist:
         messages.error(request, "Item not found in your wishlist.")
-
-    # Redirect to the wishlist view, without any template path being added.
-    return redirect('wishlist_view')  # This is the correct view name
-
+    return redirect('wishlist_view')  
 
 def wishlist_count(request):
+    """
+    Calculates and returns the number of items in the user's wishlist.
+
+    This function checks if the user is authenticated. If authenticated, it retrieves the
+    count of items in the user's wishlist. If the user is not authenticated, it returns 
+    a count of 0.
+
+    Args:
+        request (HttpRequest): The HTTP request object, containing user information.
+
+    Returns:
+        dict: A dictionary containing the key 'wishlist_count' with the number of items 
+              in the user's wishlist.
+    """
     if request.user.is_authenticated:
         wishlist, created = Wishlist.objects.get_or_create(user=request.user)
-        count = wishlist.wishlistitem_set.count()  # Get count of wishlist items
+        count = wishlist.wishlistitem_set.count()  
     else:
         count = 0
     return {'wishlist_count': count}
+
 
 @login_required
 def post_update(request):
@@ -358,6 +406,7 @@ def update_profile(request):
 
     return render(request, 'fitness/update_profile.html', {'form': form})
 
+from .forms import ReviewForm  
 
 @login_required
 def create_review(request, product_id):
@@ -384,12 +433,14 @@ def create_review(request, product_id):
             review.user = request.user
             review.product = product
             review.save()
+            
+           
+            messages.success(request, 'Your review has been submitted and is pending approval by an admin.')
             return redirect('product_detail', product_id=product.id)
     else:
         form = ReviewForm()
 
     return render(request, 'product_create_review.html', {'form': form, 'product': product})
-
 
 @login_required
 def edit_review(request, review_id):
@@ -407,77 +458,22 @@ def edit_review(request, review_id):
         HttpResponse: Redirects to the product detail page after successful update.
                       Renders the 'product_edit_review.html' template with the form on GET requests.
     """
-    review = get_object_or_404(Review, id=review_id)
-    
-    if review.user != request.user:
-        return redirect('product_detail', product_id=review.product.id)  
-    
+    review = get_object_or_404(Review, id=review_id, user=request.user)
     if request.method == 'POST':
-        form = ReviewForm(request.POST, instance=review)
-        if form.is_valid():
-            form.save()
-            return redirect('product_detail', product_id=review.product.id)
-    else:
-        form = ReviewForm(instance=review)
-    
-    return render(request, 'product_edit_review.html', {'form': form, 'review': review})
-
-
+        review.comment = request.POST['comment']
+        review.rating = request.POST['rating']
+        review.save()
+        return redirect('product_detail', product_id=review.product.id)
 @login_required
 def delete_review(request, review_id):
-    """
-    Allow users to delete their existing review for a product.
-
-    Ensures that only the user who created the review can delete it. Handles POST requests
-    to delete the review.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        review_id (int): The ID of the review to be deleted.
-
-    Returns:
-        HttpResponse: Redirects to the product detail page after successful deletion.
-                      Renders the 'product_delete_review.html' template for GET requests.
-    """
+    
     review = get_object_or_404(Review, id=review_id)
-    
+
     if review.user != request.user:
-        return redirect('product_detail', product_id=review.product.id)  
-    
-    if request.method == 'POST':
-        review.delete()
+        messages.error(request, 'You can only delete your own reviews.')
         return redirect('product_detail', product_id=review.product.id)
+
+    review.delete()
+    messages.success(request, 'Your review has been deleted.')
     
-    return render(request, 'product_delete_review.html', {'review': review})
-
-    
-def add_review(request, product_id):
-    """
-    Add a review for a specified product.
-
-    Handles POST requests to create a review with user-provided rating and comment.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        product_id (int): The ID of the product being reviewed.
-
-    Returns:
-        HttpResponse: Redirects to the product detail page after successful review creation.
-    """
-    product = get_object_or_404(Product, id=product_id)
-
-    if request.method == 'POST':
-        comment = request.POST.get('comment')
-        rating = request.POST.get('rating')
-
-
-        review = Review.objects.create(
-            user=request.user,
-            product=product,
-            comment=comment,
-            rating=rating
-        )
-        messages.success(request, 'Your review has been added successfully!')
-        return redirect('product_detail', product_id=product.id)
-
-    return redirect('product_detail', product_id=product.id)
+    return redirect('product_detail', product_id=review.product.id)

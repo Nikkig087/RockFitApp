@@ -16,27 +16,23 @@ from django.http import JsonResponse, HttpResponse
 from django.urls import reverse
 
 
+@login_required
 def view_cart(request):
     """
     Display the user's cart with all cart items and the total cost.
-
-    Retrieves the cart for the authenticated user, including all items and the total cost.
-    If the user is not authenticated, redirects to the login page.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'cart/cart.html' template with the cart items and total cost.
     """
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
         cart_items = cart.items.all()
+
+        if not cart_items: 
+            messages.info(request, "Your cart is currently empty.")
+            return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': 0})
+        
         total_cost = cart.get_total_cost()
         return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost})
     else:
-        # Redirect to login page if the user is not authenticated
-        return redirect('login') 
+        return redirect('login')
 
 def add_to_cart(request, product_id):
     """
@@ -56,25 +52,19 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
     if request.user.is_authenticated:
-        # Get or create a cart for the user
         cart, created = Cart.objects.get_or_create(user=request.user)
-
-        # Check if the product already exists in the cart
         cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
 
         if not created:
-            # If item already exists, increment the quantity
             cart_item.quantity += 1
             cart_item.save()
         else:
-            # New item, set quantity to 1
             cart_item.quantity = 1
             cart_item.save()
 
         messages.success(request, f"{product.name} has been added to your cart!")
 
     else:
-        # For unauthenticated users, continue using session
         cart = request.session.get('cart', {})
         if str(product_id) in cart:
             cart[str(product_id)] += 1
@@ -133,40 +123,37 @@ def update_cart_item(request, cart_item_id):
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def create_checkout_session(request):
-    """
-    Create a Stripe checkout session for the user.
-
-    This function prepares the line items based on the user's cart and initiates the checkout 
-    session using the Stripe API. The user is redirected to the Stripe checkout page.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Redirects to the Stripe checkout URL.
-    """
-    cart = Cart.objects.get(user=request.user)
+    cart = Cart.objects.get(user=request.user) 
     line_items = []
-    for item in cart.items.all():
+    
+    for item in cart.items.all(): 
         line_items.append({
             'price_data': {
-                'currency': 'usd',
+                'currency': 'eur',
                 'product_data': {
                     'name': item.product.name,
                 },
-                'unit_amount': int(item.product.price * 100),  # Stripe expects cents
+                'unit_amount': int(item.product.price * 100),  
             },
             'quantity': item.quantity,
         })
-    checkout_session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items=line_items,
-        mode='payment',
-        success_url=request.build_absolute_uri(reverse('cart:payment_success')),
-        cancel_url=request.build_absolute_uri(reverse('cart:payment_cancel')),
 
-    )
-    return redirect(checkout_session.url)
+    if not line_items:
+        return redirect('cart_view')  
+
+    try:
+       
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=line_items,
+            mode='payment',
+            success_url=request.build_absolute_uri('/success/'),
+            cancel_url=request.build_absolute_uri('/cancel/'),
+        )
+        return redirect(checkout_session.url)
+    except Exception as e:
+    
+        return HttpResponse(f"Error: {str(e)}")
 
 
 def payment_success(request):
