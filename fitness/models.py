@@ -31,14 +31,13 @@ class SubscriptionPlan(models.Model):
     benefits = models.TextField()
     is_active = models.BooleanField(default=True)
     is_spotlight = models.BooleanField(default=False)
-    created_at = models.DateTimeField(default=timezone.now)  # Import timezone
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         """Returns the name of the subscription plan."""
         return self.name
 
 
-# Extending the User model with profile details
 class UserProfile(models.Model):
     """
     Extends the default User model to include additional profile information.
@@ -73,7 +72,6 @@ class UserProfile(models.Model):
         return f"{self.user.username}'s Profile"
 
 
-# Exercise Plan model
 class ExercisePlan(models.Model):
     """
     Represents an exercise plan available for users.
@@ -99,7 +97,7 @@ class ExercisePlan(models.Model):
         return self.title
 
 
-# Nutrition Plan model
+
 class NutritionPlan(models.Model):
     """
     Represents a nutrition plan available for users.
@@ -123,7 +121,7 @@ class NutritionPlan(models.Model):
         return self.title
 
 
-# Product model for merchandise and nutrition products
+
 class Product(models.Model):
     """
     Represents a product available for purchase, such as merchandise or nutrition products.
@@ -143,14 +141,14 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/')
     stock_quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)  
-    is_spotlight = models.BooleanField(default=False)  # New field for spotlight products
+    is_spotlight = models.BooleanField(default=False)  
 
     def __str__(self):
         """Returns the name of the product."""
         return self.name
 
 
-# Order model for purchases
+
 class Order(models.Model):
     """
     Represents an order placed by a user.
@@ -169,35 +167,47 @@ class Order(models.Model):
         return f"Order {self.id} by {self.user.username}"
 
 
-# Review model for plans and products
 class Review(models.Model):
     """
-    Represents a review for a product, submitted by a user.
+    Represents a product review written by a user.
+
+    This model stores information about a review made by a user for a particular product. 
+    It includes the user's rating, a comment, and whether the review is approved. The 
+    review also records the timestamp of when it was created.
 
     Attributes:
-        product (Product): The product being reviewed.
-        user (User): The user who wrote the review.
-        rating (int): The rating given to the product (1 to 5).
-        comment (str): The text of the review.
-        created_at (datetime): The date and time when the review was created.
-        updated_at (datetime): The date and time when the review was last updated.
+        user (ForeignKey): The user who wrote the review.
+        product (ForeignKey): The product being reviewed.
+        rating (IntegerField): The rating given to the product, usually on a scale (e.g., 1 to 5).
+        comment (TextField): The review text or comment provided by the user.
+        approved (BooleanField): Indicates whether the review has been approved (default is False).
+        created_at (DateTimeField): The timestamp when the review was created.
+
+    Methods:
+        __str__: Returns a string representation of the review, indicating the user and the product being reviewed.
     """
-    product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)])  # Rating from 1 to 5
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField()
     comment = models.TextField()
+    approved = models.BooleanField(default=False)  
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        """Returns a string representation of the review."""
-        return f'Review for {self.product.name} by {self.user.username}'
+        """
+        Returns a string representation of the review.
 
-    def get_absolute_url(self):
-        return reverse('product_detail', args=[str(self.product.id)])
+        This method returns a human-readable string that includes the username of the reviewer
+        and the name of the product being reviewed.
+
+        Returns:
+            str: A string indicating the reviewer's username and the product name.
+        """
+        return f"Review by {self.user.username} for {self.product.name}"
 
 
-# Community Update model
+
+
 class CommunityUpdate(models.Model):
     """
     Represents a community update posted by a user.
@@ -216,21 +226,73 @@ class CommunityUpdate(models.Model):
         return f"Update by {self.user.username}"
 from django.db import models
 
-# Define the Wishlist model
 class Wishlist(models.Model):
+    """
+    Represents a user's wishlist.
+
+    This model stores a wishlist for a user, which contains a collection of products the user 
+    wants to keep track of. It uses a one-to-one relationship with the `User` model to ensure 
+    that each user can only have one wishlist. The wishlist also records the creation date.
+
+    Attributes:
+        user (OneToOneField): The user to whom the wishlist belongs.
+        created_at (DateTimeField): The timestamp when the wishlist was created.
+        products (ManyToManyField): A collection of products that the user has added to the wishlist.
+
+    Methods:
+        __str__: Returns a string representation of the wishlist, indicating the username of the owner.
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    products = models.ManyToManyField(Product)
 
     def __str__(self):
+        """
+        Returns a string representation of the wishlist.
+
+        This method returns a human-readable string indicating the username of the user who 
+        owns the wishlist.
+
+        Returns:
+            str: A string representing the user's wishlist.
+        """
         return f"{self.user.username}'s Wishlist"
 
-# Define the WishlistItem model (which references Wishlist)
+
 class WishlistItem(models.Model):
-    wishlist = models.ForeignKey('Wishlist', on_delete=models.CASCADE, related_name='items')  # 'Wishlist' as a string
+    """
+    Represents an item in a user's wishlist.
+
+    This model stores the relationship between a specific product and a user's wishlist. It 
+    connects a `Product` to a `Wishlist` and ensures that each product appears only once 
+    in the wishlist using the unique constraint.
+
+    Attributes:
+        wishlist (ForeignKey): The wishlist to which the product belongs.
+        product (ForeignKey): The product that has been added to the wishlist.
+
+    Meta:
+        unique_together: Ensures that a product can only appear once in a wishlist by enforcing 
+                          a unique constraint on the combination of `wishlist` and `product`.
+
+    Methods:
+        __str__: Returns a string representation of the wishlist item, indicating the product name 
+                 and the owner of the wishlist.
+    """
+    wishlist = models.ForeignKey('Wishlist', on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('wishlist', 'product')  # Ensure no duplicates
 
     def __str__(self):
+        """
+        Returns a string representation of the wishlist item.
+
+        This method returns a human-readable string indicating the product name and the 
+        username of the user who owns the wishlist.
+
+        Returns:
+            str: A string representing the wishlist item and the user's wishlist.
+        """
         return f"{self.product.name} in {self.wishlist.user.username}'s wishlist"

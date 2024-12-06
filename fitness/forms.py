@@ -30,7 +30,7 @@ class UserProfileForm(forms.ModelForm):
         self.fields['age'].widget.attrs.update({'class': 'form-control'})
         self.fields['phone'].widget.attrs.update({'class': 'form-control'})
 
-    # Custom validation for username length
+    
     def clean_username(self):
         """
         Custom validation for the username field.
@@ -83,7 +83,7 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['name', 'email', 'profile_picture', 'fitness_goal', 'age', 'phone']
     
-    #  CSS classes directly to form fields
+   
     def __init__(self, *args, **kwargs):
         """
         Initializes the form with custom CSS classes for each field.
@@ -98,3 +98,8 @@ class UserProfileForm(forms.ModelForm):
         self.fields['fitness_goal'].widget.attrs.update({'class': 'form-control'})
         self.fields['age'].widget.attrs.update({'class': 'form-control'})
         self.fields['phone'].widget.attrs.update({'class': 'form-control'})
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']
