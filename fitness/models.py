@@ -296,3 +296,10 @@ class WishlistItem(models.Model):
             str: A string representing the wishlist item and the user's wishlist.
         """
         return f"{self.product.name} in {self.wishlist.user.username}'s wishlist"
+
+class NewsletterSubscription(models.Model):
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

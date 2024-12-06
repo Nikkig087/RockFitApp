@@ -21,6 +21,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST  
 from django.utils import timezone
 from .forms import ReviewForm
+from .forms import NewsletterSignupForm
 import json
 
 from django.shortcuts import render, get_object_or_404
@@ -349,36 +350,51 @@ def post_update(request):
     return render(request, 'fitness/post_update.html')
 
 
+
+
 def community_updates(request):
     """
-    Display a list of community updates.
-
-    Retrieves all community updates from the database, ordered by the 
-    creation date in descending order.
+    Display a list of community updates and handle newsletter signup.
 
     Args:
         request (HttpRequest): The HTTP request object.
 
     Returns:
-        HttpResponse: Renders the 'community_updates.html' template with the updates.
+        HttpResponse: Renders the 'community_updates.html' template with updates.
     """
     updates = CommunityUpdate.objects.order_by('-created_at')
-    return render(request, 'fitness/community_updates.html', {'updates': updates})
+
+    if request.method == 'POST':
+        form = NewsletterSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'You have successfully subscribed to the newsletter!')
+            return redirect('community_updates')
+
+    else:
+        form = NewsletterSignupForm()
+
+    return render(request, 'fitness/community_updates.html', {
+        'updates': updates,
+        'form': form
+    })
 
 
+@login_required(login_url='login')  # Make sure it redirects to login page if user is not logged in
 def profile_view(request):
     """
-    Display the user's profile information.
-
-    Retrieves the user's profile data and renders it on the profile page.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'profile.html' template with the user's profile data.
+    Displays the user profile page.
+    
+    Ensures the user is logged in, and then retrieves their profile information.
+    If the user is not authenticated, it redirects them to the login page.
     """
-    user_profile = request.user.userprofile  
+    try:
+        # Access user profile
+        user_profile = request.user.userprofile
+    except AttributeError:
+        # If user doesn't have a profile, handle it (optional)
+        user_profile = None
+    
     return render(request, 'fitness/profile.html', {'user_profile': user_profile})
 
 def update_profile(request):
