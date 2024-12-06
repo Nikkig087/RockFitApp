@@ -41,6 +41,15 @@
         </div>
     </nav>
     
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 
 <!-- Toast container for messages -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">

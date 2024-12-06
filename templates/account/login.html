@@ -27,6 +27,9 @@
                 {% endif %}
                 <button class="btn btn-signup right" type="submit">{% trans "Sign In" %}</button>
             </form>
+            <div class="mt-3">
+                <a href="{% url 'account_reset_password' %}">{% trans "Forgot your password?" %}</a>
+            </div>
         </div>
     </div>
 </div>

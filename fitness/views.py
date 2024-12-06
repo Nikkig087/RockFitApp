@@ -477,3 +477,10 @@ def delete_review(request, review_id):
     messages.success(request, 'Your review has been deleted.')
     
     return redirect('product_detail', product_id=review.product.id)
+
+def some_view(request):
+    # On success:
+    messages.success(request, 'Your password has been changed successfully.')
+    
+    # On error:
+    messages.error(request, 'There was an issue with your request.')
