@@ -173,38 +173,31 @@ def home(request):
     })
 
 def products(request):
-    """
-    Display a list of products with search and sorting functionality.
-
-    Supports pagination and allows users to search for products by name or description.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'product_list.html' template with the filtered and paginated products.
-    """
     query = request.GET.get('search', '')  
     sort_by = request.GET.get('sort', 'name')  
-    products = Product.objects.all()
-    paginator = Paginator(products, 6)  
 
-    page_number = request.GET.get('page')  
-    page_obj = paginator.get_page(page_number)
+    valid_sort_fields = ['name', 'price', '-price', 'created_at', '-created_at']
+    if sort_by not in valid_sort_fields:
+        sort_by = 'name'
+
+    products = Product.objects.all()
 
     if query:
         products = products.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
-    products = products.order_by(sort_by)  
+    products = products.order_by(sort_by)
 
-    product_count = products.count()
+    paginator = Paginator(products, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, 'fitness/product_list.html', {
-        'products': products, 
-        'product_count': product_count, 
-        'query': query,
+        'products': products,
         'page_obj': page_obj,
+        'query': query,
     })
+
+
 
 def product_detail(request, product_id):
     """
