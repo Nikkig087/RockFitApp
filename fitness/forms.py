@@ -22,7 +22,7 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['username', 'name', 'email', 'profile_picture', 'fitness_goal', 'age', 'phone']
     
-    #  CSS classes directly to form fields
+   
     def __init__(self, *args, **kwargs):
         """
         Initializes the form with custom CSS classes for each field.
