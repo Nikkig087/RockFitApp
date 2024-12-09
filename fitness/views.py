@@ -380,7 +380,7 @@ def community_updates(request):
     })
 
 
-@login_required(login_url='login')  # Make sure it redirects to login page if user is not logged in
+@login_required(login_url='login') 
 def profile_view(request):
     """
     Displays the user profile page.
@@ -389,10 +389,10 @@ def profile_view(request):
     If the user is not authenticated, it redirects them to the login page.
     """
     try:
-        # Access user profile
+        
         user_profile = request.user.userprofile
     except AttributeError:
-        # If user doesn't have a profile, handle it (optional)
+        
         user_profile = None
     
     return render(request, 'fitness/profile.html', {'user_profile': user_profile})
@@ -482,6 +482,28 @@ def edit_review(request, review_id):
         return redirect('product_detail', product_id=review.product.id)
 @login_required
 def delete_review(request, review_id):
+    """
+    Deletes a review submitted by the logged-in user.
+    
+    This view allows a user to delete a review that they have written for a product. 
+    The user must be authenticated, and they can only delete reviews that they have authored. 
+    If a user tries to delete someone else's review, an error message is displayed, and they are redirected 
+    to the product detail page.
+
+    Args:
+        request: The HTTP request object, which includes information about the logged-in user.
+        review_id: The ID of the review to be deleted.
+
+    Returns:
+        A redirect to the product detail page after the review is deleted or if an error occurs.
+
+    Raises:
+        Http404: If the review with the given ID does not exist.
+
+    Notes:
+        - If the user is not authenticated, they will be redirected to the login page due to the `@login_required` decorator.
+        - A success or error message will be displayed depending on whether the review is successfully deleted.
+    """
     
     review = get_object_or_404(Review, id=review_id)
 
@@ -494,9 +516,10 @@ def delete_review(request, review_id):
     
     return redirect('product_detail', product_id=review.product.id)
 
-def some_view(request):
+
+#def some_view(request):
     # On success:
-    messages.success(request, 'Your password has been changed successfully.')
+ #   messages.success(request, 'Your password has been changed successfully.')
     
     # On error:
-    messages.error(request, 'There was an issue with your request.')
+  #  messages.error(request, 'There was an issue with your request.')

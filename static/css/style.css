@@ -3,7 +3,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   background-color: black;
   color: #333;
-  padding-top: 80px; /* Based on the navbar height */
+  padding-top: 80px; 
 }
 
 /* Navbar colors */
@@ -30,18 +30,18 @@ body {
   color: #007bff;
 }
 
-/* Optional: Center the burger icon vertically */
+
 .navbar-toggler {
-  border: none;  /* Removes the button border */
+  border: none;  
 }
 
 /* Container */
 .container {
-  margin-top: 60px; /* Adjust based on navbar height */
+  margin-top: 60px; 
   max-width: 1200px;
-  margin-top: 100px; /* Adjust for spacing under navbar */
+  margin-top: 100px; 
   padding: 20px;
- /* background-color: #ffffff;*/
+
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -64,28 +64,28 @@ ol, ul {
 
 
 .card-body {
-  padding: 20px; /* More padding for better spacing */
+  padding: 20px; 
 }
 
 .card-title {
-  font-size: 1.5rem; /* Larger font size for plan name */
+  font-size: 1.5rem;
 }
 
 .card-text {
-  font-size: 1rem; /* Standard font size for text */
+  font-size: 1rem; 
   color: black;
 }
 
 .btn {
-  font-size: 1.1rem; /* Slightly larger button text */
+  font-size: 1.1rem; 
 }
 
 .mt-3 {
-  margin-top: 15px; /* Space between the benefits and actions */
+  margin-top: 15px; 
 }
 
 .mb-4 {
-  margin-bottom: 30px; /* Larger bottom margin for cards */
+  margin-bottom: 30px; 
 }
 
 /* Card & Button Styling */
@@ -94,7 +94,7 @@ ol, ul {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s;
   list-style-type: none;
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 8px; 
 }
 .card:hover {
   transform: scale(1.02);
@@ -258,13 +258,13 @@ pp
 
 /* The popup container */
 .popup {
-  display: none; /* Hidden by default */
+  display: none; 
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5); 
   z-index: 9999;
   text-align: center;
 }
@@ -382,14 +382,14 @@ pp
 /* Style for the buttons container */
 .button-container {
   display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  gap: 10px; /* Adds space between buttons */
+  flex-direction: column; 
+  gap: 10px; 
 }
 
 .button-container-detail {
   display: flex;
-  flex-direction: row; /* Arrange buttons in a row by default */
-  gap: 10px; /* Adds space between buttons */
+  flex-direction: row; 
+  gap: 10px; 
 }
 /* Buttons */
 .button {
@@ -401,7 +401,7 @@ pp
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-size: 1rem;
-  text-decoration: none; /* For the anchor buttons */
+  text-decoration: none;
   display: inline-block;
 }
 
@@ -466,7 +466,72 @@ pp
 
 }
 
+/* Style for the container */
+.cancel-container {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  max-width: 50%;
+  width: 100%;
+  /* display: flex
+; */
+  align-content: center;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+/* Header styling */
+.cancel-container h1 {
+  font-size: 2em;
+  color: #dc3545; 
+  margin-bottom: 15px;
+}
+
+/* Paragraph styling */
+.cancel-container p {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  color: #555; 
+}
+
+/* Button group styling */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Buttons */
+.button-group a {
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  color: #fff;
+  background-color: #FF5722;
+  border:none;
+  color: black;
+}
+
+/* Button hover effect */
+.button-group a:hover {
+  background-color: #565e64; 
+}
+
+/* Secondary button style */
+.button-group a.secondary {
+  background-color: gold;
+  color: black;
+}
+
+.button-group a.secondary:hover {
+  background-color: #565e64;
+}
 
 
 /* Mobile responsiveness */
@@ -477,7 +542,7 @@ pp
   .button-container-detail {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Adds space between buttons */
+    gap: 10px; 
   }
 
   .btn {
