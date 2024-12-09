@@ -467,7 +467,7 @@ pp
 }
 
 /* Style for the container */
-.cancel-container {
+.cancel-container, .success-container {
   text-align: center;
   background-color: #ffffff;
   border-radius: 8px;
@@ -475,8 +475,6 @@ pp
   padding: 50px;
   max-width: 50%;
   width: 100%;
-  /* display: flex
-; */
   align-content: center;
   flex-wrap: wrap;
   margin-left: auto;
@@ -531,6 +529,10 @@ pp
 
 .button-group a.secondary:hover {
   background-color: #565e64;
+}
+
+.Thanks {
+  color: black;
 }
 
 

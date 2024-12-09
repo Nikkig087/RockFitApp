@@ -3,7 +3,12 @@
 {% block extra_title %} - Payment Success {% endblock %}
 
 {% block content %}
+<div class="success-container">
 <h2>Payment Successful</h2>
-<p>Thank you for your purchase! Your order has been completed.</p>
+<p class="Thanks">Thank you for your purchase! Your order has been completed.</p>
+
+<a href="{% url 'product_list' %}" class="btn btn-primary">Go to Product List</a>
+
+</div>
 
 {% endblock %}

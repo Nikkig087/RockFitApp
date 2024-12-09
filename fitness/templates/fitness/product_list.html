@@ -10,6 +10,7 @@
 
     <!-- Search and Sort -->
     <div class="row mb-4">
+        <!-- Search Bar -->
         <div class="col-md-6">
             <form method="get" action="{% url 'products' %}" class="input-group">
                 <input type="text" name="search" value="{{ query }}" placeholder="Search products..." class="form-control">
@@ -17,18 +18,21 @@
             </form>
         </div>
 
+        <!-- Sort Dropdown -->
         <div class="col-md-6">
             <form method="get" action="{% url 'products' %}">
                 <div class="input-group">
                     <select name="sort" onchange="this.form.submit()" class="form-select">
                         <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
-                        <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Sort by Price</option>
+                        <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Sort by Price (Low to High)</option>
                         <option value="-price" {% if request.GET.sort == '-price' %}selected{% endif %}>Sort by Price (High to Low)</option>
                         <option value="created_at" {% if request.GET.sort == 'created_at' %}selected{% endif %}>Sort by Date Added</option>
+                        <option value="-created_at" {% if request.GET.sort == '-created_at' %}selected{% endif %}>Sort by Date Added (Newest First)</option>
                     </select>
                     <button type="submit" class="btn btn-outline-secondary">Sort</button>
                 </div>
             </form>
+            
         </div>
     </div>
 
@@ -67,13 +71,13 @@
     <!-- Pagination Controls -->
     <div class="pagination mt-4 d-flex justify-content-center">
         {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary me-2">Previous</a>
+            <a href="?page={{ page_obj.previous_page_number }}&sort={{ sort_by }}&search={{ query }}" class="btn btn-outline-secondary me-2">Previous</a>
         {% endif %}
 
         <span class="me-2">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">Next</a>
+            <a href="?page={{ page_obj.next_page_number }}&sort={{ sort_by }}&search={{ query }}" class="btn btn-outline-secondary">Next</a>
         {% endif %}
     </div>
 
