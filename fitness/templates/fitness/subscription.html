@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-<script src="/static/fitness/js/functions.js"></script>
+
 
 {% block content %}
 <!-- Main Container for the subscription plans -->
@@ -17,7 +17,7 @@
                             <h3 class="card-title">{{ plan.name }}</h3>
 
                             <!-- Plan Price -->
-                            <p class="card-text">Price: ${{ plan.price }}</p>
+                            <p class="card-text">Price: €{{ plan.price }}</p>
 
                             <!-- Plan Duration -->
                             <p class="card-text">Duration: {{ plan.duration }} days</p>
@@ -43,14 +43,17 @@
                                                 <div class="alert alert-warning">
                                                     You already have an active subscription with the <strong>{{ user.userprofile.subscription_plan.name }}</strong> plan.
                                                 </div>
+                                                
+                                                <!-- Option to upgrade or change subscription -->
+                                                <a href="{% url 'subscription_plans' %}" class="btn btn-warning w-100 mt-2">Upgrade or Change Plan</a>
                                             {% endif %}
                                         {% else %}
                                             <!-- Choose a plan if the current subscription is canceled -->
-                                            <a href="{% url 'subscribe' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
+                                            <a href="{% url 'cart:add_subscription_to_cart' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
                                         {% endif %}
                                     {% else %}
                                         <!-- Choose a plan if the user has no active subscription -->
-                                        <a href="{% url 'subscribe' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
+                                        <a href="{% url 'cart:add_subscription_to_cart' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
                                     {% endif %}
                                 {% else %}
                                     <!-- Login option for non-authenticated users -->

@@ -1,3 +1,4 @@
+
 """
 Models for the cart application.
 
@@ -8,8 +9,7 @@ and the items within it.
 
 from django.db import models
 from django.contrib.auth.models import User
-from fitness.models import Product
-
+from fitness.models import Product, SubscriptionPlan
 
 class Cart(models.Model):
     """
@@ -43,29 +43,35 @@ class Cart(models.Model):
             int: The total number of items in the cart.
         """
         return sum(item.quantity for item in self.items.all())
-
-
+        
 class CartItem(models.Model):
     """
     Represents an item in a user's shopping cart.
 
     Attributes:
-        cart (Cart): The cart that the item belongs to.
+        cart (Cart): The cart the item belongs to.
         product (Product): The product being added to the cart.
-        quantity (int): The quantity of the product in the cart.
+        subscription (SubscriptionPlan): The subscription being added to the cart.
+        quantity (int): The quantity of the product or subscription in the cart.
     """
 
     cart = models.ForeignKey(
         Cart, related_name="items", on_delete=models.CASCADE
     )
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, null=True, blank=True, on_delete=models.CASCADE
+    )
+    subscription = models.ForeignKey(
+        SubscriptionPlan, null=True, blank=True, on_delete=models.CASCADE
+    )
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         """
         Return a string representation of the CartItem.
-
-        Returns:
-        str: A string representation of the CartItem, e.g., "ProductName (x2)".
         """
-        return f"{self.product.name} (x{self.quantity})"
+        if self.product:
+            return f"{self.product.name} (x{self.quantity})"
+        elif self.subscription:
+            return f"{self.subscription.name} (x{self.quantity})"
+        return "CartItem"
