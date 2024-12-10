@@ -52,7 +52,8 @@
 
                     <!-- Add to Cart Button (only for logged-in users) -->
                     {% if user.is_authenticated %}
-                    <form action="{% url 'cart:add_to_cart' product.id %}" method="post" class="mt-2">
+                    <form action="{% url 'cart:add_to_cart' product.id 'product' %}" method="post" class="mt-2">
+
                         {% csrf_token %}
                         <button type="submit" class="btn btn-success w-100 mb-2">Add to Cart</button>
                     </form>

@@ -11,6 +11,7 @@ from .views import (
     view_cart,
     remove_from_cart,
     update_cart_item,
+    add_subscription_to_cart
 )
 from .views import (
     create_checkout_session,
@@ -23,8 +24,10 @@ from . import views
 app_name = "cart"
 
 urlpatterns = [
-    path("add/<int:product_id>/", add_to_cart, name="add_to_cart"),
+    path('add/<int:item_id>/<str:item_type>/', views.add_to_cart, name='add_to_cart'),
     path("", view_cart, name="view_cart"),
+    path('subscription/add_to_cart/<int:plan_id>/', views.add_subscription_to_cart, name='add_subscription_to_cart'),
+
     path(
         "remove/<int:cart_item_id>/",
         remove_from_cart,

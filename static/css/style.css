@@ -535,6 +535,9 @@ pp
   color: black;
 }
 
+.plan {
+  color: black;
+}
 
 /* Mobile responsiveness */
 @media (max-width: 576px) {

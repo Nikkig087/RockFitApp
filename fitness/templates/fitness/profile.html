@@ -1,32 +1,73 @@
 {% extends "base.html" %}
-
-{% block title %}Profile{% endblock %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-4 profile">
-    <h2>{{ user_profile.user.username }}'s Profile</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Profile</h2>
 
-    <p><strong>Name:</strong> {{ user_profile.name }}</p>
-    <p><strong>Email:</strong> {{ user_profile.email }}</p>
-    <p><strong>Fitness Goal:</strong> {{ user_profile.fitness_goal }}</p>
-    <p><strong>Age:</strong> {{ user_profile.age }}</p>
-    <p><strong>Phone:</strong> {{ user_profile.phone }}</p>
-    
-    {% if user_profile.profile_picture %}
-        <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" class="img-fluid">
-    {% else %}
-        <p>No profile picture available.</p>
+    <!-- Display any messages -->
+    {% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
     {% endif %}
 
-    <!-- Display Subscription Plan -->
-    <p><strong>Subscription Plan:</strong> 
-        {% if user_profile.subscription_plan %}
-            {{ user_profile.subscription_plan.name }}
-        {% else %}
-            Not Subscribed
-        {% endif %}
-    </p>
+    <h3>Personal Information</h3>
+    <p><strong>Name:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
 
-    <a href="{% url 'update_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
+    <h3>Your Subscription</h3>
+    {% if user.userprofile.subscription_plan %}
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h4 class="card-title">Active Subscription</h4>
+                <p class="plan"><strong>Subscription Plan:</strong> {{ user.userprofile.subscription_plan.name }}</p>
+                <p class="plan"><strong>Price:</strong> €{{ user.userprofile.subscription_plan.price }}</p>
+                <p class="plan"><strong>Duration:</strong> {{ user.userprofile.subscription_plan.duration }} days</p>
+                <p class="plan"><strong>Status:</strong> 
+                    {% if user.userprofile.subscription_plan.is_active %}
+                        Active
+                    {% else %}
+                        Inactive
+                    {% endif %}
+                </p>
+                <p class="plan"><strong>Start Date:</strong> {{ user.userprofile.subscription_start_date }}</p>
+                <p class="plan"><strong>End Date:</strong> {{ user.userprofile.subscription_end_date }}</p>
+
+                {% if user.userprofile.subscription_plan.is_active %}
+                    <!-- Option to cancel the subscription if it's active -->
+                    <form action="{% url 'cancel_subscription' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100">Cancel Subscription</button>
+                    </form>
+
+                    <!-- Option to upgrade or change subscription (if applicable) -->
+                    <a href="{% url 'subscription_plans' %}" class="btn btn-warning w-100 mt-2">Upgrade or Change Subscription Plan</a>
+                {% else %}
+                    <!-- Option to subscribe to a new plan -->
+                    <a href="{% url 'subscription_plans' %}" class="btn btn-primary w-100">Choose a Subscription Plan</a>
+                {% endif %}
+
+                {% if user.userprofile.subscription_end_date %}
+                    {% with current_date_now=current_time|date:"Y-m-d" %}
+                    <p class="mt-2 text-muted">
+                        {% if user.userprofile.subscription_end_date < current_date_now %}
+                            Your subscription has expired. Please renew.
+                        {% elif user.userprofile.subscription_end_date|date:"Y-m-d" == current_date_now %}
+                            Your subscription is ending today. Renew now!
+                        {% else %}
+                            Your subscription is active until {{ user.userprofile.subscription_end_date }}.
+                        {% endif %}
+                    </p>
+                    {% endwith %}
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p>You do not have an active subscription.</p>
+        <a href="{% url 'subscription_plans' %}" class="btn btn-primary">Browse Subscription Plans</a>
+    {% endif %}
 </div>
 {% endblock %}
