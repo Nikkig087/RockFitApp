@@ -20,11 +20,30 @@ import json
 
 # Subscription Views
 def subscription_plans(request):
-    """
-    Display all active subscription plans.
-    """
-    plans = SubscriptionPlan.objects.filter(is_active=True)
-    return render(request, 'fitness/subscription.html', {'plans': plans})
+    # Fetch subscription plans from the database
+    subscription_plans = SubscriptionPlan.objects.all()
+
+    # Check if user has a profile (might be empty for some users)
+    try:
+        user_profile = request.user.userprofile
+        pause_requested = user_profile.pause_requested
+        pause_approved = user_profile.pause_approved
+    except UserProfile.DoesNotExist:
+        user_profile = None
+        pause_requested = False
+        pause_approved = False
+
+    return render(
+        request,
+        'fitness/subscription.html',  # Ensure this is the correct template name
+        {
+            'subscription_plans': subscription_plans,
+            'user_profile': user_profile,
+            'pause_requested': pause_requested,
+            'pause_approved': pause_approved
+        }
+    )
+
 
 @login_required
 def subscribe(request, plan_id):
@@ -306,6 +325,7 @@ def community_updates(request):
         'form': form
     })
 
+@login_required(login_url='login') 
 def profile_view(request):
     user_profile = request.user.userprofile
     subscription = user_profile.subscription_plan if user_profile else None
