@@ -19,46 +19,71 @@
     <p><strong>Email:</strong> {{ user.email }}</p>
 
     <h3>Your Subscription</h3>
-    {% if user.userprofile.subscription_plan %}
+    {% if subscription %}
         <div class="card shadow-sm mb-3">
             <div class="card-body">
                 <h4 class="card-title">Active Subscription</h4>
-                <p class="plan"><strong>Subscription Plan:</strong> {{ user.userprofile.subscription_plan.name }}</p>
-                <p class="plan"><strong>Price:</strong> €{{ user.userprofile.subscription_plan.price }}</p>
-                <p class="plan"><strong>Duration:</strong> {{ user.userprofile.subscription_plan.duration }} days</p>
+                <p class="plan"><strong>Subscription Plan:</strong> {{ subscription.name }}</p>
+                <p class="plan"><strong>Price:</strong> €{{ subscription.price }}</p>
+                <p class="plan"><strong>Duration:</strong> {{ subscription.duration }} days</p>
                 <p class="plan"><strong>Status:</strong> 
-                    {% if user.userprofile.subscription_plan.is_active %}
+                    {% if subscription.is_active %}
                         Active
                     {% else %}
                         Inactive
                     {% endif %}
                 </p>
-                <p class="plan"><strong>Start Date:</strong> {{ user.userprofile.subscription_start_date }}</p>
-                <p class="plan"><strong>End Date:</strong> {{ user.userprofile.subscription_end_date }}</p>
+                <p class="plan"><strong>Start Date:</strong> {{ user_profile.subscription_start_date }}</p>
+                <p class="plan"><strong>End Date:</strong> {{ user_profile.subscription_end_date }}</p>
 
-                {% if user.userprofile.subscription_plan.is_active %}
-                    <!-- Option to cancel the subscription if it's active -->
+                <!-- Pause Request Status -->
+                {% if pause_requested %}
+                    <div class="alert alert-warning">
+                        Your subscription pause request is pending approval from the admin.
+                    </div>
+                {% elif pause_approved %}
+                    <div class="alert alert-success">
+                        Your subscription pause request has been approved.
+                    </div>
+                    <!-- Resume Subscription button if pause is approved -->
+                    <form action="{% url 'resume_subscription' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success w-100 mt-2">Resume Subscription</button>
+                    </form>
+                {% else %}
+                    <!-- Option to request pause, but only if no pause is requested -->
+                    {% if subscription.is_active and not pause_requested %}
+                        <form action="{% url 'request_pause_subscription' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning w-100 mt-2">Request Pause</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+
+                <!-- Option to cancel the subscription if it's active -->
+                {% if subscription.is_active %}
                     <form action="{% url 'cancel_subscription' %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger w-100">Cancel Subscription</button>
                     </form>
 
-                    <!-- Option to upgrade or change subscription (if applicable) -->
+                    <!-- Option to upgrade or change subscription -->
                     <a href="{% url 'subscription_plans' %}" class="btn btn-warning w-100 mt-2">Upgrade or Change Subscription Plan</a>
                 {% else %}
                     <!-- Option to subscribe to a new plan -->
                     <a href="{% url 'subscription_plans' %}" class="btn btn-primary w-100">Choose a Subscription Plan</a>
                 {% endif %}
 
-                {% if user.userprofile.subscription_end_date %}
-                    {% with current_date_now=current_time|date:"Y-m-d" %}
+                <!-- Subscription expiration messaging -->
+                {% if user_profile.subscription_end_date %}
+                    {% with current_date_now=timezone.now|date:"Y-m-d" %}
                     <p class="mt-2 text-muted">
-                        {% if user.userprofile.subscription_end_date < current_date_now %}
+                        {% if user_profile.subscription_end_date < current_date_now %}
                             Your subscription has expired. Please renew.
-                        {% elif user.userprofile.subscription_end_date|date:"Y-m-d" == current_date_now %}
+                        {% elif user_profile.subscription_end_date|date:"Y-m-d" == current_date_now %}
                             Your subscription is ending today. Renew now!
                         {% else %}
-                            Your subscription is active until {{ user.userprofile.subscription_end_date }}.
+                            Your subscription is active until {{ user_profile.subscription_end_date }}.
                         {% endif %}
                     </p>
                     {% endwith %}

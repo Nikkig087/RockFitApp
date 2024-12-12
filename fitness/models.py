@@ -1,16 +1,6 @@
-"""
-Models for the fitness application.
-
-This module defines the database models for various entities such as users, 
-subscription plans, exercise plans, nutrition plans, products, orders, reviews, 
-community updates, and wishlists. These models represent the structure of the 
-application's data and include fields, relationships, and methods.
-"""
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django import forms
 
 class SubscriptionPlan(models.Model):
     """
@@ -24,6 +14,9 @@ class SubscriptionPlan(models.Model):
         is_active (bool): Indicates if the plan is currently active.
         is_spotlight (bool): Highlights the plan as a featured option.
         created_at (datetime): The date and time when the plan was created.
+        pause_requested (bool): Indicates if a pause request has been made.
+        pause_approved (bool): Indicates if the pause request has been approved.
+        paused_at (datetime): The date and time when the subscription was paused (if applicable).
     """
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -33,10 +26,15 @@ class SubscriptionPlan(models.Model):
     is_spotlight = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
+    pause_requested = models.BooleanField(default=False)
+    pause_approved = models.BooleanField(default=False)
+    paused_at = models.DateTimeField(null=True, blank=True)
+    resume_requested = models.BooleanField(default=False)
+    resume_approved = models.BooleanField(default=False)
+
     def __str__(self):
         """Returns the name of the subscription plan."""
         return self.name
-
 
 class UserProfile(models.Model):
     """
@@ -63,14 +61,26 @@ class UserProfile(models.Model):
     fitness_goal = models.CharField(max_length=255, blank=True)
     age = models.PositiveIntegerField(blank=True, null=True) 
     phone = models.CharField(max_length=15, blank=True, null=True) 
-    subscription_status = models.CharField(max_length=50, choices=[('active', 'Active'), ('inactive', 'Inactive')], default='inactive')
-    subscription_plan = models.ForeignKey(SubscriptionPlan, null=True, blank=True, on_delete=models.SET_NULL)  
-    created_at = models.DateTimeField(auto_now_add=True)  
+    subscription_plan = models.ForeignKey(SubscriptionPlan, null=True, on_delete=models.SET_NULL)
+    subscription_start_date = models.DateField(null=True, blank=True)
+    subscription_end_date = models.DateField(null=True, blank=True)
+    pause_requested = models.BooleanField(default=False)
+    pause_approved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # Pause / Resume Fields
+  
+    paused_at = models.DateTimeField(null=True, blank=True)
+    resume_requested = models.BooleanField(default=False)
+    resume_approved = models.BooleanField(default=False)
+
+    def is_paused(self):
+        """Returns if the subscription is paused."""
+        return self.pause_approved and self.paused_at is not None
 
     def __str__(self):
         """Returns a string representation of the user's profile."""
         return f"{self.user.username}'s Profile"
-
 
 class ExercisePlan(models.Model):
     """
@@ -91,12 +101,10 @@ class ExercisePlan(models.Model):
     duration = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     category = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
-    created_at = models.DateTimeField(auto_now_add=True)  
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
-
-
 
 class NutritionPlan(models.Model):
     """
@@ -115,12 +123,10 @@ class NutritionPlan(models.Model):
     diet_type = models.CharField(max_length=100)  
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     calories = models.CharField(max_length=100)  
-    created_at = models.DateTimeField(auto_now_add=True) 
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
-
-
 
 class Product(models.Model):
     """
@@ -147,8 +153,6 @@ class Product(models.Model):
         """Returns the name of the product."""
         return self.name
 
-
-
 class Order(models.Model):
     """
     Represents an order placed by a user.
@@ -161,19 +165,14 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     order_date = models.DateTimeField(default=timezone.now)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
- 
+
     def __str__(self):
         """Returns a string representation of the order."""
         return f"Order {self.id} by {self.user.username}"
 
-
 class Review(models.Model):
     """
     Represents a product review written by a user.
-
-    This model stores information about a review made by a user for a particular product. 
-    It includes the user's rating, a comment, and whether the review is approved. The 
-    review also records the timestamp of when it was created.
 
     Attributes:
         user (ForeignKey): The user who wrote the review.
@@ -182,9 +181,6 @@ class Review(models.Model):
         comment (TextField): The review text or comment provided by the user.
         approved (BooleanField): Indicates whether the review has been approved (default is False).
         created_at (DateTimeField): The timestamp when the review was created.
-
-    Methods:
-        __str__: Returns a string representation of the review, indicating the user and the product being reviewed.
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -194,19 +190,7 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """
-        Returns a string representation of the review.
-
-        This method returns a human-readable string that includes the username of the reviewer
-        and the name of the product being reviewed.
-
-        Returns:
-            str: A string indicating the reviewer's username and the product name.
-        """
         return f"Review by {self.user.username} for {self.product.name}"
-
-
-
 
 class CommunityUpdate(models.Model):
     """
@@ -222,82 +206,46 @@ class CommunityUpdate(models.Model):
     created_at = models.DateTimeField(default=timezone.now) 
 
     def __str__(self):
-        """Returns a string representation of the community update."""
+        """Returns a string representation of the community update.""" 
         return f"Update by {self.user.username}"
-from django.db import models
 
 class Wishlist(models.Model):
     """
     Represents a user's wishlist.
 
-    This model stores a wishlist for a user, which contains a collection of products the user 
-    wants to keep track of. It uses a one-to-one relationship with the `User` model to ensure 
-    that each user can only have one wishlist. The wishlist also records the creation date.
-
     Attributes:
         user (OneToOneField): The user to whom the wishlist belongs.
         created_at (DateTimeField): The timestamp when the wishlist was created.
         products (ManyToManyField): A collection of products that the user has added to the wishlist.
-
-    Methods:
-        __str__: Returns a string representation of the wishlist, indicating the username of the owner.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     products = models.ManyToManyField(Product)
 
     def __str__(self):
-        """
-        Returns a string representation of the wishlist.
-
-        This method returns a human-readable string indicating the username of the user who 
-        owns the wishlist.
-
-        Returns:
-            str: A string representing the user's wishlist.
-        """
         return f"{self.user.username}'s Wishlist"
-
 
 class WishlistItem(models.Model):
     """
     Represents an item in a user's wishlist.
 
-    This model stores the relationship between a specific product and a user's wishlist. It 
-    connects a `Product` to a `Wishlist` and ensures that each product appears only once 
-    in the wishlist using the unique constraint.
-
     Attributes:
         wishlist (ForeignKey): The wishlist to which the product belongs.
         product (ForeignKey): The product that has been added to the wishlist.
-
-    Meta:
-        unique_together: Ensures that a product can only appear once in a wishlist by enforcing 
-                          a unique constraint on the combination of `wishlist` and `product`.
-
-    Methods:
-        __str__: Returns a string representation of the wishlist item, indicating the product name 
-                 and the owner of the wishlist.
     """
     wishlist = models.ForeignKey('Wishlist', on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('wishlist', 'product')  # Ensure no duplicates
+        unique_together = ('wishlist', 'product')
 
     def __str__(self):
-        """
-        Returns a string representation of the wishlist item.
-
-        This method returns a human-readable string indicating the product name and the 
-        username of the user who owns the wishlist.
-
-        Returns:
-            str: A string representing the wishlist item and the user's wishlist.
-        """
         return f"{self.product.name} in {self.wishlist.user.username}'s wishlist"
 
 class NewsletterSubscription(models.Model):
+    """
+    Represents a subscription to the newsletter.
+    """
     email = models.EmailField(unique=True)
     subscribed_at = models.DateTimeField(auto_now_add=True)
 
