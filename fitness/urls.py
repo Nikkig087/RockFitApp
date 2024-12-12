@@ -34,7 +34,7 @@ urlpatterns = [
     path('product/<int:product_id>/', product_detail, name='product_detail'),  # Product detail page
     path('subscribe/<int:plan_id>/', views.subscribe, name='subscribe'),
     path('cancel-subscription/', views.cancel_subscription, name='cancel_subscription'),
-    
+    path('subscription-plans/', views.subscription_plans, name='subscription_plans'),
     #path('cancel-pause-request/', views.cancel_pause_request, name='cancel_pause_request'),
 
     path('pause-subscription/', views.request_pause_subscription, name='request_pause_subscription'),
@@ -44,7 +44,7 @@ urlpatterns = [
     path('wishlist/remove/<int:product_id>/', views.remove_from_wishlist, name='remove_from_wishlist'),  
     path('community-updates/', community_updates, name='community_updates'),  # Community updates page
     path('post-update/', post_update, name='post_update'),  # Page to post updates
-    path('subscription-plans/', views.subscription_plans, name='subscription_plans'),
+    #path('subscription-plans/', views.subscription_plans, name='subscription_plans'),
     
     path('accounts/login/', auth_views.LoginView.as_view(template_name='account/login.html'), name='login'),
     path('profile/', views.profile_view, name='profile'),  # Profile page

@@ -6,9 +6,9 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4 subscription">Our Subscription Plans</h2>
 
-    {% if plans %}
+    {% if subscription_plans %}
         <div class="row">
-            {% for plan in plans %}
+            {% for plan in subscription_plans %}
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
@@ -66,7 +66,7 @@
                                                 <!-- Resume Subscription -->
                                                 <form action="{% url 'resume_subscription' %}" method="post">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-success w-100 mt-2">Request to Resume Subscription</button>
+                                                    <button type="submit" class="btn btn-success w-100 mt-2">Resume Subscription</button>
                                                 </form>
                                             {% else %}
                                                 <!-- Handle other subscription states -->
