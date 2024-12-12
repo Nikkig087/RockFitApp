@@ -1,61 +1,35 @@
-"""
-Views for the fitness application.
-
-This module defines the views that handle user interactions with the fitness application,
-including subscription management, product viewing, wishlist handling, community updates,
-and user profiles. Each view function manages a specific part of the application’s functionality.
-"""
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, UserProfile, Wishlist, WishlistItem, Product 
+from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, UserProfile, Wishlist, WishlistItem
 from django.views.decorators.csrf import csrf_exempt
 from .forms import UserProfileForm
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Q  
+from django.db.models import Q
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db.models import Avg
 from django.views import View
-from django.views.decorators.csrf import csrf_protect 
-from django.views.decorators.http import require_POST  
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_POST
 from django.utils import timezone
 from .forms import ReviewForm
 from .forms import NewsletterSignupForm
 import json
 
-from django.shortcuts import render, get_object_or_404
-from .models import SubscriptionPlan
 
+# Subscription Views
 def subscription_plans(request):
     """
     Display all active subscription plans.
-
-    Retrieves active subscription plans from the database and renders them on the subscription page.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'subscription.html' template with active plans.
     """
     plans = SubscriptionPlan.objects.filter(is_active=True)
-
     return render(request, 'fitness/subscription.html', {'plans': plans})
 
 @login_required
 def subscribe(request, plan_id):
     """
     Subscribe the user to a selected subscription plan.
-
-    Checks if the user is already subscribed and handles the subscription accordingly.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        plan_id (int): The ID of the subscription plan to subscribe to.
-
-    Returns:
-        HttpResponse: Redirects to the profile page with a success or error message.
     """
     plan = get_object_or_404(SubscriptionPlan, id=plan_id)
     user_profile = request.user.userprofile
@@ -75,45 +49,26 @@ def subscribe(request, plan_id):
         messages.success(request, f"You've successfully subscribed to the {plan.name} plan!")
     return redirect('profile')
 
-
+@login_required
 def cancel_subscription(request):
     """
-    Cancel the user's active subscription plan.
-
-    Sets the subscription status to inactive and records the cancellation date.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Redirects to the subscription page with a success or error message.
+    Cancel the user's subscription plan.
     """
-    user_profile = request.user.userprofile
-    subscription = user_profile.subscription_plan
+    subscription_plan = request.user.userprofile.subscription_plan
 
-    if subscription and subscription.is_active:
-        subscription.is_active = False
-        subscription.end_date = timezone.now().date()  
-        subscription.save()
-        messages.success(request, "Your subscription has been canceled successfully.")
+    if subscription_plan and subscription_plan.is_active:
+        request.user.userprofile.subscription_plan = None
+        request.user.userprofile.save()
+        messages.success(request, "Your subscription has been canceled.")
+        return redirect('subscription')
     else:
-        messages.error(request, "You don't have an active subscription to cancel.")
-    
-    return redirect('subscription')
+        return HttpResponseBadRequest("No active subscription to cancel.")
 
-@csrf_protect  
-@require_POST 
+@csrf_protect
+@require_POST
 def add_subscription_plans(request):
     """
     Add multiple subscription plans from a JSON request.
-
-    Expects a JSON object with a list of plans, each containing name, price, duration, and benefits.
-
-    Args:
-        request (HttpRequest): The HTTP request object with JSON data.
-
-    Returns:
-        JsonResponse: Returns a success or error message based on the outcome.
     """
     try:
         data = json.loads(request.body)
@@ -121,10 +76,8 @@ def add_subscription_plans(request):
             return JsonResponse({"status": "error", "message": "No plans data provided"}, status=400)
         
         for plan in data['plans']:
-            
             if not all(key in plan for key in ('name', 'price', 'duration', 'benefits')):
                 return JsonResponse({"status": "error", "message": "Missing required plan fields"}, status=400)
-            
             
             SubscriptionPlan.objects.create(
                 name=plan['name'],
@@ -133,33 +86,69 @@ def add_subscription_plans(request):
                 benefits=plan['benefits']
             )
         
-        
         return JsonResponse({"status": "success", "message": "Plans added successfully"})
 
     except json.JSONDecodeError:
         return JsonResponse({"status": "error", "message": "Invalid JSON format"}, status=400)
     
     except Exception as e:
-
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
+
+@login_required
+def request_pause_subscription(request):
+    """
+    Allows a user to request a pause on their subscription.
+    """
+    user_profile = request.user.userprofile
+    if user_profile.pause_requested or user_profile.pause_approved:
+        # Prevent requesting a pause if one is already in progress or approved
+        messages.info(request, "You already have a pause request or it has been approved.")
+        return redirect('profile')
+
+    # If no pause request is pending, set it as requested
+    user_profile.pause_requested = True
+    user_profile.save()
+    messages.info(request, "Your pause request has been submitted for approval.")
+    return redirect('profile')
+
+@login_required
+def approve_pause_subscription(request):
+    """
+    Approves a user's pause subscription request.
+    """
+    if not request.user.is_staff:
+        return HttpResponseForbidden("You do not have permission to approve pause requests.")
+    
+    user_profile = request.user.userprofile
+    user_profile.pause_approved = True
+    user_profile.save()
+
+    messages.success(request, "The subscription pause has been approved.")
+    return redirect('profile')
+
+@login_required
+def resume_subscription(request):
+    """Allow users to resume their paused subscription."""
+    user_profile = request.user.userprofile
+    if user_profile.pause_approved:
+        # Resume the subscription
+        user_profile.pause_approved = False  # Remove the pause approval
+        user_profile.save()
+        messages.success(request, "Your subscription has been resumed.")
+    else:
+        messages.error(request, "Your subscription was not paused.")
+    
+    return redirect('profile')
 
 def home(request):
     """
     Display the home page with featured content.
-
-    Retrieves exercise plans, nutrition plans, spotlight products, and community updates to display on the home page.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'home.html' template with the retrieved data.
     """
     exercise_plans = ExercisePlan.objects.all()
     nutrition_plans = NutritionPlan.objects.all()
-    products = Product.objects.all()[:6]  
-    spotlight_products = Product.objects.filter(is_spotlight=True)[:6]  
+    products = Product.objects.all()[:6]
+    spotlight_products = Product.objects.filter(is_spotlight=True)[:6]
     community_updates = CommunityUpdate.objects.order_by('-created_at')[:5]
     spotlight_subscriptions = SubscriptionPlan.objects.filter(is_spotlight=True)[:3]
 
@@ -172,9 +161,14 @@ def home(request):
         'spotlight_subscriptions': spotlight_subscriptions,
     })
 
+# Similar updates for other views like profile_view, wishlist, etc.
+
 def products(request):
-    query = request.GET.get('search', '')  
-    sort_by = request.GET.get('sort', 'name')  
+    """
+    Display a list of products, with search and sorting options.
+    """
+    query = request.GET.get('search', '')
+    sort_by = request.GET.get('sort', 'name')
 
     valid_sort_fields = ['name', 'price', '-price', 'created_at', '-created_at']
     if sort_by not in valid_sort_fields:
@@ -197,34 +191,23 @@ def products(request):
         'query': query,
     })
 
-
-
 def product_detail(request, product_id):
     """
     Display detailed information about a specific product.
-
-    Retrieves product details, associated reviews, and calculates the average rating.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        product_id (int): The ID of the product to display.
-
-    Returns:
-        HttpResponse: Renders the 'product_detail.html' template with product details and reviews.
     """
     product = get_object_or_404(Product, id=product_id)
-    reviews = Review.objects.filter(product=product, approved=True) 
+    reviews = Review.objects.filter(product=product, approved=True)
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
     
     if request.method == 'POST':
-        if 'add_to_cart' in request.POST: 
+        if 'add_to_cart' in request.POST:
             return redirect('cart:cart_detail')
         
         elif 'add_to_wishlist' in request.POST:
             if request.user.is_authenticated:
                 Wishlist.objects.get_or_create(user=request.user, product=product)
-                return redirect('wishlist') 
-
+                return redirect('wishlist')
+    
     return render(request, 'fitness/product_detail.html', {
         'product': product,
         'reviews': reviews,
@@ -234,19 +217,6 @@ def product_detail(request, product_id):
 def add_to_wishlist(request, product_id):
     """
     Adds a product to the user's wishlist.
-
-    This view handles the logic for adding a product to a user's wishlist. It first
-    checks if a wishlist exists for the current user, and if not, it creates one. Then,
-    it creates a WishlistItem for the specific product, adding it to the user's wishlist.
-
-    Args:
-        request (HttpRequest): The HTTP request object, which contains metadata about
-                               the request and user.
-        product_id (int): The ID of the product to be added to the wishlist.
-
-    Returns:
-        HttpResponseRedirect: Redirects to the wishlist view after successfully adding
-                               the product.
     """
     product = get_object_or_404(Product, id=product_id)
     wishlist, created = Wishlist.objects.get_or_create(user=request.user)
@@ -254,19 +224,10 @@ def add_to_wishlist(request, product_id):
     
     return redirect('wishlist_view')
 
+@login_required(login_url='login') 
 def wishlist_view(request):
     """
     Displays the user's wishlist.
-
-    This view retrieves the wishlist for the authenticated user and displays all the 
-    products currently in the wishlist. If no wishlist exists, it will display an empty 
-    wishlist.
-
-    Args:
-        request (HttpRequest): The HTTP request object, containing user information.
-
-    Returns:
-        HttpResponse: Renders the 'wishlist.html' template, passing in the wishlist items.
     """
     wishlist = Wishlist.objects.filter(user=request.user).first()  
     wishlist_items = wishlist.items.all() if wishlist else []  
@@ -276,18 +237,6 @@ def wishlist_view(request):
 def remove_from_wishlist(request, product_id):
     """
     Removes a product from the user's wishlist.
-
-    This view allows the user to remove a specific product from their wishlist. If the 
-    product exists in the wishlist, it is deleted. A success or error message is displayed 
-    depending on the result.
-
-    Args:
-        request (HttpRequest): The HTTP request object, containing user information.
-        product_id (int): The ID of the product to be removed from the wishlist.
-
-    Returns:
-        HttpResponseRedirect: Redirects to the wishlist view after attempting to remove
-                               the product.
     """
     wishlist = get_object_or_404(Wishlist, user=request.user)
     try:
@@ -296,45 +245,24 @@ def remove_from_wishlist(request, product_id):
         messages.success(request, "Item removed from your wishlist.")
     except WishlistItem.DoesNotExist:
         messages.error(request, "Item not found in your wishlist.")
-    return redirect('wishlist_view')  
+    return redirect('wishlist_view')
 
 def wishlist_count(request):
     """
-    Calculates and returns the number of items in the user's wishlist.
-
-    This function checks if the user is authenticated. If authenticated, it retrieves the
-    count of items in the user's wishlist. If the user is not authenticated, it returns 
-    a count of 0.
-
-    Args:
-        request (HttpRequest): The HTTP request object, containing user information.
-
-    Returns:
-        dict: A dictionary containing the key 'wishlist_count' with the number of items 
-              in the user's wishlist.
+    Returns the count of items in the user's wishlist.
     """
     if request.user.is_authenticated:
         wishlist, created = Wishlist.objects.get_or_create(user=request.user)
-        count = wishlist.wishlistitem_set.count()  
+        count = wishlist.wishlistitem_set.count()
     else:
         count = 0
     return {'wishlist_count': count}
 
-
+# Community Update Views
 @login_required
 def post_update(request):
     """
     Allow authenticated users to post community updates.
-
-    Handles POST requests to create a new community update. If the request is 
-    successful, the user is redirected to the community updates page.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Redirects to 'community_updates' on success or 
-                      renders the 'post_update.html' template for GET requests.
     """
     if request.method == 'POST':
         update_text = request.POST.get('update_text')
@@ -342,27 +270,33 @@ def post_update(request):
         return redirect('community_updates')
     return render(request, 'fitness/post_update.html')
 
-
-
-
 def community_updates(request):
     """
-    Display a list of community updates and handle newsletter signup.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'community_updates.html' template with updates.
+    Display a list of community updates and handle newsletter subscription/unsubscription.
     """
     updates = CommunityUpdate.objects.order_by('-created_at')
 
     if request.method == 'POST':
-        form = NewsletterSignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'You have successfully subscribed to the newsletter!')
-            return redirect('community_updates')
+        action = request.POST.get('action')
+        email = request.POST.get('email')
+
+        if action == 'subscribe':
+            form = NewsletterSignupForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'You have successfully subscribed to the newsletter!')
+            else:
+                messages.error(request, 'This email is already subscribed.')
+
+        elif action == 'unsubscribe':
+            try:
+                subscription = NewsletterSubscription.objects.get(email=email)
+                subscription.delete()
+                messages.success(request, 'You have successfully unsubscribed from the newsletter.')
+            except NewsletterSubscription.DoesNotExist:
+                messages.error(request, 'This email is not subscribed.')
+
+        return redirect('community_updates')
 
     else:
         form = NewsletterSignupForm()
@@ -372,37 +306,21 @@ def community_updates(request):
         'form': form
     })
 
-
-@login_required(login_url='login') 
 def profile_view(request):
-    """
-    Displays the user profile page.
-    
-    Ensures the user is logged in, and then retrieves their profile information.
-    If the user is not authenticated, it redirects them to the login page.
-    """
-    try:
-        
-        user_profile = request.user.userprofile
-    except AttributeError:
-        
-        user_profile = None
-    
-    return render(request, 'fitness/profile.html', {'user_profile': user_profile})
+    user_profile = request.user.userprofile
+    subscription = user_profile.subscription_plan if user_profile else None
+    pause_requested = user_profile.pause_requested if user_profile else False
+    pause_approved = user_profile.pause_approved if user_profile else False
 
+    return render(request, 'fitness/profile.html', {
+        'user_profile': user_profile,
+        'subscription': subscription,
+        'pause_requested': pause_requested,
+        'pause_approved': pause_approved,
+    })
 def update_profile(request):
     """
     Allow users to update their profile information.
-
-    Handles POST requests to update the user's profile with data from the submitted form.
-    For GET requests, it pre-fills the form with the user's current profile information.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Redirects to 'profile' on successful update or 
-                      renders the 'update_profile.html' template with the form.
     """
     user_profile = request.user.userprofile  
     if request.method == 'POST':
@@ -415,23 +333,11 @@ def update_profile(request):
 
     return render(request, 'fitness/update_profile.html', {'form': form})
 
-from .forms import ReviewForm  
-
+# Review Views
 @login_required
 def create_review(request, product_id):
     """
     Allow users to create a review for a product.
-
-    Handles POST requests to create a new review for a specified product. 
-    Ensures the review is associated with the authenticated user.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        product_id (int): The ID of the product being reviewed.
-
-    Returns:
-        HttpResponse: Redirects to the product detail page after successful creation.
-                      Renders the 'product_create_review.html' template with the form on GET requests.
     """
     product = get_object_or_404(Product, id=product_id)
     
@@ -443,7 +349,6 @@ def create_review(request, product_id):
             review.product = product
             review.save()
             
-           
             messages.success(request, 'Your review has been submitted and is pending approval by an admin.')
             return redirect('product_detail', product_id=product.id)
     else:
@@ -455,17 +360,6 @@ def create_review(request, product_id):
 def edit_review(request, review_id):
     """
     Allow users to edit their existing review for a product.
-
-    Ensures that only the user who created the review can edit it. Handles POST requests
-    to update the review data.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        review_id (int): The ID of the review to be edited.
-
-    Returns:
-        HttpResponse: Redirects to the product detail page after successful update.
-                      Renders the 'product_edit_review.html' template with the form on GET requests.
     """
     review = get_object_or_404(Review, id=review_id, user=request.user)
     if request.method == 'POST':
@@ -473,31 +367,12 @@ def edit_review(request, review_id):
         review.rating = request.POST['rating']
         review.save()
         return redirect('product_detail', product_id=review.product.id)
+
 @login_required
 def delete_review(request, review_id):
     """
-    Deletes a review submitted by the logged-in user.
-    
-    This view allows a user to delete a review that they have written for a product. 
-    The user must be authenticated, and they can only delete reviews that they have authored. 
-    If a user tries to delete someone else's review, an error message is displayed, and they are redirected 
-    to the product detail page.
-
-    Args:
-        request: The HTTP request object, which includes information about the logged-in user.
-        review_id: The ID of the review to be deleted.
-
-    Returns:
-        A redirect to the product detail page after the review is deleted or if an error occurs.
-
-    Raises:
-        Http404: If the review with the given ID does not exist.
-
-    Notes:
-        - If the user is not authenticated, they will be redirected to the login page due to the `@login_required` decorator.
-        - A success or error message will be displayed depending on whether the review is successfully deleted.
+    Delete a review submitted by the logged-in user.
     """
-    
     review = get_object_or_404(Review, id=review_id)
 
     if review.user != request.user:
@@ -508,11 +383,3 @@ def delete_review(request, review_id):
     messages.success(request, 'Your review has been deleted.')
     
     return redirect('product_detail', product_id=review.product.id)
-
-
-#def some_view(request):
-    # On success:
- #   messages.success(request, 'Your password has been changed successfully.')
-    
-    # On error:
-  #  messages.error(request, 'There was an issue with your request.')

@@ -15,6 +15,7 @@ from .views import (
     product_detail, 
     community_updates,
     post_update, 
+    request_pause_subscription
     
 )
 from .views import subscription_plans,subscribe, profile_view, update_profile#, subscription_viewnames
@@ -31,14 +32,19 @@ urlpatterns = [
     path('products/', products, name='products'),  # Products list page
     path('product_list/', products, name='product_list'),  # product-list URL
     path('product/<int:product_id>/', product_detail, name='product_detail'),  # Product detail page
-    path('subscription/', subscription_plans, name='subscription_plans'),
-    path('subscription/subscribe/<int:plan_id>/', subscribe, name='subscribe'),
+    path('subscribe/<int:plan_id>/', views.subscribe, name='subscribe'),
     path('cancel-subscription/', views.cancel_subscription, name='cancel_subscription'),
+    
+    #path('cancel-pause-request/', views.cancel_pause_request, name='cancel_pause_request'),
+
+    path('pause-subscription/', views.request_pause_subscription, name='request_pause_subscription'),
+     path('resume-subscription/', views.resume_subscription, name='resume_subscription'),
    path('wishlist/', views.wishlist_view, name='wishlist_view'), 
     path('wishlist/add/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
     path('wishlist/remove/<int:product_id>/', views.remove_from_wishlist, name='remove_from_wishlist'),  
     path('community-updates/', community_updates, name='community_updates'),  # Community updates page
     path('post-update/', post_update, name='post_update'),  # Page to post updates
+    path('subscription-plans/', views.subscription_plans, name='subscription_plans'),
     
     path('accounts/login/', auth_views.LoginView.as_view(template_name='account/login.html'), name='login'),
     path('profile/', views.profile_view, name='profile'),  # Profile page
@@ -50,7 +56,7 @@ urlpatterns = [
     path('review/<int:review_id>/edit/', views.edit_review, name='edit_review'),
     path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
     #path('product/<int:product_id>/add_review/', views.add_review, name='add_review'),
-    
+    #path('request-pause-subscription/', views.request_pause_subscription, name='request_pause_subscription'),
     path('subscription/', views.subscription_plans, name='subscription'),  # Correct URL
     path('subscribe/<int:plan_id>/', views.subscribe, name='subscribe'),  # Subscribe to a plan
 ]

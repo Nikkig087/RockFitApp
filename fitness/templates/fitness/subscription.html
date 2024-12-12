@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 
-
 {% block content %}
 <!-- Main Container for the subscription plans -->
 <div class="container mt-5">
@@ -31,28 +30,56 @@
                             <div class="mt-3">
                                 {% if user.is_authenticated %}
                                     {% if user.userprofile.subscription_plan %}
-                                        {% if user.userprofile.subscription_plan.is_active %}
-                                            {% if user.userprofile.subscription_plan == plan %}
-                                                <!-- Cancel current subscription -->
+                                        {% if user.userprofile.subscription_plan == plan %}
+                                            {% if user.userprofile.subscription_plan.is_active %}
+                                                <div class="alert alert-success">
+                                                    Your subscription is active.
+                                                </div>
+
+                                                <!-- Request to Pause Subscription -->
+                                                <form action="{% url 'request_pause_subscription' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-warning w-100 mt-2">Request Pause</button>
+                                                </form>
+
+                                                <!-- Cancel Current Subscription -->
                                                 <form action="{% url 'cancel_subscription' %}" method="post">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger w-100">Cancel Current Subscription</button>
+                                                    <button type="submit" class="btn btn-danger w-100 mt-2">Cancel Current Subscription</button>
+                                                </form>
+                                            {% elif user.userprofile.subscription_plan.pause_requested %}
+                                                <div class="alert alert-info">
+                                                    Your request to pause the subscription is pending approval.
+                                                </div>
+
+                                                <!-- Cancel Pause Request -->
+                                                <form action="{% url 'cancel_pause_request' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger w-100 mt-2">Cancel Pause Request</button>
+                                                </form>
+                                            {% elif user.userprofile.subscription_plan.pause_approved %}
+                                                <div class="alert alert-info">
+                                                    Your pause request has been approved. Your subscription is paused as of 
+                                                    {{ user.userprofile.subscription_plan.paused_at|date:"F j, Y, g:i a" }}.
+                                                </div>
+
+                                                <!-- Resume Subscription -->
+                                                <form action="{% url 'resume_subscription' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-success w-100 mt-2">Request to Resume Subscription</button>
                                                 </form>
                                             {% else %}
-                                                <!-- Alert for already having an active subscription -->
-                                                <div class="alert alert-warning">
-                                                    You already have an active subscription with the <strong>{{ user.userprofile.subscription_plan.name }}</strong> plan.
-                                                </div>
-                                                
-                                                <!-- Option to upgrade or change subscription -->
-                                                <a href="{% url 'subscription_plans' %}" class="btn btn-warning w-100 mt-2">Upgrade or Change Plan</a>
+                                                <!-- Handle other subscription states -->
                                             {% endif %}
                                         {% else %}
-                                            <!-- Choose a plan if the current subscription is canceled -->
-                                            <a href="{% url 'cart:add_subscription_to_cart' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
+                                            <!-- Active subscription for a different plan -->
+                                            <div class="alert alert-warning">
+                                                You already have an active subscription: 
+                                                <strong>{{ user.userprofile.subscription_plan.name }}</strong>.
+                                            </div>
                                         {% endif %}
                                     {% else %}
-                                        <!-- Choose a plan if the user has no active subscription -->
+                                        <!-- If the user has no active subscription -->
                                         <a href="{% url 'cart:add_subscription_to_cart' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
                                     {% endif %}
                                 {% else %}

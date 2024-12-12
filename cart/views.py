@@ -19,7 +19,7 @@ from django.http import JsonResponse, HttpResponse
 from django.urls import reverse
 from decimal import Decimal
 
-@login_required
+@login_required(login_url='login') 
 def view_cart(request):
     """
     Display the user's cart with all cart items and the total cost.
