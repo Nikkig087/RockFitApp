@@ -26,6 +26,13 @@ class SubscriptionPlan(models.Model):
     is_spotlight = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
+     #user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
+    #is_active = models.BooleanField(default=True)
+    #pause_requested = models.BooleanField(default=False)
+    ##pause_approved = models.BooleanField(default=False)
+    #paused_at = models.DateTimeField(null=True, blank=True)  # To store the pause time
+
+
     pause_requested = models.BooleanField(default=False)
     pause_approved = models.BooleanField(default=False)
     paused_at = models.DateTimeField(null=True, blank=True)
@@ -73,6 +80,8 @@ class UserProfile(models.Model):
     paused_at = models.DateTimeField(null=True, blank=True)
     resume_requested = models.BooleanField(default=False)
     resume_approved = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+  
 
     def is_paused(self):
         """Returns if the subscription is paused."""

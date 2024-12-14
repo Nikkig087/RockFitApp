@@ -16,33 +16,73 @@ from django.utils import timezone
 from .forms import ReviewForm
 from .forms import NewsletterSignupForm
 import json
+from django.core.mail import send_mail
 
 
 # Subscription Views
-def subscription_plans(request):
+#def subscription_plans(request):
     # Fetch subscription plans from the database
-    subscription_plans = SubscriptionPlan.objects.all()
+    #subscription_plans = SubscriptionPlan.objects.all()
 
     # Check if user has a profile (might be empty for some users)
-    try:
-        user_profile = request.user.userprofile
-        pause_requested = user_profile.pause_requested
-        pause_approved = user_profile.pause_approved
-    except UserProfile.DoesNotExist:
-        user_profile = None
-        pause_requested = False
-        pause_approved = False
+    #try:
+     #   user_profile = request.user.userprofile
+      #  pause_requested = user_profile.pause_requested
+       # pause_approved = user_profile.pause_approved
+    #except UserProfile.DoesNotExist:
+     #   user_profile = None
+      #  pause_requested = False
+       # pause_approved = False
 
-    return render(
-        request,
-        'fitness/subscription.html',  # Ensure this is the correct template name
-        {
-            'subscription_plans': subscription_plans,
-            'user_profile': user_profile,
-            'pause_requested': pause_requested,
-            'pause_approved': pause_approved
-        }
-    )
+    #return render(
+     #   request,
+      #  'fitness/subscription.html',  # Ensure this is the correct template name
+       # {
+        ##    'subscription_plans': subscription_plans,
+          #  'user_profile': user_profile,
+           # 'pause_requested': pause_requested,
+            #'pause_approved': pause_approved
+       # }
+    #)
+
+def subscription_plans(request):
+    """
+    View to display subscription plans and the user's current subscription state.
+    """
+    subscription_plans = SubscriptionPlan.objects.all()
+    plans = SubscriptionPlan.objects.filter(is_active=True)
+
+    # Fetch user profile and subscription details
+    user_profile = getattr(request.user, 'userprofile', None)
+    current_subscription = user_profile.subscription_plan if user_profile else None
+    is_paused = user_profile.pause_approved if user_profile else False
+
+    # Pass subscription details to both profile and subscription page
+    context = {
+        'subscription_plans': subscription_plans,
+        'user_profile': user_profile,
+        'current_subscription': current_subscription,
+        'is_paused': is_paused,
+        'pause_requested': user_profile.pause_requested if user_profile else False,
+        'pause_approved': is_paused,  # show 'pause approved' status
+    }
+
+    return render(request, 'fitness/subscription.html', context)
+
+
+
+@login_required
+def subscription_view(request):
+    user = request.user
+    subscription_plans = SubscriptionPlan.objects.all()
+    
+    # Pass the user's current subscription details
+    context = {
+        'user': user,
+        'subscription_plans': subscription_plans,
+    }
+    return render(request, 'subscription.html', context)
+
 
 
 @login_required
@@ -114,38 +154,70 @@ def add_subscription_plans(request):
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
 
-@login_required
-def request_pause_subscription(request):
-    """
-    Allows a user to request a pause on their subscription.
-    """
-    user_profile = request.user.userprofile
-    if user_profile.pause_requested or user_profile.pause_approved:
-        # Prevent requesting a pause if one is already in progress or approved
-        messages.info(request, "You already have a pause request or it has been approved.")
-        return redirect('profile')
+
+#def request_pause_subscription(request):
+ #   ""
+  #  Allows a user to request a pause on their subscription.
+    
+   # user_profile = request.user.userprofile
+    #if user_profile.pause_requested or user_profile.pause_approved:
+     #   # Prevent requesting a pause if one is already in progress or approved
+      #  messages.info(request, "You already have a pause request or it has been approved.")
+       # return redirect('profile')
 
     # If no pause request is pending, set it as requested
-    user_profile.pause_requested = True
-    user_profile.save()
-    messages.info(request, "Your pause request has been submitted for approval.")
-    return redirect('profile')
+   # user_profile.pause_requested = True
+   # user_profile.save()
+   # messages.info(request, "Your pause request has been submitted for approval.")
+   # return redirect('profile')
 
+#from django.utils import timezone
+def request_pause_subscription(request):
+    user_profile = request.user.userprofile
+
+    # Check if the user has an active subscription and not already requested pause
+    if not user_profile.pause_requested and request.user.userprofile.subscription_plan.is_active:
+        user_profile.pause_requested = True
+        user_profile.save()
+
+        # Send email to admin to notify them about the pause request
+        send_mail(
+            'Subscription Pause Request',
+            f'{request.user.username} has requested to pause their subscription.',
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.ADMIN_EMAIL],  # Add admin's email here
+        )
+
+        messages.success(request, 'Your subscription pause request has been submitted and is awaiting approval.')
+        return redirect('profile')
+    else:
+        messages.error(request, 'You cannot request to pause your subscription at this time.')
+        return redirect('profile')
+
+"""
 @login_required
 def approve_pause_subscription(request):
-    """
+    ""
     Approves a user's pause subscription request.
-    """
+    ""
     if not request.user.is_staff:
         return HttpResponseForbidden("You do not have permission to approve pause requests.")
     
-    user_profile = request.user.userprofile
-    user_profile.pause_approved = True
-    user_profile.save()
+    # Assuming admin selects a specific user to approve
+    user_id = request.POST.get('user_id')  # Example: ID passed in a form
+    user_profile = get_object_or_404(UserProfile, user_id=user_id)
+    
+    if user_profile.pause_requested:
+        user_profile.pause_requested = False
+        user_profile.pause_approved = True
+        user_profile.save()
 
-    messages.success(request, "The subscription pause has been approved.")
-    return redirect('profile')
-
+        messages.success(request, "The subscription pause has been approved.")
+    else:
+        messages.error(request, "No pause request to approve.")
+    
+    return redirect('admin_dashboard')  # Replace with actual admin view
+"""
 @login_required
 def resume_subscription(request):
     """Allow users to resume their paused subscription."""

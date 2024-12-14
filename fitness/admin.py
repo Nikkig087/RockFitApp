@@ -5,6 +5,8 @@ from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdat
 from django.utils import timezone
 from django.urls import reverse
 from django.utils.html import format_html
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # Inline for UserProfile to be displayed within User Admin
 class UserProfileInline(admin.StackedInline):
@@ -12,16 +14,55 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'User Profile'
 
+from django.contrib import admin
+from .models import UserProfile
+from django.utils.timezone import now
+
+# Action to approve pause request
+def approve_pause(modeladmin, request, queryset):
+    for profile in queryset:
+        if profile.pause_requested:
+            profile.pause_requested = False
+            profile.pause_approved = True
+            profile.paused_at = now()  # Record the time when pause was approved
+            profile.save()
+            modeladmin.message_user(request, f"Pause request for {profile.user.username} has been approved.")
+        else:
+            modeladmin.message_user(request, f"No pause request for {profile.user.username} to approve.")
+
+approve_pause.short_description = 'Approve selected pause requests'
+
+# Admin class for UserProfile
+#class UserProfileAdmin(admin.ModelAdmin):
+ #   list_display = ['user', 'subscription_plan', 'pause_requested', 'pause_approved', 'paused_at']
+  #  actions = [approve_pause]  # Register the approve_pause action for admin users
+
+#admin.site.register(UserProfile, UserProfileAdmin)
+
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'pause_requested', 'pause_approved', 'subscription_plan']
     list_filter = ['pause_requested', 'pause_approved']
     actions = ['approve_pause', 'reject_pause']
 
-    def approve_pause(self, request, queryset):
-        """Approve the pause request."""
-        queryset.update(pause_approved=True, pause_requested=False)
-        self.message_user(request, "Pause request approved.")
+def approve_pause_request(request, subscription_id):
+    try:
+        subscription = Subscription.objects.get(id=subscription_id)
+
+        if subscription.pause_requested and not subscription.pause_approved:
+            subscription.pause_approved = True
+            subscription.paused_at = timezone.now()
+            subscription.save()
+
+            messages.success(request, f'Pause request for {subscription.user.username} has been approved.')
+        else:
+            messages.error(request, 'No pause request to approve.')
+
+    except Subscription.DoesNotExist:
+        messages.error(request, 'Subscription not found.')
+
+    return redirect('admin_dashboard')  # Redirect to admin dashboard or any appropriate page
+
 
     def reject_pause(self, request, queryset):
         """Reject the pause request."""
@@ -81,3 +122,9 @@ class SubscriptionPlanAdmin(admin.ModelAdmin):
             obj.paused_at = timezone.now()  # Set the current time as paused_at
         super().save_model(request, obj, form, change)
 
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+    instance.userprofile.save()
