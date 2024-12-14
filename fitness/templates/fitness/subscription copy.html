@@ -32,25 +32,24 @@
                                     {% if user.userprofile.subscription_plan %}
                                         {% if user.userprofile.subscription_plan == plan %}
                                             {% if user.userprofile.subscription_plan.is_active %}
-                                                <!-- Active Subscription -->
                                                 <div class="alert alert-success">
                                                     Your subscription is active.
-                                                    <p>Subscription status: Active</p>
                                                 </div>
 
-                                                <!-- Redirect to Profile Page for Pausing -->
-                                                <a href="{% url 'profile' %}" class="btn btn-warning w-100 mt-2">Manage Subscription (Pause/Resume)</a>
+                                                <!-- Request to Pause Subscription -->
+                                                <form action="{% url 'request_pause_subscription' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-warning w-100 mt-2">Request Pause</button>
+                                                </form>
 
                                                 <!-- Cancel Current Subscription -->
                                                 <form action="{% url 'cancel_subscription' %}" method="post">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-danger w-100 mt-2">Cancel Current Subscription</button>
                                                 </form>
-
                                             {% elif user.userprofile.subscription_plan.pause_requested %}
-                                                <!-- Pause Requested (Waiting for Admin Approval) -->
                                                 <div class="alert alert-info">
-                                                    Your request to pause the subscription is waiting for admin approval.
+                                                    Your request to pause the subscription is pending approval.
                                                 </div>
 
                                                 <!-- Cancel Pause Request -->
@@ -58,12 +57,10 @@
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-danger w-100 mt-2">Cancel Pause Request</button>
                                                 </form>
-
                                             {% elif user.userprofile.subscription_plan.pause_approved %}
-                                                <!-- Subscription Paused (Pause Approved by Admin) -->
-                                                <div class="alert alert-warning">
-                                                    Your subscription is paused.<br>
-                                                    Paused since: {{ user.userprofile.subscription_plan.paused_at|date:"F j, Y, g:i a" }}
+                                                <div class="alert alert-info">
+                                                    Your pause request has been approved. Your subscription is paused as of 
+                                                    {{ user.userprofile.subscription_plan.paused_at|date:"F j, Y, g:i a" }}.
                                                 </div>
 
                                                 <!-- Resume Subscription -->
@@ -71,18 +68,8 @@
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-success w-100 mt-2">Resume Subscription</button>
                                                 </form>
-
-                                                <!-- Cancel Subscription -->
-                                                <form action="{% url 'cancel_subscription' %}" method="post">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger w-100 mt-2">Cancel Subscription</button>
-                                                </form>
-
                                             {% else %}
-                                                <!-- Handle Other Subscription States -->
-                                                <div class="alert alert-secondary">
-                                                    Subscription status unknown. Please contact support.
-                                                </div>
+                                                <!-- Handle other subscription states -->
                                             {% endif %}
                                         {% else %}
                                             <!-- Active subscription for a different plan -->
@@ -106,7 +93,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-center">No subscription plans available.</p>
+        <p>No subscription plans available.</p>
     {% endif %}
 </div>
 {% endblock %}

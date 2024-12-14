@@ -92,6 +92,13 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+# settings.py
+# settings.py
+
+ADMIN_EMAIL = 'test@example.com'  # Dummy admin email for testing
+
+
+
 ROOT_URLCONF = 'RockFit.urls'
 
 TEMPLATES = [

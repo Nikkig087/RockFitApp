@@ -628,6 +628,77 @@ pp
   width: auto; 
 }
 
+.btn-warning:hover {
+background-color: silver;
+border: none;
+}
+
+.btn-danger:hover {
+  background-color: silver;
+border: none;
+color: black;
+}
+
+.btn-danger {
+ background-color: lightcoral;
+border: none;
+color: black;
+}
+
+/*profile */
+
+.profile-text {
+  color: white;
+  margin: 15px 0px 20px 0px;
+}
+
+.status {
+  background-color: lightgreen;
+  color: black;
+}
+
+.resume {
+  margin-bottom: 10px;
+  background-color: lightgreen;
+  color: black;
+}
+
+.request {
+  margin-bottom: 10px;
+  background-color: lightgreen;
+  color: black;
+}
+
+.pause_alert {
+  color: black;
+}
+
+.pause_alert:hover {
+  background-color: silver;
+}
+
+.resume:hover {
+  background-color: silver;
+}
+
+.request:hover {
+  background-color: silver;
+}
+
+.cancel {
+  color: black;
+  background-color: lightcoral;
+}
+.cancel:hover {
+  background-color: silver;
+  color: black;
+}
+
+.upgrade:hover {
+  background-color: silver;
+  color: black;
+}
+
 @media (max-width: 768px) {
   .newsletter-section-newsletter {
       flex-direction: column;
