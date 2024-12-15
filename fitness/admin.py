@@ -1,14 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, Wishlist, UserProfile
+from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, Wishlist, UserProfile, ContactMessage
 from django.utils import timezone
 from django.urls import reverse
 from django.utils.html import format_html
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from .forms import UserProfileForm
+from django.db.models.signals import pre_save
 
-# Inline for UserProfile to be displayed within User Admin
+
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
@@ -18,7 +20,7 @@ from django.contrib import admin
 from .models import UserProfile
 from django.utils.timezone import now
 
-# Action to approve pause request
+
 def approve_pause(modeladmin, request, queryset):
     for profile in queryset:
         if profile.pause_requested:
@@ -32,51 +34,44 @@ def approve_pause(modeladmin, request, queryset):
 
 approve_pause.short_description = 'Approve selected pause requests'
 
-# Admin class for UserProfile
-#class UserProfileAdmin(admin.ModelAdmin):
- #   list_display = ['user', 'subscription_plan', 'pause_requested', 'pause_approved', 'paused_at']
-  #  actions = [approve_pause]  # Register the approve_pause action for admin users
-
-#admin.site.register(UserProfile, UserProfileAdmin)
-
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
+    form = UserProfileForm  
+
     list_display = ['user', 'pause_requested', 'pause_approved', 'subscription_plan']
     list_filter = ['pause_requested', 'pause_approved']
+    
     actions = ['approve_pause', 'reject_pause']
 
-def approve_pause_request(request, subscription_id):
-    try:
-        subscription = Subscription.objects.get(id=subscription_id)
+    def save_model(self, request, obj, form, change):
+        if obj.pause_approved:  
+            obj.pause_requested = False
+        super().save_model(request, obj, form, change)
 
-        if subscription.pause_requested and not subscription.pause_approved:
-            subscription.pause_approved = True
-            subscription.paused_at = timezone.now()
-            subscription.save()
+    def approve_pause(self, request, queryset):
+        for profile in queryset:
+            if profile.pause_requested:
+                profile.pause_requested = False
+                profile.pause_approved = True
+                profile.paused_at = timezone.now()  
+                profile.save()
+                self.message_user(request, f"Pause request for {profile.user.username} has been approved.")
+            else:
+                self.message_user(request, f"No pause request for {profile.user.username} to approve.")
 
-            messages.success(request, f'Pause request for {subscription.user.username} has been approved.')
-        else:
-            messages.error(request, 'No pause request to approve.')
-
-    except Subscription.DoesNotExist:
-        messages.error(request, 'Subscription not found.')
-
-    return redirect('admin_dashboard')  # Redirect to admin dashboard or any appropriate page
-
+    approve_pause.short_description = 'Approve selected pause requests'
 
     def reject_pause(self, request, queryset):
         """Reject the pause request."""
         queryset.update(pause_approved=False, pause_requested=False)
         self.message_user(request, "Pause request rejected.")
 
-
-
 class CustomUserAdmin(UserAdmin):
-    inlines = (UserProfileInline,)  # Add the UserProfile inline
+    inlines = (UserProfileInline,) 
 
-# This registers the customized UserAdmin with additional UserProfile inline
-admin.site.unregister(User)  # Unregister the default User model
-admin.site.register(User, CustomUserAdmin)  # Register with the customized admin
+
+admin.site.unregister(User) 
+admin.site.register(User, CustomUserAdmin)  
 
 
 @admin.register(ExercisePlan)
@@ -109,18 +104,28 @@ class CommunityUpdateAdmin(admin.ModelAdmin):
 
 @admin.register(SubscriptionPlan)
 class SubscriptionPlanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'is_active', 'is_spotlight', 'pause_requested', 'pause_approved', 'paused_at', 'resume_requested', 'resume_approved')
-    list_filter = ('is_active', 'is_spotlight', 'pause_requested', 'pause_approved')
+    list_display = ('name', 'price', 'is_active', 'is_spotlight')
+    list_filter = ('is_active', 'is_spotlight')
     search_fields = ('name',)
 
-    # Allow pause-related fields to be edited in the admin panel
-    fields = ('name', 'price', 'duration', 'benefits', 'is_active', 'is_spotlight', 'pause_requested', 'pause_approved', 'paused_at', 'resume_requested', 'resume_approved')
+  
+    fields = ('name', 'price', 'duration', 'benefits', 'is_active', 'is_spotlight')
 
-    def save_model(self, request, obj, form, change):
-        # When saving, check if pause_requested is set and update paused_at field accordingly
-        if obj.pause_requested and not obj.paused_at:
-            obj.paused_at = timezone.now()  # Set the current time as paused_at
-        super().save_model(request, obj, form, change)
+   # def save_model(self, request, obj, form, change):
+        #"""
+        #Override save_model to untick pause_requested when pause_approved is ticked.
+        #"""
+        # Check if pause_approved has been changed to True
+    #    if obj.pause_approved and 'pause_approved' in form.changed_data:
+     #       obj.pause_requested = False  # Ensure pause_requested is unticked
+        
+        # Set paused_at only if it hasn't been set before
+      #  if not obj.paused_at:
+       #     obj.paused_at = timezone.now()
+    
+        # Call the parent save_model to persist changes
+        #super().save_model(request, obj, form, change)
+
 
 
 @receiver(post_save, sender=User)
@@ -147,3 +152,14 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ("name", "email", "message", "created_at")
     search_fields = ("name", "email", "message")
     list_filter = ("name", "created_at")
+
+
+#@receiver(pre_save, sender=SubscriptionPlan)
+#def auto_untick_pause_requested(sender, instance, **kwargs):
+ #   """
+  #  Ensure pause_requested is unticked when pause_approved is True.
+   # """
+    #if instance.pause_approved:
+     #   instance.pause_requested = False  # Automatically untick pause_requested
+      #  if not instance.paused_at:
+       #     instance.paused_at = timezone.now()  # Set paused_at if not already set

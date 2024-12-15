@@ -127,3 +127,19 @@ class ContactMessageForm(forms.ModelForm):
         if not email:
             raise forms.ValidationError("This field is required.")
         return email
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['user', 'pause_requested', 'pause_approved', 'subscription_plan', 'paused_at']
+
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        pause_requested = cleaned_data.get('pause_requested')
+        pause_approved = cleaned_data.get('pause_approved')
+
+        if pause_approved:
+            cleaned_data['pause_requested'] = False 
+
+        return cleaned_data
