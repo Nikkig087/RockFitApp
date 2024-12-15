@@ -50,7 +50,7 @@ var contactFormUrl = "{% url 'contact_form' %}";
             data: $form.serialize(),
             success: function (response) {
                 console.log('Contact form submission successful at', new Date().toISOString(), response);
-                $('#contactModal .modal-body').html('<h5>Thank You!</h5><p>Thank you for contacting us!</p>');
+                $('#contactModal .modal-body').html('<h5>Thank You!</h5><p>Thank you for contacting us a member of our team will be in touch soon!</p>');
                 setTimeout(function () {
                     $('#contactModal').modal('hide'); // Hide the modal
                     console.log('Contact modal hidden at', new Date().toISOString());

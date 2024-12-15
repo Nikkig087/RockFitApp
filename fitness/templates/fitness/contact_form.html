@@ -2,11 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block nav %}
-<!-- This block intentionally left empty to remove the navigation bar -->
+
 {% endblock %}
 
 {% block content %} 
-<form method="post" id="contactForm" action="{% url 'contact_form' %}">
+<form method="post" id="contactForm" action="{% url 'contact_form' %}" >
     {% csrf_token %}
     <div class="mb-3">
         <label for="name" class="form-label"></label>
@@ -48,7 +48,7 @@
 {% block footer %}
 <footer class="footer">
 <div class="container text-center">
-    <p>&copy; 2024 Powercakes. All Rights Reserved.</p>
+    <p>&copy; 2025 Rockfit. All Rights Reserved.</p>
     <div class="social-links">
         <a href="#">Instagram</a>
         <a href="#">Twitter</a>

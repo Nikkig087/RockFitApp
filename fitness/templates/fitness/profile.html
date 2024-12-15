@@ -46,7 +46,7 @@
                         <!-- Resume Subscription button if pause is approved -->
                         <form action="{% url 'resume_subscription' %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-success w-100 mt-2">Resume Subscription</button>
+                            <button type="submit" class="btn btn-success w-100 mt-2 resume">Resume Subscription</button>
                         </form>
                     {% elif user_profile.pause_requested %}
                         <div class="alert alert-info">

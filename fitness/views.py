@@ -52,19 +52,19 @@ def subscription_plans(request):
     subscription_plans = SubscriptionPlan.objects.all()
     plans = SubscriptionPlan.objects.filter(is_active=True)
 
-    # Fetch user profile and subscription details
+    
     user_profile = getattr(request.user, 'userprofile', None)
     current_subscription = user_profile.subscription_plan if user_profile else None
     is_paused = user_profile.pause_approved if user_profile else False
 
-    # Pass subscription details to both profile and subscription page
+   
     context = {
         'subscription_plans': subscription_plans,
         'user_profile': user_profile,
         'current_subscription': current_subscription,
         'is_paused': is_paused,
         'pause_requested': user_profile.pause_requested if user_profile else False,
-        'pause_approved': is_paused,  # show 'pause approved' status
+        'pause_approved': is_paused, 
     }
 
     return render(request, 'fitness/subscription.html', context)
@@ -76,7 +76,6 @@ def subscription_view(request):
     user = request.user
     subscription_plans = SubscriptionPlan.objects.all()
     
-    # Pass the user's current subscription details
     context = {
         'user': user,
         'subscription_plans': subscription_plans,
@@ -175,17 +174,17 @@ def add_subscription_plans(request):
 def request_pause_subscription(request):
     user_profile = request.user.userprofile
 
-    # Check if the user has an active subscription and not already requested pause
+   
     if not user_profile.pause_requested and request.user.userprofile.subscription_plan.is_active:
         user_profile.pause_requested = True
         user_profile.save()
 
-        # Send email to admin to notify them about the pause request
+      
         send_mail(
             'Subscription Pause Request',
             f'{request.user.username} has requested to pause their subscription.',
             settings.DEFAULT_FROM_EMAIL,
-            [settings.ADMIN_EMAIL],  # Add admin's email here
+            [settings.ADMIN_EMAIL],  
         )
 
         messages.success(request, 'Your subscription pause request has been submitted and is awaiting approval.')
@@ -223,8 +222,8 @@ def resume_subscription(request):
     """Allow users to resume their paused subscription."""
     user_profile = request.user.userprofile
     if user_profile.pause_approved:
-        # Resume the subscription
-        user_profile.pause_approved = False  # Remove the pause approval
+       
+        user_profile.pause_approved = False  
         user_profile.save()
         messages.success(request, "Your subscription has been resumed.")
     else:
@@ -252,7 +251,7 @@ def home(request):
         'spotlight_subscriptions': spotlight_subscriptions,
     })
 
-# Similar updates for other views like profile_view, wishlist, etc.
+
 
 def products(request):
     """
@@ -349,7 +348,7 @@ def wishlist_count(request):
         count = 0
     return {'wishlist_count': count}
 
-# Community Update Views
+
 @login_required
 def post_update(request):
     """
@@ -425,7 +424,7 @@ def update_profile(request):
 
     return render(request, 'fitness/update_profile.html', {'form': form})
 
-# Review Views
+
 @login_required
 def create_review(request, product_id):
     """

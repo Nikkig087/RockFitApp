@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 class SubscriptionPlan(models.Model):
     """
@@ -25,23 +27,17 @@ class SubscriptionPlan(models.Model):
     is_active = models.BooleanField(default=True)
     is_spotlight = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
-
-     #user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
-    #is_active = models.BooleanField(default=True)
     #pause_requested = models.BooleanField(default=False)
-    ##pause_approved = models.BooleanField(default=False)
-    #paused_at = models.DateTimeField(null=True, blank=True)  # To store the pause time
-
-
-    pause_requested = models.BooleanField(default=False)
-    pause_approved = models.BooleanField(default=False)
-    paused_at = models.DateTimeField(null=True, blank=True)
-    resume_requested = models.BooleanField(default=False)
-    resume_approved = models.BooleanField(default=False)
+    #pause_approved = models.BooleanField(default=False)
+    #paused_at = models.DateTimeField(null=True, blank=True)
+    #resume_requested = models.BooleanField(default=False)
+    #resume_approved = models.BooleanField(default=False)
 
     def __str__(self):
         """Returns the name of the subscription plan."""
         return self.name
+
+
 
 class UserProfile(models.Model):
     """
@@ -73,10 +69,7 @@ class UserProfile(models.Model):
     subscription_end_date = models.DateField(null=True, blank=True)
     pause_requested = models.BooleanField(default=False)
     pause_approved = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    # Pause / Resume Fields
-  
+    created_at = models.DateTimeField(auto_now_add=True)  
     paused_at = models.DateTimeField(null=True, blank=True)
     resume_requested = models.BooleanField(default=False)
     resume_approved = models.BooleanField(default=False)
