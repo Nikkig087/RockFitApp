@@ -15,7 +15,8 @@ from .views import (
     product_detail, 
     community_updates,
     post_update, 
-    request_pause_subscription
+    request_pause_subscription,
+    contact_form
     
 )
 from .views import subscription_plans,subscribe, profile_view, update_profile#, subscription_viewnames
@@ -49,6 +50,9 @@ urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(template_name='account/login.html'), name='login'),
     path('profile/', views.profile_view, name='profile'),  # Profile page
     path('update-profile/', views.update_profile, name='update_profile'),
+     path(
+        "contact/", contact_form, name="contact_form"
+    ),  # For function-based view
 
 
 

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block nav %}
+<!-- This block intentionally left empty to remove the navigation bar -->
+{% endblock %}
+
+{% block content %} 
+<form method="post" id="contactForm" action="{% url 'contact_form' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label"></label>
+        {{ form.name|as_crispy_field }}
+        {% if form.name.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.name.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label"></label>
+        {{ form.email|as_crispy_field }}
+        {% if form.email.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.email.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="message" class="form-label"></label>
+        {{ form.message|as_crispy_field }}
+        {% if form.message.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.message.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
+
+{% block footer %}
+<footer class="footer">
+<div class="container text-center">
+    <p>&copy; 2024 Powercakes. All Rights Reserved.</p>
+    <div class="social-links">
+        <a href="#">Instagram</a>
+        <a href="#">Twitter</a>
+        <a href="#">YouTube</a>
+    </div>
+</div>
+</footer>
+{% endblock %}

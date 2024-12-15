@@ -128,3 +128,22 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
     instance.userprofile.save()
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    """
+    Admin interface for managing ContactMessage instances.
+
+    This customization allows for viewing contact messages submitted by users.
+
+    Attributes:
+        readonly_fields: Fields that cannot be edited in the admin interface.
+        list_display: Fields to display in the list view.
+        search_fields: Fields to include in the search functionality.
+        list_filter: Fields to filter by in the list view.
+    """
+
+    readonly_fields = ("name", "email", "message", "created_at")
+    list_display = ("name", "email", "message", "created_at")
+    search_fields = ("name", "email", "message")
+    list_filter = ("name", "created_at")

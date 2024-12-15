@@ -8,6 +8,7 @@ from django import forms
 from .models import UserProfile, SubscriptionPlan, Review
 
 from .models import NewsletterSubscription
+from .models import ContactMessage
 
 class NewsletterSignupForm(forms.ModelForm):
     class Meta:
@@ -112,3 +113,17 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['rating', 'comment']
+
+
+
+
+class ContactMessageForm(forms.ModelForm):
+    class Meta:
+        model = ContactMessage
+        fields = ["name", "email", "message"]
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not email:
+            raise forms.ValidationError("This field is required.")
+        return email

@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from .forms import ReviewForm
-from .forms import NewsletterSignupForm
+from .forms import NewsletterSignupForm,ContactMessageForm
 import json
 from django.core.mail import send_mail
 
@@ -475,3 +475,24 @@ def delete_review(request, review_id):
     messages.success(request, 'Your review has been deleted.')
     
     return redirect('product_detail', product_id=review.product.id)
+
+
+def contact_form(request):
+    if request.method == "POST":
+        form = ContactMessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                "Thank you for your message. We will get back to you soon!",
+            )
+            return redirect(
+                "home"
+            )
+        else:
+            messages.error(
+                request, "There was an error with your submission."
+            )
+    else:
+        form = ContactMessageForm()
+    return render(request, "fitness/contact_form.html", {"form": form})
