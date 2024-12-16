@@ -16,3 +16,5 @@ urlpatterns = [
     
     
 ]
+
+handler404 = "fitness.views.custom_404_view"
