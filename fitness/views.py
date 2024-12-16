@@ -495,3 +495,6 @@ def contact_form(request):
     else:
         form = ContactMessageForm()
     return render(request, "fitness/contact_form.html", {"form": form})
+
+def custom_404_view(request, exception):
+    return render(request, "fitness/404.html", status=404)

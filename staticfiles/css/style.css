@@ -3,7 +3,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   background-color: black;
   color: #333;
-  padding-top: 80px; /* Based on the navbar height */
+  padding-top: 80px; 
 }
 
 /* Navbar colors */
@@ -18,30 +18,40 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
+
+.navbar-light .navbar-nav .nav-link {
+  color: black;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  color: #FF5722;
+}
+/*
 .navbar-brand {
   color: #333;
   font-weight: bold;
 }
 .navbar-nav .nav-link {
-  color: #555;
+  color: black;
   font-size: 1rem;
 }
 .navbar-nav .nav-link:hover {
-  color: #007bff;
+  color: gold;
 }
 
-/* Optional: Center the burger icon vertically */
+*/
+
 .navbar-toggler {
-  border: none;  /* Removes the button border */
+  border: none;  
 }
 
 /* Container */
 .container {
-  margin-top: 60px; /* Adjust based on navbar height */
+  margin-top: 60px; 
   max-width: 1200px;
-  margin-top: 100px; /* Adjust for spacing under navbar */
+  margin-top: 100px; 
   padding: 20px;
- /* background-color: #ffffff;*/
+
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -56,31 +66,36 @@ li {
   unicode-bidi: isolate;
 }
 
+ol, ul {
+  padding-left: 0;
+}
+
 /* Styling for the subscription cards */
 
 
 .card-body {
-  padding: 20px; /* More padding for better spacing */
+  padding: 20px; 
 }
 
 .card-title {
-  font-size: 1.5rem; /* Larger font size for plan name */
+  font-size: 1.5rem;
 }
 
 .card-text {
-  font-size: 1rem; /* Standard font size for text */
+  font-size: 1rem; 
+  color: black;
 }
 
 .btn {
-  font-size: 1.1rem; /* Slightly larger button text */
+  font-size: 1.1rem; 
 }
 
 .mt-3 {
-  margin-top: 15px; /* Space between the benefits and actions */
+  margin-top: 15px; 
 }
 
 .mb-4 {
-  margin-bottom: 30px; /* Larger bottom margin for cards */
+  margin-bottom: 30px; 
 }
 
 /* Card & Button Styling */
@@ -89,18 +104,120 @@ li {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s;
   list-style-type: none;
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 8px; 
 }
 .card:hover {
   transform: scale(1.02);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
-.btn-primary {
-  background-color: #007bff;
-  border: none;
+.btn-outline-primary {
+  color: black;
+  background-color: gold;
+  border-color: none;
+
 }
+
+.btn-outline-primary:hover {
+  color: black;
+  background-color: silver;
+  border-color: none;
+
+}
+
+.btn-outline-secondary {
+  color: black;
+  background-color: #FF5722;
+  border-color: none;
+}
+
+.btn-outline-secondary:hover {
+  color: black;
+  background-color: silver;
+  border-color: none;
+
+}
+
+.btn-secondary {
+  color: black;
+  background-color: gold;
+  border-color: none;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #5c636a;
+  border-color: #565e64;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #FF5722;
+  border:none;
+  color: white;
+}
+
+.btn-success:hover {
+  color: silver;
+  background-color: silver;
+  border:none;
+  color: black;
+}
+
+.btn-primary {
+  background-color: gold;
+  border: none;
+  margin-right: 0px;
+  color: black;
+}
+
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color:silver;
+  color: black;
+}
+/* Newsletter */
+.newsletter-signup {
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+.newsletter-signup h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.newsletter-signup p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: black;
+  text-align: center;
+}
+
+.newsletter-signup form {
+  display: flex;
+  flex-direction: column;
+}
+
+.newsletter-signup input[type="email"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.newsletter-signup button {
+  padding: 10px;
+  background-color: silver;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.newsletter-signup button:hover {
+  background-color: gold;
 }
 
 /*Spotlights */
@@ -113,26 +230,55 @@ li {
   padding-top: 10px;
 }
 
-.review p {
+p {
+  margin-bottom: 10px;
+  color: #fff;
+}
+.modal-header {
+  background-color: black;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  color: #fff;
+  z-index: 1;
+}
+.modal-body {
+  background-color: black;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  z-index: 1;
+  color: #fff;
+}
+.modal-footer {
+  background-color: black;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  z-index: 1;
+}
+/*
+.review {
   font-size: 14px;
-  color: #888;
+  color: #fff;
+  padding: 0px 0px;
 }
 
 .review p:last-child {
   font-size: 12px;
   color: #aaa;
 }
-
+pp 
 
 /* The popup container */
 .popup {
-  display: none; /* Hidden by default */
+  display: none; 
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5); 
   z-index: 9999;
   text-align: center;
 }
@@ -145,6 +291,19 @@ li {
   margin-top: 20%;
   display: inline-block;
   min-width: 300px;
+}
+
+.toast-body {
+  padding: .75rem;
+  word-wrap: break-word;
+  background-color: rgba(255, 217, 0, 0.732);
+  color: black;
+}
+
+.pop {
+  background-color: gold;
+  color: black;
+
 }
 
 /* Close button */
@@ -178,6 +337,10 @@ li {
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+}
+
+.cart_status {
+  color: black;
 }
 
 /* Heading Style */
@@ -230,6 +393,18 @@ li {
   border-radius: 5px;
 }
 
+/* Style for the buttons container */
+.button-container {
+  display: flex;
+  flex-direction: column; 
+  gap: 10px; 
+}
+
+.button-container-detail {
+  display: flex;
+  flex-direction: row; 
+  gap: 10px; 
+}
 /* Buttons */
 .button {
   padding: 10px 15px;
@@ -240,7 +415,7 @@ li {
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-size: 1rem;
-  text-decoration: none; /* For the anchor buttons */
+  text-decoration: none;
   display: inline-block;
 }
 
@@ -285,6 +460,61 @@ li {
   background-color: #218838;
 }
 
+/* static/css/404.css */
+.server-error-page {
+  display: flow;
+  text-align: center;
+  min-height: 90vh;
+  background-color: #312118; 
+  margin: 0;
+}
+
+
+.server-error-page h1 {
+  font-size: 3rem; 
+}
+
+.server-error-text {
+  margin-top: 10px;
+}
+
+.server-error-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.server-error-text a:hover {
+  text-decoration: underline;
+}
+
+
+/* static/css/404.css */
+.server-error-page {
+  display: flow;
+  text-align: center;
+  min-height: 90vh;
+  background-color: #312118; 
+  margin: 0;
+}
+
+
+.server-error-page h1 {
+  font-size: 3rem; 
+}
+
+.server-error-text {
+  margin-top: 10px;
+}
+
+.server-error-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.server-error-text a:hover {
+  text-decoration: underline;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .cart-container {
@@ -301,8 +531,252 @@ li {
   .quantity-input {
       margin-bottom: 5px;
   }
+
+
 }
 
+/* Style for the container */
+.cancel-container, .success-container {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  max-width: 50%;
+  width: 100%;
+  align-content: center;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Header styling */
+.cancel-container h1 {
+  font-size: 2em;
+  color: #dc3545; 
+  margin-bottom: 15px;
+}
+
+/* Paragraph styling */
+.cancel-container p {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  color: #555; 
+}
+
+/* Button group styling */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Buttons */
+.button-group a {
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  color: #fff;
+  background-color: #FF5722;
+  border:none;
+  color: black;
+}
+
+/* Button hover effect */
+.button-group a:hover {
+  background-color: #565e64; 
+}
+
+/* Secondary button style */
+.button-group a.secondary {
+  background-color: gold;
+  color: black;
+}
+
+.button-group a.secondary:hover {
+  background-color: #565e64;
+}
+
+.Thanks {
+  color: black;
+}
+
+.plan {
+  color: black;
+}
+
+.container.community-updates-newsletter {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title-newsletter {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.updates-list-newsletter {
+  margin-bottom: 40px;
+}
+
+.update-newsletter {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.newsletter-section-newsletter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.card-newsletter {
+  flex: 1 1 calc(50% - 10px);
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-newsletter h2 {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  font-weight: bolder;
+}
+
+.card-newsletter p {
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  color: black;
+}
+
+.form-control-newsletter {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn-newsletter {
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.btn-primary-newsletter {
+  background-color: gold;
+  color: black;
+}
+
+.btn-danger-newsletter {
+  background-color: #FF5722;
+  color: black;
+}
+
+
+.card-newsletter form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-newsletter {
+  width: auto; 
+}
+
+.btn-warning:hover {
+background-color: silver;
+border: none;
+}
+
+.btn-danger:hover {
+  background-color: silver;
+border: none;
+color: black;
+}
+
+.btn-danger {
+ background-color: lightcoral;
+border: none;
+color: black;
+}
+
+/*profile */
+
+.profile-text {
+  color: white;
+  margin: 15px 0px 20px 0px;
+}
+
+.status {
+  background-color: lightgreen;
+  color: black;
+}
+
+.resume {
+  margin-bottom: 10px;
+  background-color: lightgreen;
+  color: black;
+}
+
+.request {
+  margin-bottom: 10px;
+  background-color: lightgreen;
+  color: black;
+}
+
+.pause_alert {
+  color: black;
+}
+
+.pause_alert:hover {
+  background-color: silver;
+}
+
+.resume:hover {
+  background-color: silver;
+}
+
+.request:hover {
+  background-color: silver;
+}
+
+.cancel {
+  color: black;
+  background-color: lightcoral;
+}
+.cancel:hover {
+  background-color: silver;
+  color: black;
+}
+
+.upgrade:hover {
+  background-color: silver;
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .newsletter-section-newsletter {
+      flex-direction: column;
+  }
+
+  .card-newsletter {
+      flex: 1 1 100%;
+  }
+}
 
 
 /* Mobile responsiveness */
@@ -310,8 +784,32 @@ li {
   .container {
       margin-top: 80px;
   }
+  .button-container-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+  }
 
   .btn {
       width: 100%;
   }
+
+  .btn-outline-primary {
+    color: black;
+    background-color: gold;
+    border-color: none;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  
+  }
+
+  .btn-outline-secondary {
+    color: black;
+    background-color: #FF5722;
+    border-color: none;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  }
+
+  
 }

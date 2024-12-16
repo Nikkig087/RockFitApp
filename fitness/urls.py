@@ -63,4 +63,8 @@ urlpatterns = [
     #path('request-pause-subscription/', views.request_pause_subscription, name='request_pause_subscription'),
     path('subscription/', views.subscription_plans, name='subscription'),  # Correct URL
     path('subscribe/<int:plan_id>/', views.subscribe, name='subscribe'),  # Subscribe to a plan
+
+    
 ]
+
+handler404 = "fitness.views.custom_404_view"

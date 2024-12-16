@@ -29,7 +29,9 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+
 
 ALLOWED_HOSTS = ['8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net','.herokuapp.com',]
 CSRF_TRUSTED_ORIGINS = [
@@ -73,6 +75,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -191,9 +195,11 @@ LOGIN_REDIRECT_URL = '/'  # Home page or your desired page
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
 LOGOUT_REDIRECT_URL = '/'  # Redirect path after successful logout
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-STATICFILES_STORAGE = 'compressor.storage.CompressorFileStorage'
+
+#STATICFILES_STORAGE = 'compressor.storage.CompressorFileStorage'
 COMPRESS_ENABLED = True  # Enable compression
 COMPRESS_URL = '/static/'  
 COMPRESS_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
@@ -220,7 +226,6 @@ CLOUDINARY_STORAGE = {
 }
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
