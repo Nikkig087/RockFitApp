@@ -465,7 +465,7 @@ pp
   display: flow;
   text-align: center;
   min-height: 90vh;
-  background-color: #312118; 
+  background-color: black; 
   margin: 0;
 }
 
@@ -476,6 +476,7 @@ pp
 
 .server-error-text {
   margin-top: 10px;
+  color: #fff;
 }
 
 .server-error-text a {
@@ -487,33 +488,17 @@ pp
   text-decoration: underline;
 }
 
-
-/* static/css/404.css */
-.server-error-page {
-  display: flow;
-  text-align: center;
-  min-height: 90vh;
-  background-color: #312118; 
-  margin: 0;
+/* Privacy Page */
+.private-li {
+  padding-left: 5%;
+  list-style: disc;
+  color: white;
 }
 
-
-.server-error-page h1 {
-  font-size: 3rem; 
+.privacy-text {
+  color: #fff;
 }
 
-.server-error-text {
-  margin-top: 10px;
-}
-
-.server-error-text a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.server-error-text a:hover {
-  text-decoration: underline;
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
