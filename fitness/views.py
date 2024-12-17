@@ -498,3 +498,7 @@ def contact_form(request):
 
 def custom_404_view(request, exception):
     return render(request, "fitness/404.html", status=404)
+
+
+def privacy_policy(request):
+    return render(request, 'fitness/privacy_policy.html')  # Adjust the path if needed

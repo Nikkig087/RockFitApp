@@ -16,7 +16,8 @@ from .views import (
     community_updates,
     post_update, 
     request_pause_subscription,
-    contact_form
+    contact_form,
+    privacy_policy
     
 )
 from .views import subscription_plans,subscribe, profile_view, update_profile#, subscription_viewnames
@@ -55,7 +56,7 @@ urlpatterns = [
     ),  # For function-based view
 
 
-   
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('product/<int:product_id>/review/create/', views.create_review, name='create_review'),
     path('review/<int:review_id>/edit/', views.edit_review, name='edit_review'),
     path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),

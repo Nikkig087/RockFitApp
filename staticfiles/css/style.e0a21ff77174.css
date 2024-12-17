@@ -488,15 +488,9 @@ pp
   text-decoration: underline;
 }
 
-/* Privacy Page */
 .private-li {
-  padding-left: 5%;
-  list-style: disc;
-  color: white;
-}
-
-.privacy-text {
-  color: #fff;
+  padding-left: 10px;
+  list-style: circle;
 }
 
 
