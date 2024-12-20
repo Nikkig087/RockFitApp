@@ -11,6 +11,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from fitness.models import Product, SubscriptionPlan
 
+
 class Cart(models.Model):
     """
     Represents a user's shopping cart.
@@ -43,7 +44,8 @@ class Cart(models.Model):
             int: The total number of items in the cart.
         """
         return sum(item.quantity for item in self.items.all())
-        
+
+
 class CartItem(models.Model):
     """
     Represents an item in a user's shopping cart.
@@ -51,8 +53,10 @@ class CartItem(models.Model):
     Attributes:
         cart (Cart): The cart the item belongs to.
         product (Product): The product being added to the cart.
-        subscription (SubscriptionPlan): The subscription being added to the cart.
-        quantity (int): The quantity of the product or subscription in the cart.
+        subscription (SubscriptionPlan): The subscription being
+        added to the cart.
+        quantity (int): The quantity of the product or
+        subscription in the cart.
     """
 
     cart = models.ForeignKey(

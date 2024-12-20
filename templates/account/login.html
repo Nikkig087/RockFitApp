@@ -1,16 +1,30 @@
 {% extends "base.html" %}
 
-{% load i18n %}
+{% load i18n static %}  <!-- Load the 'static' tag here -->
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block head_title %}{% trans "Sign In - Rockfit App" %}{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{% trans 'Sign in to your Rockfit account to leave comments, like posts, and access exclusive features.' %}">
+    <meta name="keywords" content="Rockfit, Sign In, Login, Fitness App, User Account, Comments, Like Posts">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{% trans 'Sign In to Rockfit App' %}">
+    <meta property="og:description" content="{% trans 'Log in to access your Rockfit account, interact with posts, and enjoy a personalized experience.' %}">
+    <meta property="og:image" content="{% static 'images/og-image.jpg' %}">  <!-- Static tag now works -->
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% trans 'Sign In to Rockfit App' %}">
+    <meta name="twitter:description" content="{% trans 'Log in to your Rockfit account and engage with the fitness community.' %}">
+    <meta name="twitter:image" content="{% static 'images/og-image.jpg' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container signin">
     <div class="row">
         <div class="col-md-8 mt-3 offset-md-2">
-            <h3>{% trans "Sign In" %}</h3>
+            <h1>{% trans "Sign In to Your Rockfit Account" %}</h1>
             <p>
-                {% blocktrans %}Welcome back to the code|star blog. To leave a comment or like a post, please log in. If
+                {% blocktrans %}Welcome back to the Rockfit App. To leave a comment or like a post, please log in. If
                 you have not created an account yet, then{% endblocktrans %}
                 <a class="link" href="{% url 'account_signup' %}">{% trans "sign up" %}</a>
                 {% blocktrans %} first.{% endblocktrans %}
