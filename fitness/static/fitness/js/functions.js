@@ -1,7 +1,7 @@
-// Get CSRF token from the page (from the hidden form field injected by Django)
+
 const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-// Example function to send data using AJAX
+
 function addPlans() {
     const plans = [
         {
@@ -24,12 +24,12 @@ function addPlans() {
         }
     ];
 
-    // Make the AJAX POST request with CSRF token
+   
     fetch('/add-plans/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken // Include CSRF token in the header
+            'X-CSRFToken': csrfToken 
         },
         body: JSON.stringify({
             plans: plans

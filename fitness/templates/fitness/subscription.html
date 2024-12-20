@@ -1,10 +1,37 @@
 {% extends "base.html" %}
 {% load static %}
 
+<head>
+{% block title %}Subscription Plans - Rockfit App{% endblock %}
+
+{% block meta %}
+<!-- SEO Meta Tags -->
+<meta name="description" content="Explore our wide range of fitness products. Sort and search by price, name, or newest arrivals. Find the best products for your fitness journey.">
+<meta name="keywords" content="fitness products, workout gear, gym equipment, buy fitness products, online fitness shop, sports equipment">
+
+<!-- Open Graph Meta Tags (For Facebook and other platforms) -->
+<meta property="og:title" content="Fitness Products - Shop the Best Gear for Your Workout">
+<meta property="og:description" content="Browse a variety of fitness products. Sort by price, name, or newest arrivals and shop now to enhance your fitness journey.">
+<meta property="og:image" content="https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net/static/images/product-list-banner.jpg">
+<meta property="og:url" content="https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net/">
+<meta property="og:type" content="website">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fitness Products - Shop the Best Gear for Your Workout">
+<meta name="twitter:description" content="Browse our fitness products collection, sorted by price, name, and more. Shop the best workout gear and equipment for all levels.">
+<meta name="twitter:image" content="https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net/static/images/product-list-banner.jpg">
+
+
+{% endblock %}
+</head>
+
 {% block content %}
-<!-- Main Container for the subscription plans -->
 <div class="container mt-5">
-    <h2 class="text-center mb-4 subscription">Our Subscription Plans</h2>
+    <h1 class="text-center mb-4 subscription">Our Subscription Plans</h1>
+    <p class="text-center">Choose from our range of subscription options designed to meet your fitness needs. </p>
+
+    <br>
 
     {% if subscription_plans %}
         <div class="row">
@@ -13,16 +40,17 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <!-- Plan Name -->
-                            <h3 class="card-title">{{ plan.name }}</h3>
+                            <h2 class="card-title">{{ plan.name }}</h2>
 
                             <!-- Plan Price -->
-                            <p class="card-text">Price: €{{ plan.price }}</p>
+                            <p class="card-text"><strong>Price:</strong> €{{ plan.price }}</p>
 
                             <!-- Plan Duration -->
-                            <p class="card-text">Duration: {{ plan.duration }} days</p>
+                            <p class="card-text"><strong>Duration:</strong> {{ plan.duration }} days</p>
 
                             <!-- Plan Benefits -->
                             <div class="card-text">
+                                <strong>Benefits:</strong>
                                 {{ plan.benefits|safe }}
                             </div>
 
@@ -32,71 +60,28 @@
                                     {% if user.userprofile.subscription_plan %}
                                         {% if user.userprofile.subscription_plan == plan %}
                                             {% if user.userprofile.subscription_plan.is_active %}
-                                                <!-- Active Subscription -->
                                                 <div class="alert alert-success">
                                                     Your subscription is active.
-                                                   
                                                 </div>
-
-                                                <!-- Redirect to Profile Page for Pausing -->
-                                                <a href="{% url 'profile' %}" class="btn btn-warning w-100 mt-2">Manage Subscription (Pause/Resume)</a>
-
-                                                <!-- Cancel Current Subscription -->
-                                                <form action="{% url 'cancel_subscription' %}" method="post">
+                                                <a href="{% url 'profile' %}" class="btn btn-warning w-100 mt-2">Manage Subscription</a>
+                                                <form action="{% url 'cancel_subscription' %}" method="post" class="mt-2">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger w-100 mt-2">Cancel Current Subscription</button>
+                                                    <button type="submit" class="btn btn-danger w-100">Cancel Subscription</button>
                                                 </form>
-
-                                            {% elif user.userprofile.subscription_plan.pause_requested %}
-                                                <!-- Pause Requested (Waiting for Admin Approval) -->
-                                                <div class="alert alert-info">
-                                                    Your request to pause the subscription is waiting for admin approval.
-                                                </div>
-
-                                                <!-- Cancel Pause Request -->
-                                                <form action="{% url 'cancel_pause_request' %}" method="post">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger w-100 mt-2">Cancel Pause Request</button>
-                                                </form>
-
-                                            {% elif user.userprofile.subscription_plan.pause_approved %}
-                                                <!-- Subscription Paused (Pause Approved by Admin) -->
-                                                <div class="alert alert-warning">
-                                                    Your subscription is paused.<br>
-                                                    Paused since: {{ user.userprofile.subscription_plan.paused_at|date:"F j, Y, g:i a" }}
-                                                </div>
-
-                                                <!-- Resume Subscription -->
-                                                <form action="{% url 'resume_subscription' %}" method="post">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-success w-100 mt-2">Resume Subscription</button>
-                                                </form>
-
-                                                <!-- Cancel Subscription -->
-                                                <form action="{% url 'cancel_subscription' %}" method="post">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger w-100 mt-2">Cancel Subscription</button>
-                                                </form>
-
                                             {% else %}
-                                                <!-- Handle Other Subscription States -->
-                                                <div class="alert alert-secondary">
-                                                    Subscription status unknown. Please contact support.
+                                                <div class="alert alert-info">
+                                                    Subscription status: Paused or Pending.
                                                 </div>
                                             {% endif %}
                                         {% else %}
-                                            <!-- Active subscription for a different plan -->
                                             <div class="alert alert-warning">
-                                                You already have an active subscription: 
-                                                <strong>{{ user.userprofile.subscription_plan.name }}</strong>.
+                                                You have an active subscription: {{ user.userprofile.subscription_plan.name }}.
                                             </div>
                                         {% endif %}
                                     {% else %}
-                                        <!-- If the user has no active subscription -->
                                         <a href="{% url 'cart:add_subscription_to_cart' plan.id %}" class="btn btn-primary w-100">Choose this Plan</a>
                                     {% endif %}
                                 {% else %}
-                                    <!-- Login option for non-authenticated users -->
                                     <a href="{% url 'login' %}" class="btn btn-primary w-100">Login to Subscribe</a>
                                 {% endif %}
                             </div>
@@ -106,7 +91,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-center">No subscription plans available.</p>
+        <p class="text-center">No subscription plans available at the moment. Please check back later.</p>
     {% endif %}
 </div>
 {% endblock %}

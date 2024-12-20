@@ -66,21 +66,23 @@ def add_to_cart(request, item_id, item_type):
     if item_type == "product":
         item = get_object_or_404(Product, id=item_id)
     elif item_type == "subscription":
-    
-        return add_subscription_to_cart(request, item_id)
+        item = get_object_or_404(SubscriptionPlan, id=item_id)
     else:
         messages.error(request, "Invalid item type.")
         return redirect("product_list")
-    
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
 
-     
         if item_type == "product":
-            cart_item, created = CartItem.objects.get_or_create(cart=cart, product=item)
-
+            cart_item, created = CartItem.objects.get_or_create(
+                cart=cart, product=item
+            )
+        elif item_type == "subscription":
+            cart_item, created = CartItem.objects.get_or_create(
+                cart=cart, subscription=item
+            )
         if not created:
-            cart_item.quantity += 1  
+            cart_item.quantity += 1
         cart_item.save()
 
         messages.success(request, f"{item.name} has been added to your cart!")
@@ -94,7 +96,6 @@ def add_to_cart(request, item_id, item_type):
         request.session["cart"] = cart
         request.session.modified = True
         messages.success(request, "Item added to your cart!")
-    
     return redirect(
         "product_list" if item_type == "product" else "subscription"
     )
@@ -265,19 +266,13 @@ def cancel_view(request):
     """
     return render(request, "cart/payment_cancel.html")
 
+
 def add_subscription_to_cart(request, plan_id):
     """
     Add a subscription plan to the user's cart.
-    Prevent adding more than one subscription.
     """
     plan = get_object_or_404(SubscriptionPlan, id=plan_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
-
-   
-    existing_subscription = CartItem.objects.filter(cart=cart, subscription__isnull=False).exists()
-    if existing_subscription:
-        messages.error(request, "You can only have one subscription in your cart.")
-        return redirect("cart:view_cart") 
 
     cart_item, created = CartItem.objects.get_or_create(
         cart=cart, subscription=plan

@@ -1,10 +1,31 @@
 {% extends "base.html" %}
 
+{% block extra_title %} - {{ product.name }}{% endblock %}
+
 {% block content %}
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="{{ product.description|truncatewords:30 }}... Buy {{ product.name }} for €{{ product.price }}. High-quality product with reliable delivery options.">
+<meta name="keywords" content="{{ product.name }}, buy {{ product.name }}, fitness products, gym equipment, workout gear, online store, product details, {{ product.category }}">
+
+<!-- Open Graph Tags -->
+<meta property="og:title" content="{{ product.name }} - Buy Online at Our Store">
+<meta property="og:description" content="{{ product.description|truncatewords:30 }}... Purchase {{ product.name }} for €{{ product.price }} with fast shipping and easy returns.">
+<meta property="og:image" content="{{ product.image.url }}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ product.name }} - Buy Online at Our Store">
+<meta name="twitter:description" content="{{ product.description|truncatewords:30 }}... Purchase {{ product.name }} for €{{ product.price }} now.">
+<meta name="twitter:image" content="{{ product.image.url }}">
+
+
+<!-- Product Card -->
 <div class="card">
-    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+    <img src="{{ product.image.url }}" class="card-img-top" alt="Image of {{ product.name }} - {{ product.category }}" style="object-fit: cover;">
     <div class="card-body">
-        <h5 class="card-title">{{ product.name }}</h5>
+        <h1 class="card-title">{{ product.name }}</h1>
         <p class="card-text">{{ product.description }}</p>
         <p class="card-text">€{{ product.price }}</p>
 
@@ -12,20 +33,18 @@
         <div class="d-flex justify-content-between mt-3">
             {% if user.is_authenticated %}
             <div class="button-container-detail">
-
                 <!-- Add to Cart Button -->
                 <form action="{% url 'cart:add_to_cart' product.id 'product' %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-success">Add to Cart</button>
                 </form>
 
+                <!-- Add to Wishlist Button -->
                 <form method="POST" action="{% url 'add_to_wishlist' product.id %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-secondary">Add to Wishlist</button>
                 </form>
-                
-              </div>  
-                
+            </div>  
             {% else %}
                 <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-warning">Login to Add to Cart</a>
             {% endif %}
@@ -33,9 +52,9 @@
     </div>
 </div>
 
-<!-- Review Form (Visible if user is logged in) -->
-{% if user.is_authenticated %}
+<!-- Review Section -->
 <h3 class="review_rule">Write a Review</h3>
+{% if user.is_authenticated %}
 <form method="post" action="{% url 'create_review' product.id %}">
     {% csrf_token %}
     <div class="mb-3">
@@ -145,7 +164,6 @@
         document.getElementById('deleteModal').style.display = 'none';
     }
 
-    
     function showEditModal(reviewId, comment, rating) {
         const editForm = document.getElementById('editForm');
         const actionUrl = "{% url 'edit_review' 0 %}".replace('0', reviewId);

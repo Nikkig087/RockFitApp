@@ -113,40 +113,40 @@ ol, ul {
 .btn-outline-primary {
   color: black;
   background-color: gold;
-  border-color: none;
+  border: none;
 
 }
 
 .btn-outline-primary:hover {
   color: black;
   background-color: silver;
-  border-color: none;
+  border: none;
 
 }
 
 .btn-outline-secondary {
   color: black;
   background-color: #FF5722;
-  border-color: none;
+  border: none;
 }
 
 .btn-outline-secondary:hover {
   color: black;
   background-color: silver;
-  border-color: none;
+  border: none;
 
 }
 
 .btn-secondary {
   color: black;
   background-color: gold;
-  border-color: none;
+  border: none;
 }
 
 .btn-secondary:hover {
   color: #fff;
   background-color: #5c636a;
-  border-color: #565e64;
+  border: #565e64;
 }
 
 .btn-success {
@@ -782,7 +782,7 @@ color: black;
   .btn-outline-primary {
     color: black;
     background-color: gold;
-    border-color: none;
+    border: none;
     margin-bottom: 30px;
     margin-top: 10px;
   
@@ -791,7 +791,7 @@ color: black;
   .btn-outline-secondary {
     color: black;
     background-color: #FF5722;
-    border-color: none;
+    border: none;
     margin-bottom: 30px;
     margin-top: 10px;
   }

@@ -2,6 +2,23 @@
 {% load static %}
 
 {% block content %}
+<!-- SEO Meta Tags -->
+<meta name="description" content="Keep track of your favorite fitness products in your wishlist. Easily revisit and purchase items you love, all in one place.">
+<meta name="keywords" content="fitness wishlist, favorite fitness products, workout gear, gym equipment, save fitness items, fitness shop favorites">
+
+<!-- Open Graph Tags -->
+<meta property="og:title" content="Your Fitness Wishlist - Save Your Favorite Products">
+<meta property="og:description" content="Your personalized wishlist for fitness products. Save and manage your favorite workout gear and equipment for easy shopping.">
+<meta property="og:image" content="{% static 'images/wishlist-banner.jpg' %}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your Fitness Wishlist - Save Your Favorite Products">
+<meta name="twitter:description" content="View and manage your wishlist of fitness products. Save the best gear for your workout journey.">
+<meta name="twitter:image" content="{% static 'images/wishlist-banner.jpg' %}">
+
+
 <div class="container wish">
     <h2 class="page-header text-center my-4">Your Wishlist</h2>
     <div class="row">

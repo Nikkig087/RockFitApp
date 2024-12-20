@@ -1,12 +1,36 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags static i18n %} <!-- Load 'i18n' tag library here -->
 
-{% block nav %}
+{% block head_title %}{% trans "Contact Us - Rockfit" %}{% endblock %}
+
+{% block meta %}
+   <!-- SEO Meta Tags -->
+<meta name="description" content="Get in touch with the Rockfit team. Use our contact form to send your message, ask questions, or inquire about our services.">
+<meta name="keywords" content="Rockfit, contact us, fitness inquiries, customer support, fitness team, send message, reach Rockfit">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph Tags -->
+<meta property="og:title" content="Contact Us - Rockfit">
+<meta property="og:description" content="Have questions or need assistance? Fill out the form to contact Rockfit and get answers to your inquiries.">
+<meta property="og:image" content="{% static 'images/contact-us.jpg' %}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact Us - Rockfit">
+<meta name="twitter:description" content="Reach out to Rockfit using our contact form. We’re here to help with your inquiries and support needs.">
+<meta name="twitter:image" content="{% static 'images/contact-us.jpg' %}">
 
 {% endblock %}
 
-{% block content %} 
-<form method="post" id="contactForm" action="{% url 'contact_form' %}" >
+{% block nav %}
+<!-- Navigation block content here (if any) -->
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Contact Rockfit" %}</h1> <!-- Improved heading for SEO -->
+
+<form method="post" id="contactForm" action="{% url 'contact_form' %}">
     {% csrf_token %}
     <div class="mb-3">
         <label for="name" class="form-label"></label>
@@ -41,19 +65,14 @@
             </div>
         {% endif %}
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 </form>
 {% endblock %}
 
 {% block footer %}
 <footer class="footer">
-<div class="container text-center">
-    <p>&copy; 2025 Rockfit. All Rights Reserved.</p>
-    <div class="social-links">
-        <a href="#">Instagram</a>
-        <a href="#">Twitter</a>
-        <a href="#">YouTube</a>
+    <div class="container text-center">
+        <p>&copy; 2025 Rockfit. {% trans 'All Rights Reserved.' %}</p>
     </div>
-</div>
 </footer>
 {% endblock %}

@@ -113,7 +113,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         - The `pause_requested` field is automatically set to False when the request is approved.
         - The action is visible as "Approve selected pause requests" in the Django admin interface.
 
-    """        
+        """        
         for profile in queryset:
             if profile.pause_requested:
                 profile.pause_requested = False
