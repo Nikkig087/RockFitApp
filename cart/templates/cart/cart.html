@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
+{% block head %}
+    <title> Shopping Cart | Rockfit App</title>
+    <meta name="description" content="{% if cart_items %}View and manage your shopping cart, check the products and subscriptions you've added to your cart, and proceed to checkout with ease.{% else %}Your cart is empty. Browse and add products to your cart for a smooth shopping experience.{% endif %}">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="Your Shopping Cart | YourSiteName">
+    <meta property="og:description" content="{% if cart_items %}Review your cart items, update quantities, and proceed to checkout.{% else %}Your cart is currently empty. Start shopping now!{% endif %}">
+    <meta property="og:image" content="URL_to_some_image_of_a_cart_or_product_image">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+{% endblock %}
+
 {% block content %}
 <div class="cart-container">
     <h2>Your Shopping Cart</h2>
@@ -100,13 +113,10 @@
     {% endif %}
 </div>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-       
         const subscriptionInCart = Array.from(document.querySelectorAll('.cart-item')).some(item => item.dataset.itemType === 'subscription');
         
-       
         const subscriptionButtons = document.querySelectorAll('.add-to-cart-subscription'); 
         if (subscriptionInCart) {
             subscriptionButtons.forEach(button => {
