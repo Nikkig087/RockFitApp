@@ -6,6 +6,7 @@ DATABASES = {
         'NAME': ':memory:',
     }
 }
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
 """
 Database configuration for Django using an in-memory SQLite database.
