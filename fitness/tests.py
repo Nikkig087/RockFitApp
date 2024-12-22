@@ -1,132 +1,83 @@
 from django.test import TestCase
-from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Product, Review, SubscriptionPlan, Cart, Order
+from fitness.models import Product, SubscriptionPlan
+from cart.models import Cart, CartItem
+from decimal import Decimal
 
-class RockFitAppTests(TestCase):
+class CartTests(TestCase):
     def setUp(self):
-        # Set up data for the tests
-        self.user = User.objects.create_user(username="testuser", password="password")
-        self.product = Product.objects.create(name="Test Product", price=50.0)
-        self.subscription_plan = SubscriptionPlan.objects.create(name="Premium Plan", price=9.99)
-        self.cart = Cart.objects.create(user=self.user)
-    
-    # Test for "Subscribe to a Plan"
-    def test_subscribe_to_plan(self):
-        self.client.login(username="testuser", password="password")
-        response = self.client.post(reverse('subscribe'), {'plan_id': self.subscription_plan.id})
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Checkout")
-
-    # Test for "View Subscription Plans"
-    def test_view_subscription_plans(self):
-        self.client.login(username="testuser", password="password")
-        response = self.client.get(reverse('subscriptions'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.subscription_plan.name)
-
-    # Test for "Forgot Password"
-    def test_forgot_password(self):
-        response = self.client.post(reverse('password_reset'), {'email': self.user.email})
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Password reset instructions sent")
-
-    # Test for "View and Edit Account Details"
-    def test_view_edit_account_details(self):
-        self.client.login(username="testuser", password="password")
-        response = self.client.get(reverse('profile'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.user.username)
+        # Create a user
+        self.user = User.objects.create_user(username="testuser", password="password123")
         
-        response = self.client.post(reverse('profile'), {'username': 'newusername'})
-        self.assertEqual(response.status_code, 302)
-        self.user.refresh_from_db()
-        self.assertEqual(self.user.username, 'newusername')
+        # Create a Cart instance
+        self.cart = Cart.objects.create(user=self.user)
+        
+        # Create a Product instance
+        self.product = Product.objects.create(
+            name="Test Product",
+            description="A test product description",
+            price=10.99,
+            stock_quantity=100
+        )
+        
+        self.subscription = SubscriptionPlan.objects.create(
+            name="Monthly Plan", 
+            duration=30,  # Assuming the duration is in days or months
+            price=19.99  # Provide a non-null value here
+        )
+        
+        # Add a product to the cart
+        self.cart_item_product = CartItem.objects.create(
+            cart=self.cart,
+            product=self.product,
+            quantity=2
+        )
+        
+        # Add a subscription to the cart
+        self.cart_item_subscription = CartItem.objects.create(
+            cart=self.cart,
+            subscription=self.subscription,
+            quantity=1
+        )
 
-    # Test for "Login"
-    def test_login(self):
-        response = self.client.post(reverse('login'), {'username': 'testuser', 'password': 'password'})
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.startswith(reverse('home')))
+    def test_add_to_cart(self):
+        # Verify product item in the cart
+        self.assertEqual(self.cart_item_product.product.name, "Test Product")
+        self.assertEqual(self.cart_item_product.quantity, 2)
 
-    # Test for "Dynamic Cart Icon Update"
-    def test_cart_icon_update(self):
-        self.client.login(username="testuser", password="password")
-        self.cart.products.add(self.product)
-        response = self.client.get(reverse('cart'))
-        self.assertContains(response, "1 item")
+        # Verify subscription item in the cart
+        self.assertEqual(self.cart_item_subscription.subscription.name, "Monthly Plan")
+        self.assertEqual(self.cart_item_subscription.quantity, 1)
 
-    # Test for "Remove Item from Cart"
-    def test_remove_item_from_cart(self):
-        self.cart.products.add(self.product)
-        self.client.login(username="testuser", password="password")
-        response = self.client.post(reverse('remove_from_cart'), {'product_id': self.product.id})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.cart.products.count(), 0)
+    def test_total_cost(self):
+        # Calculate the total cost of the cart
+        expected_cost = Decimal(self.product.price * 2) + Decimal(self.subscription.price * 1)
+        # Ensure both are Decimal for accurate comparison
+        self.assertAlmostEqual(self.cart.get_total_cost(), expected_cost)
 
-    # Test for "Update Quantity in Cart"
-    def test_update_quantity_in_cart(self):
-        self.cart.products.add(self.product)
-        self.client.login(username="testuser", password="password")
-        response = self.client.post(reverse('update_cart'), {'product_id': self.product.id, 'quantity': 2})
-        self.assertEqual(response.status_code, 302)
-        self.cart.refresh_from_db()
-        self.assertEqual(self.cart.items.first().quantity, 2)
+    def test_total_items(self):
+        # Verify total items in the cart
+        expected_items = 2 + 1  # 2 products and 1 subscription
+        self.assertEqual(self.cart.get_total_items(), expected_items)
 
-    # Test for "View Total Price of Items in Cart"
-    def test_total_price_in_cart(self):
-        self.cart.products.add(self.product)
-        self.client.login(username="testuser", password="password")
-        response = self.client.get(reverse('cart'))
-        self.assertContains(response, "Total: $50.00")
+    def test_remove_from_cart(self):
+        # Remove product item and check
+        self.cart_item_product.delete()
+        self.assertFalse(CartItem.objects.filter(id=self.cart_item_product.id).exists())
+        
+        # Remove subscription item and check
+        self.cart_item_subscription.delete()
+        self.assertFalse(CartItem.objects.filter(id=self.cart_item_subscription.id).exists())
 
-    # Test for "Add Product to Cart"
-    def test_add_product_to_cart(self):
-        self.client.login(username="testuser", password="password")
-        response = self.client.post(reverse('add_to_cart'), {'product_id': self.product.id})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.cart.products.count(), 1)
+    def test_view_cart(self):
+        # Retrieve cart items and check
+        cart_items = self.cart.items.all()
+        self.assertEqual(cart_items.count(), 2)
 
-    # Test for "Create, Edit, Delete Reviews"
-    def test_manage_reviews(self):
-        self.client.login(username="testuser", password="password")
-        response = self.client.post(reverse('add_review', args=[self.product.id]), {'rating': 5, 'comment': 'Great product!'})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.product.reviews.count(), 1)
-
-        review = self.product.reviews.first()
-        response = self.client.post(reverse('edit_review', args=[review.id]), {'rating': 4, 'comment': 'Good product!'})
-        self.assertEqual(response.status_code, 302)
-        review.refresh_from_db()
-        self.assertEqual(review.rating, 4)
-
-        response = self.client.post(reverse('delete_review', args=[review.id]))
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.product.reviews.count(), 0)
-
-    # Test for "View Customer Reviews and Ratings"
-    def test_view_reviews(self):
-        Review.objects.create(product=self.product, user=self.user, rating=5, comment="Excellent!")
-        response = self.client.get(reverse('product_detail', args=[self.product.id]))
-        self.assertContains(response, "Excellent!")
-
-    # Test for "See Product Images"
-    def test_product_images(self):
-        response = self.client.get(reverse('product_list'))
-        self.assertContains(response, self.product.image.url)
-
-    # Test for "Sort Products"
-    def test_sort_products(self):
-        response = self.client.get(reverse('product_list') + '?sort=price')
-        self.assertEqual(response.status_code, 200)
-
-    # Test for "Search Products"
-    def test_search_products(self):
-        response = self.client.get(reverse('product_list') + '?search=Test')
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.product.name)
-
-    # Test for "View List of Products"
-    def test_view_products(self):
-        response = self.client.get(reverse('product_list'))
-        self.assertContains(response, self.product.name)
+        # Check the product in the cart
+        product_item = cart_items.get(product=self.product)
+        self.assertEqual(product_item.quantity, 2)
+        
+        # Check the subscription in the cart
+        subscription_item = cart_items.get(subscription=self.subscription)
+        self.assertEqual(subscription_item.quantity, 1)

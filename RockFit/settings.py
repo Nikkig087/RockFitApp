@@ -88,6 +88,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 
+
+
 ACCOUNT_PASSWORD_RESET_REDIRECT_URL = '/accounts/password_reset_done/'
 ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = '/accounts/password_change_done/'
 

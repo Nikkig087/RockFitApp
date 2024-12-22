@@ -80,7 +80,7 @@ def subscription_view(request):
         'user': user,
         'subscription_plans': subscription_plans,
     }
-    return render(request, 'subscription.html', context)
+    return render(request, 'fitness/subscription.html', context)
 
 
 

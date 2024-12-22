@@ -26,16 +26,15 @@ class Cart(models.Model):
 
     def get_total_cost(self):
         """
-        Calculate the total cost of all items in the cart.
-
-        Returns:
-            float: The total cost of the cart.
+        Calculate the total cost of the cart, considering both products and subscriptions.
         """
-        return sum(
-            item.product.price * item.quantity
-            for item in self.items.all()
-        )
-
+        total_cost = 0
+        for item in self.items.all():
+            if item.product:
+                total_cost += item.product.price * item.quantity
+            elif item.subscription:
+                total_cost += item.subscription.price * item.quantity
+        return total_cost
     def get_total_items(self):
         """
         Calculate the total number of items in the cart.

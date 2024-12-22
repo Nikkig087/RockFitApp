@@ -1,3 +1,11 @@
+"""
+Views for the cart application.
+
+This module contains the views that handle cart functionality,
+including viewing the cart, adding items to the cart, removing items,
+updating quantities, and handling checkout and payments.
+"""
+
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cart, CartItem
 from fitness.models import Product, SubscriptionPlan
@@ -53,23 +61,28 @@ def add_to_cart(request, item_id, item_type):
         item_type (str): Either "product" or "subscription".
 
     Returns:
-        HttpResponse: Redirects to the appropriate page.
+        HttpResponse: Redirects to the product list or subscription page.
     """
     if item_type == "product":
         item = get_object_or_404(Product, id=item_id)
     elif item_type == "subscription":
+    
         return add_subscription_to_cart(request, item_id)
     else:
         messages.error(request, "Invalid item type.")
-        return redirect("fitness:products")  # Corrected the URL name here
+        return redirect("product_list")
     
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
+
+     
         if item_type == "product":
             cart_item, created = CartItem.objects.get_or_create(cart=cart, product=item)
-            if not created:
-                cart_item.quantity += 1
-            cart_item.save()
+
+        if not created:
+            cart_item.quantity += 1  
+        cart_item.save()
+
         messages.success(request, f"{item.name} has been added to your cart!")
     else:
         cart = request.session.get("cart", {})
@@ -82,8 +95,9 @@ def add_to_cart(request, item_id, item_type):
         request.session.modified = True
         messages.success(request, "Item added to your cart!")
     
-    # Corrected the redirection to use proper names
-    return redirect("fitness:products" if item_type == "product" else "fitness:subscription_plans")
+    return redirect(
+        "product_list" if item_type == "product" else "subscription"
+    )
 
 
 @login_required
@@ -130,13 +144,9 @@ def update_cart_item(request, cart_item_id):
 
     if request.method == "POST":
         new_quantity = int(request.POST.get("quantity"))
-        if new_quantity <= 0:
-            messages.error(request, "Quantity must be greater than zero.")
-        else:
-            cart_item.quantity = new_quantity
-            cart_item.save()
-            messages.success(request, "Items updated in your cart!")
-    
+        cart_item.quantity = new_quantity
+        cart_item.save()
+        messages.success(request, "Items updated in your cart!")
     return redirect("cart:view_cart")
 
 
@@ -150,12 +160,9 @@ def create_checkout_session(request):
     cart = get_object_or_404(Cart, user=request.user)
 
     subscription_plan = None
+
     line_items = []
     total_cost = 0
-
-    if cart.items.count() == 0:
-        messages.error(request, "Your cart is empty.")
-        return redirect("cart:view_cart")  # Redirect back to cart view if empty
 
     for item in cart.items.all():
         if item.product:
@@ -189,11 +196,12 @@ def create_checkout_session(request):
                     "quantity": 1,
                 }
             )
-
     if subscription_plan:
         request.session["selected_plan_id"] = subscription_plan.id
-    
+    if not line_items:
+        return redirect("cart:view_cart")
     try:
+
         success_url = request.build_absolute_uri(reverse("cart:success"))
         cancel_url = request.build_absolute_uri(reverse("cart:cancel"))
 
@@ -217,30 +225,45 @@ def payment_success(request):
     Handle the successful payment response from Stripe and
     update the user's subscription.
     """
+
     cart = Cart.objects.get(user=request.user)
-    cart.items.all().delete()  # Clear the cart after successful payment
+    cart.items.all().delete()
 
     subscription_plan_id = request.session.get("selected_plan_id")
+
     if subscription_plan_id:
+
         plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
+
         user_profile = request.user.userprofile
         user_profile.subscription_plan = plan
         user_profile.subscription_start_date = timezone.now()
-        user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
+        user_profile.subscription_end_date = (
+            timezone.now() + timezone.timedelta(days=plan.duration)
+        )
         user_profile.save()
 
-        messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
+        messages.success(
+            request, f"Successfully subscribed to the {plan.name} plan!"
+        )
         del request.session["selected_plan_id"]
-
     return render(request, "cart/payment_success.html")
 
 
 def cancel_view(request):
     """
     Handle the canceled payment response from Stripe.
+
+    This view is triggered when the user cancels the payment,
+    and it renders a cancellation message.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the 'payment_cancel.html' template.
     """
     return render(request, "cart/payment_cancel.html")
-
 
 def add_subscription_to_cart(request, plan_id):
     """
@@ -250,6 +273,7 @@ def add_subscription_to_cart(request, plan_id):
     plan = get_object_or_404(SubscriptionPlan, id=plan_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
 
+   
     existing_subscription = CartItem.objects.filter(cart=cart, subscription__isnull=False).exists()
     if existing_subscription:
         messages.error(request, "You can only have one subscription in your cart.")
