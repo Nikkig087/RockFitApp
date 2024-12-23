@@ -31,14 +31,14 @@
 
     <div class="updates-list-newsletter">
         {% for update in updates %}
-            <div class="update-newsletter">
-                <strong>{{ update.user.username }}</strong>
-                <p>{{ update.update_text }}</p>
-                <p><small>{{ update.date }}</small></p>
-            </div>
-        {% empty %}
-            <p>{% trans "No updates available." %}</p>
-        {% endfor %}
+    <div class="update-newsletter">
+        <strong>{{ update.user.username }}</strong>
+        <p>{{ update.content }}</p>  <!-- Change from update_text to content -->
+        <p><small>{{ update.created_at }}</small></p>  <!-- Change from date to created_at -->
+    </div>
+{% empty %}
+    <p>{% trans "No updates available." %}</p>
+{% endfor %}
     </div>
 
     <!-- Newsletter Section -->
