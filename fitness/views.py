@@ -71,7 +71,7 @@ def subscription_plans(request):
 
 
 
-@login_required
+#@login_required
 def subscription_view(request):
     user = request.user
     subscription_plans = SubscriptionPlan.objects.all()
@@ -84,7 +84,7 @@ def subscription_view(request):
 
 
 
-@login_required
+#@login_required
 def subscribe(request, plan_id):
     """
     Subscribe the user to a selected subscription plan.
@@ -107,7 +107,7 @@ def subscribe(request, plan_id):
         messages.success(request, f"You've successfully subscribed to the {plan.name} plan!")
     return redirect('profile')
 
-@login_required
+#@login_required
 def cancel_subscription(request):
     """
     Cancel the user's subscription plan.
@@ -217,7 +217,7 @@ def approve_pause_subscription(request):
     
     return redirect('admin_dashboard')  # Replace with actual admin view
 """
-@login_required
+#@login_required
 def resume_subscription(request):
     """Allow users to resume their paused subscription."""
     user_profile = request.user.userprofile
@@ -323,7 +323,7 @@ def wishlist_view(request):
     wishlist_items = wishlist.items.all() if wishlist else []  
     return render(request, 'fitness/wishlist.html', {'wishlist_items': wishlist_items})
 
-@login_required
+#@login_required
 def remove_from_wishlist(request, product_id):
     """
     Removes a product from the user's wishlist.
@@ -349,7 +349,7 @@ def wishlist_count(request):
     return {'wishlist_count': count}
 
 
-@login_required
+#@login_required
 def post_update(request):
     """
     Allow authenticated users to post community updates.
@@ -398,17 +398,23 @@ def community_updates(request):
 
 @login_required(login_url='login') 
 def profile_view(request):
-    user_profile = request.user.userprofile
-    subscription = user_profile.subscription_plan if user_profile else None
-    pause_requested = user_profile.pause_requested if user_profile else False
-    pause_approved = user_profile.pause_approved if user_profile else False
+    if not request.user.is_authenticated:
+        return redirect('login')  # Make sure 'login' is the correct URL name for the login page
 
+    try:
+        user_profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        # Handle case where the user does not have a profile (optional)
+        user_profile = None
+
+    # Your existing code for handling the profile view goes here.
     return render(request, 'fitness/profile.html', {
         'user_profile': user_profile,
-        'subscription': subscription,
-        'pause_requested': pause_requested,
-        'pause_approved': pause_approved,
+        'subscription': user_profile.subscription_plan if user_profile else None,
+        'pause_requested': user_profile.pause_requested if user_profile else False,
+        'pause_approved': user_profile.pause_approved if user_profile else False,
     })
+    
 def update_profile(request):
     """
     Allow users to update their profile information.
@@ -425,7 +431,7 @@ def update_profile(request):
     return render(request, 'fitness/update_profile.html', {'form': form})
 
 
-@login_required
+#@login_required
 def create_review(request, product_id):
     """
     Allow users to create a review for a product.
@@ -447,7 +453,7 @@ def create_review(request, product_id):
 
     return render(request, 'product_create_review.html', {'form': form, 'product': product})
 
-@login_required
+#@login_required
 def edit_review(request, review_id):
     """
     Allow users to edit their existing review for a product.
@@ -459,7 +465,7 @@ def edit_review(request, review_id):
         review.save()
         return redirect('product_detail', product_id=review.product.id)
 
-@login_required
+#@login_required
 def delete_review(request, review_id):
     """
     Delete a review submitted by the logged-in user.

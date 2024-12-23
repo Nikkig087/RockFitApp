@@ -75,7 +75,8 @@
                 </form>
                 {% else %}
                 <!-- Button for non-logged-in users to log in -->
-                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-warning w-100 mb-2" title="Log in to add {{ product.name }} to your cart">Login to Add to Cart</a>
+                <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-warning w-100 mb-2" title="Log in to add {{ product.name }} to your cart">Login to Add to Cart</a>
+
                 {% endif %}
             </div>
         </div>

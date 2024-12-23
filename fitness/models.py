@@ -205,7 +205,8 @@ class CommunityUpdate(models.Model):
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     update_text = models.TextField()
-    created_at = models.DateTimeField(default=timezone.now) 
+    created_at = models.DateTimeField(default=timezone.now)
+    content = models.TextField(default="No content")  # Set default value here
 
     def __str__(self):
         """Returns a string representation of the community update.""" 
