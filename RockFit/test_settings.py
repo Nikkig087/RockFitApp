@@ -1,25 +1,26 @@
 from .settings import *
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-    }
+# Use an in-memory SQLite database for testing (so it doesn't touch your production DB)
+DATABASES['default'] = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': ':memory:',  # In-memory database for tests
 }
+
+# Disable sending real emails during tests
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
-"""
-Database configuration for Django using an in-memory SQLite database.
+# Set the media root and static root to temporary directories during tests
+STATIC_URL = '/static/'
 
-The database is created in memory and will not persist after the testing session ends.
+STORAGES = {
+    'default': {
+        'BACKEND': "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    'staticfiles': {
+        'BACKEND': "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
-Settings:
-- ENGINE: Specifies the backend to use. 
-  'django.db.backends.sqlite3' for SQLite.
-- NAME: The name of the database. ':memory:' so that the database 
-  will be created in RAM and not saved to disk.
 
-Usage:
-This configuration is used in test settings to ensure that each 
-test starts with a clean state, providing faster test execution.
-"""
+
+# Additional test-specific settings can go here (for example, cache settings, etc.)

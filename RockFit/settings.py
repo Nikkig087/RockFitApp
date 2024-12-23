@@ -197,7 +197,7 @@ LOGIN_REDIRECT_URL = '/'  # Home page or your desired page
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
 LOGOUT_REDIRECT_URL = '/'  # Redirect path after successful logout
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
@@ -217,9 +217,16 @@ STATICFILES_FINDERS = [
     'compressor.finders.CompressorFinder',  # Add this line
 ]
 
-DEFAULT_FILE_STORAGE = (
-    "cloudinary_storage.storage.MediaCloudinaryStorage"
-)
+STORAGES = {
+    'default': {
+        'BACKEND': "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    'staticfiles': {
+        'BACKEND': "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": "dvgozeo62",
@@ -227,13 +234,13 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": "83XoStnIJI0Ux0Snby6soXqGmaE",
 }
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
