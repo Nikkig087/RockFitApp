@@ -473,14 +473,6 @@ p {
   color: #fff;
 }
 
-.title {
-  margin-bottom: .5rem;
-  color: #fff;
-}
-
-h1 {
-  color: #fff;
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
