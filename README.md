@@ -30,55 +30,131 @@ Our Store is your go-to source for fitness plans and products. Our blog features
 
 #### Contact Us Desktop
 
-<img src="docs/wireframes/contact_us.webp" alt="Contact Us Desktop" width="50%"/>
+<img src="docs/wireframes/contactus.webp" alt="Contact Us Desktop" width="50%"/>
 
 #### Contact Us Mobile
 
-<img src="docs/wireframes/mob_contact.webp" alt="Contact Us Mobile" width="50%"/>
+<img src="docs/wireframes/contactus_mobile.webp" alt="Contact Us Mobile" width="50%"/>
 
-#### Edit Comment Desktop
+#### Edit Review Desktop
 
-<img src="docs/wireframes/edit_comment.webp" alt="Edit Comment Desktop" width="50%"/>
+<img src="docs/wireframes/edit_review.webp" alt="Edit Review Desktop" width="50%"/>
 
-#### Edit Comment Mobile
+#### Edit Review Mobile
 
-<img src="docs/wireframes/mob_edit_comment.webp" alt="Edit Comment Mobile" width="50%"/>
+<img src="docs/wireframes/edit_review_mobile.webp" alt="Edit Review Mobile" width="50%"/>
 
-#### Exercise Detail Page Desktop
+#### Cart Desktop
 
-<img src="docs/wireframes/exercise_detail_page.webp" alt="Exercise Detail Page Desktop" width="50%"/>
+<img src="docs/wireframes/cart.webp" alt="Cart Page Desktop" width="50%"/>
 
-#### Exercise Detail Page Mobile User
+#### Cart Mobile
 
-<img src="docs/wireframes/mob_exercise_detail_page.webp" alt="Exercise Detail Page Mobile" width="50%"/>
+<img src="docs/wireframes/cart_mobile.webp" alt="Cart Page Mobile" width="50%"/>
 
-#### Exercise Detail Page Mobile Visitor
+#### Community Update
 
-<img src="docs/wireframes/mob_exercise_detail_visitor.webp" alt="Exercise Detail Page Mobile Visitor" width="50%"/>
+<img src="docs/wireframes/community_update.webp" alt="Community Update Page" width="50%"/>
 
-#### Homepage Desktop
+#### Community Update Mobile
 
-<img src="docs/wireframes/homepage.webp" alt="Homepage Desktop" width="50%"/>
+<img src="docs/wireframes/community_update_mobile.webp" alt="Community Update Page Mobile" width="50%"/>
+
+#### Homepage
+
+<img src="docs/wireframes/homepage.webp" alt="Home Page" width="50%"/>
 
 #### Homepage Mobile
 
-<img src="docs/wireframes/mob_home.webp" alt="Homepage Mobile" width="50%"/>
+<img src="docs/wireframes/homepage_mobile.webp" alt="Home Page Mobile" width="50%"/>
+
+#### Products Page 
+
+<img src="docs/wireframes/products.webp" alt="Products Page" width="50%"/>
+
+#### Products Page Mobile
+
+<img src="docs/wireframes/products_mobile.webp" alt="Products Page Mobile" width="50%"/>
+
 
 #### Password Reset Desktop
 
-<img src="docs/wireframes//password_reset.webp" alt="Password Reset Desktop" width="50%"/>
+<img src="docs/wireframes/password_reset.webp" alt="Password Reset Page Desktop" width="50%"/>
 
 #### Password Reset Mobile
 
-<img src="docs/wireframes//mob_password_reset.webp" alt="Password Reset Mobile" width="50%"/>
+<img src="docs/wireframes/password_reset_mobile.webp" alt="Password Reset Page Mobile" width="50%"/>
 
 #### Password Reset Confirmation Desktop
 
-<img src="docs/wireframes//password_reset_confirmation.webp" alt="Password Reset Confirmation Desktop" width="50%"/>
+<img src="docs/wireframes/password_reset_confirmation.webp" alt="Password Reset Confirmation Page Desktop" width="50%"/>
 
 #### Password Reset Confirmation Mobile
 
-<img src="docs/wireframes//mob_password_reset_confirmation.webp" alt="Password Reset Confirmation Mobile" width="50%"/>
+<img src="docs/wireframes/password_reset_confirmation_mobile.webp" alt="Password Reset Confirmation Page Mobile" width="50%"/>
+
+#### Product Detail Desktop (Logged in)
+
+<img src="docs/wireframes/product_detail.webp" alt="Product Detail Page Desktop (logged in)" width="50%"/>
+
+#### Product Detail Desktop (Not Logged in)
+<img src="docs/wireframes/product_detail_not_loggedin.webp" alt="Product Detail Page Desktop (Not logged in)" width="50%"/>
+
+#### Product Detail Mobile
+
+<img src="docs/wireframes/product_detail_mobile.webp" alt="Product Detail Page Mobile" width="50%"/>
+
+#### Profile Desktop 
+
+<img src="docs/wireframes/profile.webp" alt="Profile Page Desktop" width="50%"/>
+
+#### Profile Mobile
+
+<img src="docs/wireframes/profile_mobile.webp" alt="Profile Page Mobile" width="50%"/>
+
+#### Register Desktop 
+
+<img src="docs/wireframes/register.webp" alt="Register Page Desktop" width="50%"/>
+
+#### Sign in Desktop
+
+<img src="docs/wireframes/signin.webp" alt="Sign in Page Desktop" width="50%"/>
+
+#### Sign in Mobile
+
+<img src="docs/wireframes/signin_mobile.webp" alt="Sign in Page Mobile" width="50%"/>
+
+#### Sign Out Desktop
+
+<img src="docs/wireframes/signout.webp" alt="Sign out Page Desktop" width="50%"/>
+
+#### Sign Out Mobile
+
+<img src="docs/wireframes/signout_mobile.webp" alt="Sign out Page Mobile" width="50%"/>
+
+#### Subscripton Desktop
+
+<img src="docs/wireframes/subscription.webp" alt="Subscription Page Desktop" width="50%"/>
+
+#### Subscription Mobile
+
+<img src="docs/wireframes/subscription_mobile.webp" alt="Subscription Page Mobile" width="50%"/>
+
+#### Thank You Desktop
+
+<img src="docs/wireframes/thankyou.webp" alt="Thank You Page Desktop" width="50%"/>
+
+#### Subscription Mobile
+
+<img src="docs/wireframes/thankyou_mobile.webp" alt="Thank You Page Mobile" width="50%"/>
+
+#### Wishlist Desktop
+
+<img src="docs/wireframes/wishlist.webp" alt="Wishlist Page Desktop" width="50%"/>
+
+#### Subscription Mobile
+
+<img src="docs/wireframes/wishlist_mobile.webp" alt="Wishlist Page Mobile" width="50%"/>
 
 ## Agile Methodology
 
@@ -150,9 +226,11 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 
 - As a **developer**, I want to **deploy the application to Heroku** so that **it is accessible to users online**.
 
-- As a **developer**, I want to **ensure that application meets performance and accessibility standards** so that **provides a seamless experience for all users and performs optimally**.
+- As a **developer**, I want to **ensure that application meets performance and accessibility standards** so that it **provides a seamless experience for all users and performs optimally**.
 
+- As a **developer**, I want to **enable actions like approving or rejecting pause requests** so that **admins can efficiently manage user subscriptions.**
 
+- As a **Developer,** I want to **implement inline editing for related models** so that **data relationships can be managed efficiently.**
 
 *************************************************************
 ## Visitor Stories
@@ -161,8 +239,17 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 
 - As a **visitor**, I want to **able to register an account** so **I can create an account**.
 
-- As a **visitor**, I want to **provide feedback, report issues, and suggest improvements through a contact form,** so that I can **actively participate in improving the platform and receive support when needed**.
+- As a **visitor**, I want to **provide feedback and suggest improvements through a contact form,** so that I can **actively participate in improving the platform and receive support when needed**.
 
+- As a **visitor**, I want to **view customer reviews and ratings for each product,** so that I can **evaluate the quality of the product.**
+
+- As a **Visitor**, I want to **be able to view a list of products** so that **I can find one to obtain more details on.**
+
+- As a **Visitor**, I want to **search for products by name or keyword,** so that **I can quickly find what I’m looking for**
+
+- As a **Visitor**, I want to **sort products by price, name, or date added,** so that **I can organize the product list in a way that suits my needs.**
+
+- As a **Visitor**, I want to **see images of products,** so that I can **visualize what is possible for buying.**
 ****************************************************
 
 ## Registered User Stories
@@ -170,18 +257,36 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 - As a **registered user**, I want to **be able to log in and out of my account** so that **I can use the platform**.
 
 - As a **registered user**, I want to **to be able to reset my password** so that **I do not loose access to my account**.
-.
 
-- As a **registered user**, I want to **to be able to comment on posts** so that **provide feedback to authors**.
+- As a **Registered User,** I want to **create, edit and delete my customer reviews once it is approved,** so that **I can help other customers when reviewing product.**
 
-- As a **registered user**, I want to **to be able to delete and edit comments** so that I can **control my engagement on the platform**.
+- As a **Registered User,** I want to **view and edit my account details,** so that I **can keep my information up to date.**
 
+- As a **Registered User,** I want to **add products to my cart,** so that **I can purchase them later.**
+
+- As a **Registered User,** I want to **see the total price of the items in my cart,** so that **I can track my spending.**
+
+- As a **Registered User,** I want to **update the quantity of items in my cart,** so that **I can adjust my order as needed.**
+
+- As a **Registered User,** I want to **see the cart icon in the navigation bar update dynamically,** so that **I always know how many items are in my cart.**
+
+- As a **Registered User,** I want to **subscribe to a plan,** so that **I can access premium features or content.**
+ 
 
 ## Admin User Stories
 
 - As an **admin user**, I want **the ability to perform all CRUD (Create, Read, Update, Delete) operations** so that **manually manage, control and edit content**.
 
-- As an **admin user**, I want to **approve comments and posts** so that **I can ensure content quality and appropriateness before it is published**.
+- As an **Admin,** I want to **moderate user reviews** so that **only appropriate feedback is displayed.**
+
+- As an **Admin,** I want to **filter products by spotlight status** so that **I can highlight key offerings.**
+
+- As an **Admin,** I want to **review and edit subscription plans** so that **I can ensure accurate pricing and details.**
+
+- As an **Admin,** I want to **read user-submitted contact messages** so that **I can respond to inquiries.**
+
+- As an **Admin,** I want to **manage community updates** so that **the latest news is visible to users.**
+
 
 ## Website Goals and Objectives
 
@@ -215,7 +320,6 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 - Developers
 - Health and Fitness Coaches
 - General Visitors
-- Families and Educators
 - Sports Enthusiasts
 
 [Back to top](#contents)
@@ -234,11 +338,11 @@ In combining these two colors, I aim to create an experience where users not onl
 
 ## DataBase Diagram
 
-The project's data model is based on an Entity-Relationship Diagram (ERD) that maps out the relationships between the different Django models. At the core is the User model, which extends Django's default User class with fields like id, username, password, and email. Each user can create Exercises that include attributes such as title, description, two levels of detailed descriptions, and images (handled by Cloudinary fields). Exercises are tied to the user who created them through a Foreign Key.
+The project's data model is based on an Entity-Relationship Diagram (ERD) that maps out the relationships between the different Django models. At the core is the User model, which extends Django's default User class with fields like id, username, password, and email. 
 
-Users can also leave Comments on exercises, with fields for the content of the comment, when it was created, and whether it’s been approved. Additionally, users can report comments by filing CommentReports, which link both the user and the specific comment in question. There’s also a ContactMessage model, which allows visitors to send messages to the site admins.
+Registered Users can also leave reviews on Products, with fields for the content of the review, when it was created, and whether it’s been approved. There’s also a ContactMessage model, which allows visitors to send messages to the site admins.
 
-In terms of relationships, a User can have multiple Exercises, Comments, and CommentReports (one-to-many relationships). Similarly, an Exercise can have many Comments, and a Comment can have multiple CommentReports. The ERD lays this out clearly, showing how the different models connect and interact.
+In terms of relationships
 
 <img src="docs/erd/erd.png" alt="ERD Diagram" width="50%"/> 
 
@@ -275,13 +379,13 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 
 <img src="docs/screenshots/home_mobile.webp" alt="Home-page Mobile" width="50%"/> 
 
-#### Exercise Details Page Desktop
+#### Products Details Page Desktop
 
-<img src="docs/screenshots/exercise_detail_desktop.webp" alt="Exercise Details Desktop" width="50%"/>
+<img src="docs/screenshots/product_detail_desktop.webp" alt="Product Details Desktop" width="50%"/>
 
-#### Exercise Details Page Mobile
+#### Products Details Page Mobile
 
-<img src="docs/screenshots/exercise_detail_mobile.webp" alt="Exercise Details Mobile" width="50%"/>
+<img src="docs/screenshots/product_detail_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
 ### CRUD User
 #### Create Comment Desktop Page
@@ -459,51 +563,82 @@ Refer to Feature Screenshots and also automated testing for confirmation of succ
 
 | **User Story** | **Test** | **Pass** |
 | --- | --- | :---: |
-| As a developer, I want to create wireframes so that I can visually represent the layout and structure of the application. | Verify wireframes match the final structure and design of the platform. | ✓ |
-| As a developer, I want to design a database schema so that I can efficiently store and manage platform content, ensuring optimal performance, scalability, and flexibility. | Test if the database schema supports content creation, retrieval, update, and deletion without errors. | ✓ |
-| As a developer, I want to create visually engaging and responsive designs so that users can easily navigate the website and access relevant information. | Check if the website layout is responsive on different devices (mobile, tablet, desktop). | ✓ |
-| As a developer, I want to adopt Agile methodology so that I can deliver high-quality product that meets the needs of the user. | Confirm that user stories are broken down into manageable tasks, and functionality is delivered incrementally. | ✓ |
-| As a developer, I want to install and add basic configurations to Django so that I can create a working app. | Ensure Django is installed correctly and that the app starts without issues. | ✓ |
-| As a developer, I want to deploy to Heroku so that I can verify initial setup. | Test if the initial deployment to Heroku is successful, and the app runs as expected online. | ✓ |
-| As a developer, I want the platform to load quickly and respond swiftly to user interactions so that users can have a seamless experience. | Measure load times and check responsiveness of user actions across pages. | ✓ |
-| As a developer, I want to ensure that all syntax errors are identified and resolved during the code validation process so that the code is free from syntax-related issues. | Run a syntax checker and ensure no syntax errors remain in the codebase. | ✓ |
-| As a developer, I want to maintain thorough documentation so that code is maintained seamlessly in the future. | Verify that all major functions and components have corresponding documentation. | ✓ |
-| As a developer, I want to ensure that user stories are thoroughly tested so that they meet acceptance criteria and deliver the expected functionality. | Test each user story to confirm they meet acceptance criteria and function as intended. | ✓ |
-| As a developer, I want to deploy the application to Heroku so that it is accessible to users online. | Test if the app is accessible through its Heroku URL and functions correctly. | ✓ |
-| As a developer, I want to ensure that the application meets performance and accessibility standards so that it provides a seamless experience for all users and performs optimally. | Run performance checks (e.g., Lighthouse), test for accessibility compliance (e.g., WCAG standards). | ✓ |
-| As a developer, I want to update my profile information so that I can keep my information current and accurate. | Test the update functionality for developer profiles, ensuring changes reflect immediately. | ✓ |
-| As a visitor, I want to navigate through the platform effortlessly, so that I can find relevant sections and features intuitively. | Test navigation across all sections of the platform, ensuring it’s intuitive and easy to use. | ✓ |
-| As a visitor, I want to register an account so I can create an account. | Test the registration form and confirm the user can successfully create an account. | ✓ |
-| As a visitor, I want to provide feedback, report issues, and suggest improvements through a contact form, so that I can actively participate in improving the platform and receive support when needed. | Submit the contact form and ensure it reaches the intended recipient or displays a confirmation. | ✓ |
-| As a registered user, I want to be able to log in and out of my account so that I can use the platform. | Test the login and logout functionality, ensuring it works correctly and updates the session. | ✓ |
-| As a registered user, I want to be able to reset my password so that I do not lose access to my account. | Test the password reset functionality by requesting a password reset link and updating the password. | ✓ |
-| As a registered user, I want to be able to comment on posts so that I can provide feedback to authors. | Test adding a comment to a post and ensure it is visible after submission. | ✓ |
-| As a registered user, I want to be able to delete and edit comments so that I can control my engagement on the platform. | Test the edit and delete functionality for comments, ensuring both actions work as expected. | ✓ |
-| As an admin user, I want the ability to perform all CRUD (Create, Read, Update, Delete) operations so that I can manually manage, control, and edit content. | Test CRUD operations across the platform, ensuring the admin user can manage all content as intended. | ✓ |
-| As an admin user, I want to approve comments and posts so that I can ensure content quality and appropriateness before it is published. | Test the approval process for both comments and posts, verifying they only go live after approval. | ✓ |
+| As a Registered user, I want to log in to my account, so that I can access my personalized information. | The user clicks on "Log In" in the navigation bar. <br>The app presents a login form for the user to enter their credential. | ✓ |
+| As a Registered User, I want to create, edit, and delete my customer reviews once it is approved, so that I can help other customers when reviewing products. | Registered users can contribute helpful information by submitting reviews in the dedicated section below the product description. | ✓ |
+| As a Registered User, I want to view and edit my account details, so that I can keep my information up to date. | The user navigates to the "Profile" page via the navigation bar. <br>The app displays editable account fields for the user to update. | ✓ |
+| As a Registered User, I want to add products to my cart, so that I can purchase them later. | The user clicks the "Add to Cart" button on the product list or detail page. <br>The app updates the cart icon in the navigation bar to reflect the new quantity. | ✓ |
+| As a Registered User, I want to see the total price of the items in my cart, so that I can track my spending. | The user clicks on the "Cart" link in the navigation bar. <br>The app displays a summary page showing the total price of all items in the cart. | ✓ |
+| As a Registered User, I want to update the quantity of items in my cart, so that I can adjust my order as needed. | The user navigates to the cart page. <br>The user adjusts the quantity using a dropdown or input field next to each item. <br>The app recalculates the totals automatically or upon clicking an "Update" button. | ✓ |
+| As a Registered User, I want to see the cart icon in the navigation bar update dynamically, so that I always know how many items are in my cart. | Each time an item is added, removed, or updated, the app refreshes the cart count in the navigation bar. | ✓ |
+| As a Registered User, I want to view subscription plans, so that I can choose the best option for my needs. | The user clicks on the "Subscriptions" link in the navigation bar. <br>The app loads a page showing available plans with pricing, features, and descriptions. | ✓ |
+| As a Registered User, I want to subscribe to a plan, so that I can access premium features or content. | The user clicks the "Subscribe" button on the subscription plan of their choice. <br>The app navigates to a checkout page where the user can enter payment details. | ✓ |
+| As a user, I want to be able to view a list of products so that I can find one to obtain more details on. | The user clicks on the "Products" link in the navigation menu. <br>The app loads the products page, displaying a grid or list of products with the option to view details on each. | ✓ |
+| As a user, I want to search for products by name or keyword, so that I can quickly find what I’m looking for. | The user enters a keyword in the search bar at the top of the product page. <br>The user clicks the "Search" button or presses Enter. <br>The app filters the product list to show only matching results. | ✓ |
+| As a user, I want to sort products by price, name, or date added, so that I can organize the product list in a way that suits my needs. | The user selects a sort option (e.g., "Sort by Price") from a dropdown menu on the product page. <br>The app reloads the product list with the selected sorting applied. | ✓ |
+| As a user, I want to see images of products, so that I can visualize what I may be buying. | The app displays product images on the product list and detail pages. <br>The user can click on an image to view a larger version. | ✓ |
+| As a user, I want to view customer reviews and ratings for each product, so that I can evaluate the quality of the product. | The product detail page includes a section for reviews and ratings, visible below the product description. | ✓ |
+| As a Developer, I want to enable actions like approving or rejecting pause requests so that admins can efficiently manage user subscriptions. | The developer creates custom actions approve_pause and reject_pause in the UserProfileAdmin class. <br>The actions update the pause_requested and pause_approved fields correctly. <br>Actions are tested with different querysets to validate functionality. | ✓ |
+| As a Developer, I want to implement inline editing for related models so that data relationships can be managed efficiently. | The developer adds the UserProfileInline to the custom UserAdmin. <br>The inline feature is tested for data integrity. | ✓ |
+| As an Admin, I want to moderate user reviews so that only appropriate feedback is displayed. | The admin opens the "Reviews" section in the dashboard. <br>The admin edits or deletes inappropriate reviews directly from the interface. | ✓ |
+| As an Admin, I want to filter products by spotlight status so that I can highlight key offerings. | The admin navigates to the "Products" section. <br>The admin uses the "is_spotlight" filter to view spotlighted products. | ✓ |
+| As an Admin, I want to review and edit subscription plans so that I can ensure accurate pricing and details. | The admin goes to the "Subscription Plans" section. <br>The admin sees a list of plans with fields like name, price, duration, and benefits. <br>The admin clicks "Edit" to modify a plan or "Add" to create a new one. | ✓ |
+| As an Admin, I want to read user-submitted contact messages so that I can respond to inquiries. | The admin goes to the "Contact Messages" section. <br>The admin uses search or filters to locate specific messages. | ✓ |
+| As an Admin, I want to manage community updates so that the latest news is visible to users. | The admin navigates to the "Community Updates" section. <br>The admin ensures only relevant updates are displayed. | ✓ |
+
+| **User Story** | **Test** | **Pass** |
+| --- | --- | :---: |
+| As a Registered user, I want to log in to my account, so that I can access my personalized information. | The user clicks on "Log In" in the navigation bar.<br>The app presents a login form for the user to enter their credential. | ✓ |
+| As a visitor, I want to provide feedback and suggest improvements through a contact form, so that I can actively participate in improving the platform and receive support when needed. | The user navigates to the contact form.<br>The app displays a form where the user can enter feedback and suggestions.<br>The user submits the form.<br>The app confirms the submission was successful. | ✓ |
+| As a Visitor, I want to see images of products, so that I can visualize what is possible for buying. | The user navigates to the product section.<br>The app displays images of available products. | ✓ |
+| As an admin user, I want the ability to perform all CRUD (Create, Read, Update, Delete) operations so that I can manually manage, control and edit content. | The admin navigates to the management section.<br>The app provides options to create, read, update, and delete content.<br>The admin successfully performs CRUD operations. | ✓ |
+| As a visitor, I want to navigate through the platform effortlessly, so that I can find relevant sections and features intuitively. | The user explores the platform.<br>The navigation is intuitive and the user easily finds relevant sections and features. | ✓ |
+| As a developer, I want the platform to load quickly and respond swiftly to user interactions so that users can have a seamless experience. | The platform is tested for performance.<br>The app loads quickly and responds swiftly to user interactions. | ✓ |
+| As a developer, I want to ensure that all syntax errors are identified and resolved during the code validation process so that the code is free from syntax-related issues. | The code validation process identifies and resolves syntax errors.<br>The code passes validation without syntax-related issues. | ✓ |
+| As a developer, I want to maintain thorough documentation so that code is maintained seamlessly in future. | Documentation is reviewed and updated regularly.<br>The codebase is accompanied by comprehensive documentation. | ✓ |
+| As a developer, I want to ensure that user stories are thoroughly tested so that they meet acceptance criteria and deliver the expected functionality. | The user stories are thoroughly tested against acceptance criteria.<br>The tests confirm the expected functionality is delivered. | ✓ |
+| As a developer, I want to deploy the application to Heroku so that it is accessible to users online. | The application is deployed to Heroku.<br>The deployed application is accessible online to users. | ✓ |
+| As a developer, I want to ensure that the application meets performance and accessibility standards so that it provides a seamless experience for all users and performs optimally. | The application is tested for performance and accessibility standards.<br>The application meets the required standards. | ✓ |
+
 
 ### Manual Testing features
 
-| **Feature** | **Test** | **Pass** |
+| **Feature** | **Description** | **Pass** |
 | --- | --- | :---: |
-| User Registration | Test if users can create an account successfully with valid credentials. | ✓ |
-| User Login | Test if users can log in with valid credentials and see their profile. | ✓ |
-| Password Reset | Test if users can request and reset their password using the password recovery feature. | ✓ |
-| Navigation | Test if all navigation links and menus lead to the correct pages without broken links. | ✓ |
-| Add/Edit/Delete Post | Test the ability to create, edit, and delete a post. Ensure changes reflect immediately. | ✓ |
-| Commenting on Posts | Test if users can add comments to posts. Ensure comments appear immediately. | ✓ |
-| Edit/Delete Own Comments | Test if users can edit and delete their own comments, but not comments made by others. | ✓ |
-| Search Functionality | Test if the search feature works and returns relevant results. | ✓ |
-| Contact Form Submission | Test if the contact form submits correctly and confirmation is received. | ✓ |
-| Page Load Time | Measure the page load time to ensure it’s within an acceptable range for user experience. | ✓ |
-| Mobile Responsiveness | Test if the platform is fully responsive on different screen sizes (mobile, tablet, desktop). | ✓ |
-| Admin CRUD Operations | Test if the admin user can perform Create, Read, Update, and Delete actions on all platform content. | ✓ |
-| Content Approval System | Test if the admin user can approve comments/posts before they are publicly visible. | ✓ |
-| Admin Search Functionality | Test if the admin can search for exercises, comments, and comment reports efficiently through the admin panel. | ✓ |
+| Subscription Plans Management | Manage subscription plans with attributes such as name, price, duration, benefits, spotlight status, and activity status. | ✓ |
+| User Profile Extension | Extend the default User model with additional attributes like profile picture, fitness goal, phone, and subscription-related details. | ✓ |
+| Exercise Plans | Provide detailed exercise plans with attributes like title, difficulty, category, and price. | ✓ |
+| Nutrition Plans | Offer nutrition plans with details such as diet type, calories, and pricing. | ✓ |
+| Product Management | Manage a catalog of products with attributes like name, description, price, stock, and spotlight status. | ✓ |
+| Order Management | Record user orders with total cost and order details. | ✓ |
+| Reviews | Allow users to leave product reviews with ratings and comments, subject to admin approval. | ✓ |
+| Community Updates | Post community updates with content and timestamps, linked to user accounts. | ✓ |
+| Wishlist Functionality | Provide a wishlist feature for users to save favorite products for later. | ✓ |
+| Newsletter Subscription | Enable users to subscribe to newsletters using their email addresses. | ✓ |
+| Contact Messages | Manage messages submitted via the contact form with user name, email, and message content. | ✓ |
+| Shopping Cart | Provide a shopping cart to manage selected products and subscriptions, calculate totals, and track items. | ✓ |
+| Cart Item Management | Add individual products or subscriptions to the cart, track quantities, and link to the user's cart. | ✓ |
+| Spotlight Features | Highlight key products and subscription plans with a spotlight attribute for better visibility. | ✓ |
+| Pause and Resume Subscriptions | Allow users to request and manage pauses or resumptions in their subscriptions, subject to admin approval. | ✓ |
+| Dynamic Profile Picture Upload | Support uploading and displaying profile pictures for user accounts. | ✓ |
+| Subscription Plan Integration | Link user profiles to active subscription plans with start and end dates. | ✓ |
+| Fitness Goals Tracking | Allow users to set fitness goals as part of their profile. | ✓ |
+| Total Cost Calculation | Automatically calculate the total cost of items in the cart, including both products and subscriptions. | ✓ |
+| Quantity Updates | Allow users to update item quantities in the cart dynamically. | ✓ |
+| Review Approval Workflow | Enable admins to moderate user reviews for appropriateness before displaying them. | ✓ |
+| Editable Subscription Plans | Admins can create, edit, and delete subscription plans with ease. | ✓ |
+| Related Models Inline Editing | Inline editing for related models like UserProfile in the admin interface. | ✓ |
+| Product Spotlight Filtering | Admins can filter and view spotlighted products. | ✓ |
+| Secure User Data | Ensure all sensitive user data is handled securely in models. | ✓ |
+
+
 
 ## To Do
 Images are not high quality therefore I would like to have a professional photographer for a real world website.  Also when password reset is completed, the email functionality is not fully set up however the terminal does confirm the functionality of the submission.
 ![Password Reset Message](docs/testing/password_reset_message.webp)
+
+Also I would like to implement a feature that suggests similiar Products to the Customer based on the following
+- Same category as the viewed product.
+- Shared tags or similar price ranges.
 
 ## Bugs
 ## Deployment

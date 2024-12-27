@@ -101,7 +101,7 @@ AUTHENTICATION_BACKENDS = (
 # settings.py
 # settings.py
 
-ADMIN_EMAIL = 'test@example.com'  # Dummy admin email for testing
+ADMIN_EMAIL = 'Nikki@Rockfit.com'  # Dummy admin email for testing
 
 
 
@@ -246,6 +246,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 SITE_ID = 1
+site_name = 'Rockfit.com'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

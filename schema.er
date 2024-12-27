@@ -1,0 +1,31 @@
+[entities]
+User
+SubscriptionPlan
+UserProfile
+ExercisePlan
+NutritionPlan
+Product
+Order
+Review
+CommunityUpdate
+Wishlist
+WishlistItem
+NewsletterSubscription
+ContactMessage
+Cart
+CartItem
+
+[relationships]
+UserProfile *--1 User
+UserProfile *--0..1 SubscriptionPlan
+Order *--1 User
+Review *--1 User
+Review *--1 Product
+CommunityUpdate *--1 User
+Wishlist *--1 User
+WishlistItem *--1 Wishlist
+WishlistItem *--1 Product
+Cart *--1 User
+CartItem *--1 Cart
+CartItem *--0..1 Product
+CartItem *--0..1 SubscriptionPlan
