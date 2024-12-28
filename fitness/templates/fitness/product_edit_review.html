@@ -2,11 +2,42 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h3>Edit Your Review</h3>
-    <form action="{% url 'edit_review' review.id %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Update Review</button>
-    </form>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Edit Your Review</h3>
+            <form action="{% url 'edit_review' review.id %}" method="post" novalidate>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {{ form.hidden_fields }}
+
+                <!-- Review Comment Field -->
+                <div class="mb-3">
+                    <label for="id_comment" class="form-label">Your Review</label>
+                    {{ form.comment }}
+                    {% if form.comment.errors %}
+                        <div class="text-danger">
+                            {{ form.comment.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Rating Field -->
+                <div class="mb-3">
+                    <label for="id_rating" class="form-label">Rating</label>
+                    {{ form.rating }}
+                    {% if form.rating.errors %}
+                        <div class="text-danger">
+                            {{ form.rating.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-success">Update Review</button>
+                <!-- Cancel Button -->
+                <a href="{% url 'product_detail' review.product.id %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

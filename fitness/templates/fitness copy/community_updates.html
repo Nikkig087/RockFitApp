@@ -4,7 +4,7 @@
 {% block head_title %}{% trans "Community Updates - Rockfit" %}{% endblock %}
 
 {% block meta %}
-<!-- SEO Meta Tags -->
+  <!-- SEO Meta Tags -->
 <meta name="description" content="Stay updated with the latest community news, fitness trends, and Rockfit updates. Subscribe to our newsletter for regular updates on all things fitness.">
 <meta name="keywords" content="Rockfit, community updates, fitness news, newsletter, fitness trends, Rockfit community, stay updated, fitness tips">
 <meta name="robots" content="index, follow">
@@ -20,57 +20,48 @@
 <meta name="twitter:title" content="Community Updates - Rockfit">
 <meta name="twitter:description" content="Catch up on the latest community news, fitness tips, and trends from Rockfit. Subscribe to our newsletter for the latest updates.">
 <meta name="twitter:image" content="{% static 'images/community-updates.jpg' %}">
+
 {% endblock %}
 
 {% block extra_title %} - {% trans "Community Updates" %}{% endblock %}
 
 {% block content %}
-<main class="container community-updates-newsletter">
-    <header>
-        <h1 class="title-newsletter">{% trans "Community Updates" %}</h1>
-    </header>
+<div class="container community-updates-newsletter">
+    <h1 class="title-newsletter">{% trans "Community Updates" %}</h1>
 
-    <section class="updates-list-newsletter">
+    <div class="updates-list-newsletter">
         {% for update in updates %}
-        <article class="update-newsletter">
-            <header>
-                <strong>{{ update.user.username }}</strong>
-            </header>
-            <p>{{ update.content }}</p> <!-- Change from update_text to content -->
-            <footer>
-                <p><small>{{ update.created_at }}</small></p> <!-- Change from date to created_at -->
-            </footer>
-        </article>
-        {% empty %}
-        <p>{% trans "No updates available." %}</p>
-        {% endfor %}
-    </section>
+    <div class="update-newsletter">
+        <strong>{{ update.user.username }}</strong>
+        <p>{{ update.content }}</p>  <!-- Change from update_text to content -->
+        <p><small>{{ update.created_at }}</small></p>  <!-- Change from date to created_at -->
+    </div>
+{% empty %}
+    <p>{% trans "No updates available." %}</p>
+{% endfor %}
+    </div>
 
     <!-- Newsletter Section -->
-    <section class="newsletter-section-newsletter">
-        <article class="card-newsletter subscribe-card-newsletter">
-            <header>
-                <h2>{% trans "Stay Updated with Our Newsletter" %}</h2>
-            </header>
+    <div class="newsletter-section-newsletter">
+        <div class="card-newsletter subscribe-card-newsletter">
+            <h2>{% trans "Stay Updated with Our Newsletter" %}</h2>
             <p>{% trans "Get the latest community news and updates straight to your inbox." %}</p>
             <form method="post" action="">
                 {% csrf_token %}
                 <input type="email" name="email" placeholder="{% trans 'Enter your email' %}" required class="form-control-newsletter">
                 <button type="submit" name="action" value="subscribe" class="btn-newsletter btn-primary-newsletter">{% trans "Subscribe" %}</button>
             </form>
-        </article>
+        </div>
 
-        <article class="card-newsletter unsubscribe-card-newsletter">
-            <header>
-                <h2>{% trans "Unsubscribe from Newsletter" %}</h2>
-            </header>
+        <div class="card-newsletter unsubscribe-card-newsletter">
+            <h2>{% trans "Unsubscribe from Newsletter" %}</h2>
             <p>{% trans "If you no longer wish to receive updates, you can unsubscribe here:" %}</p>
             <form method="post" action="">
                 {% csrf_token %}
                 <input type="email" name="email" placeholder="{% trans 'Enter your email' %}" required class="form-control-newsletter">
                 <button type="submit" name="action" value="unsubscribe" class="btn-newsletter btn-danger-newsletter">{% trans "Unsubscribe" %}</button>
             </form>
-        </article>
-    </section>
-</main>
+        </div>
+    </div>
+</div>
 {% endblock %}

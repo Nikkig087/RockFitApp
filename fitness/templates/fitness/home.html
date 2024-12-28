@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+
 <head>
 {% block extra_title %} - Home | Fitness Center{% endblock %}
 <!-- SEO Meta Tags -->
@@ -18,81 +19,83 @@
 <meta name="twitter:description" content="Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
 <meta name="twitter:image" content="{% static 'images/hero-bg.jpg' %}">
 </head>
+
 {% block content %}
 
+<main>
+    <!-- Hero Section -->
+    <header class="hero-section text-white text-center py-5" style="background-image: url('{% static 'images/hero-bg.jpg' %}'); background-size: cover; background-position: center;">
+        <div class="container">
+            <h1 class="display-4">Welcome to Our Fitness Center</h1>
+            <p class="lead">Your journey to health and fitness starts here.</p>
+            <a href="{% url 'products' %}" class="btn btn-primary btn-lg mt-3">Shop Now</a>
+        </div>
+    </header>
 
-<!-- Hero Section -->
-<header class="hero-section text-white text-center py-5" style="background-image: url('{% static 'images/hero-bg.jpg' %}'); background-size: cover; background-position: center;">
-    <div class="container">
-        <h1 class="display-4">Welcome to Our Fitness Center</h1>
-        <p class="lead">Your journey to health and fitness starts here.</p>
-        <a href="{% url 'products' %}" class="btn btn-primary btn-lg mt-3">Shop Now</a>
-    </div>
-</header>
-
-<!-- Spotlight Products Section -->
-{% if spotlight_products %}
-<section class="container my-5">
-    <h2 class="text-center mb-4 spotlight">Spotlight Products</h2>
-    <div class="row">
-        {% for product in spotlight_products %}
-        <article class="col-md-4 mb-4">
-            <div class="card h-100 text-center shadow-sm">
-                <img src="{{ product.image.url }}" alt="Spotlight product: {{ product.name }}" class="card-img-top" style="height: 250px; object-fit: cover;">
-                <div class="card-body">
-                    <h3 class="card-title">{{ product.name }}</h3>
-                    <p class="card-text text-muted">{{ product.description|truncatewords:10 }}</p>
-                    <p class="card-price text-primary fw-bold">€{{ product.price }}</p>
-                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View Details</a>
+    <!-- Spotlight Products Section -->
+    {% if spotlight_products %}
+    <section class="container my-5">
+        <h2 class="text-center mb-4 spotlight">Spotlight Products</h2>
+        <div class="row">
+            {% for product in spotlight_products %}
+            <article class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <img src="{{ product.image.url }}" alt="Spotlight product: {{ product.name }}" class="card-img-top" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ product.name }}</h3>
+                        <p class="card-text text-muted">{{ product.description|truncatewords:10 }}</p>
+                        <p class="card-price text-primary fw-bold">€{{ product.price }}</p>
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View Details</a>
+                    </div>
                 </div>
-            </div>
-        </article>
-        {% endfor %}
-    </div>
-</section>
-{% endif %}
-
-<!-- Spotlight Subscriptions Section -->
-<section class="container my-5">
-    <h2 class="text-center mb-4 spotlight">Spotlight Subscriptions</h2>
-    {% if spotlight_subscriptions %}
-    <div class="row">
-        {% for subscription in spotlight_subscriptions %}
-        <article class="col-md-4 mb-4">
-            <div class="card h-100 text-center shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title">{{ subscription.name }}</h3>
-                    <p class="card-price text-primary fw-bold">€{{ subscription.price }} / {{ subscription.duration }} days</p>
-                    <div class="card-text text-muted">{{ subscription.benefits|safe }}</div>
-                    <a href="{% url 'subscription' %}" class="btn btn-outline-primary mt-3">Learn More</a>
-                </div>
-            </div>
-        </article>
-        {% endfor %}
-    </div>
-    {% else %}
-    <p class="text-center text-muted">No spotlight subscriptions available at the moment.</p>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
     {% endif %}
-</section>
 
-<!-- General Product Grid Section -->
-<section class="container my-5">
-    <h2 class="text-center mb-4 spotlight">Our Products</h2>
-    <div class="row">
-        {% for product in products %}
-        <article class="col-md-4 mb-4">
-            <div class="card h-100 text-center shadow-sm">
-                <img src="{{ product.image.url }}" alt="Product: {{ product.name }}" class="card-img-top">
-                <div class="card-body">
-                    <h3 class="card-title">{{ product.name }}</h3>
-                    <p class="card-text text-muted">{{ product.description|truncatewords:10 }}</p>
-                    <p class="card-price">€{{ product.price }}</p>
-                    <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary">View Details</a>
+    <!-- Spotlight Subscriptions Section -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4 spotlight">Spotlight Subscriptions</h2>
+        {% if spotlight_subscriptions %}
+        <div class="row">
+            {% for subscription in spotlight_subscriptions %}
+            <article class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ subscription.name }}</h3>
+                        <p class="card-price text-primary fw-bold">€{{ subscription.price }} / {{ subscription.duration }} days</p>
+                        <div class="card-text text-muted">{{ subscription.benefits|safe }}</div>
+                        <a href="{% url 'subscription' %}" class="btn btn-outline-primary mt-3">Learn More</a>
+                    </div>
                 </div>
-            </div>
-        </article>
-        {% endfor %}
-    </div>
-</section>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-muted">No spotlight subscriptions available at the moment.</p>
+        {% endif %}
+    </section>
+
+    <!-- General Product Grid Section -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4 spotlight">Our Products</h2>
+        <div class="row">
+            {% for product in products %}
+            <article class="col-md-4 mb-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <img src="{{ product.image.url }}" alt="Product: {{ product.name }}" class="card-img-top">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ product.name }}</h3>
+                        <p class="card-text text-muted">{{ product.description|truncatewords:10 }}</p>
+                        <p class="card-price">€{{ product.price }}</p>
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+</main>
 
 {% endblock %}

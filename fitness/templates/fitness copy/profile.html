@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_title %} - Your Profile{% endblock %}
+
+{% block content %}
+<!-- Meta Tags for SEO -->
+<meta name="description" content="Manage your personal information, subscription details, and account settings. View your active subscription plan, request pauses, and cancel your subscription if needed.">
+<meta name="keywords" content="user profile, subscription management, subscription plans, account settings, subscription pause, resume subscription, cancel subscription, personal information">
+<meta property="og:title" content="User Profile - Manage Your Subscription">
+<meta property="og:description" content="View and manage your personal information, subscription plan, and account settings on our platform.">
+<meta property="og:image" content="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="User Profile - Manage Your Subscription">
+<meta name="twitter:description" content="Manage your personal information, subscription details, and account settings.">
+
+<!-- Profile Page Content -->
+<div class="container mt-5">
+    <h1 class="text-center mb-4 profile-text">Your Profile</h1>
+
+    <!-- Profile Picture -->
+    <div class="text-center mb-4">
+        <img src="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" alt="Profile Picture" class="rounded-circle" width="150">
+    </div>
+
+    <!-- Display any messages --
+    {% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}-->
+
+    <!-- Your Profile Information Here -->
+    <h3 class="profile-text">Personal Information</h3>
+    <p><strong>Name:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <h3 class="profile-text">Your Subscription</h3>
+    {% if user_profile.subscription_plan %}
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h4 class="card-title">Active Subscription</h4>
+                <p class="plan"><strong>Subscription Plan:</strong> {{ user_profile.subscription_plan.name }}</p>
+                <p class="plan"><strong>Price:</strong> €{{ user_profile.subscription_plan.price }}</p>
+                <p class="plan"><strong>Duration:</strong> {{ user_profile.subscription_plan.duration }} days</p>
+                <p class="plan"><strong>Status:</strong> 
+                    {% if user_profile.subscription_plan.is_active %}
+                        Active
+                    {% else %}
+                        Inactive
+                    {% endif %}
+                </p>
+                <p class="plan"><strong>Start Date:</strong> {{ user_profile.subscription_start_date }}</p>
+                <p class="plan"><strong>End Date:</strong> {{ user_profile.subscription_end_date }}</p>
+
+                <!-- Display Pause Request Status under End Date -->
+                <div class="mt-3">
+                    {% if user_profile.pause_approved %}
+                        <div class="alert alert-warning">
+                            Your subscription is paused.<br>
+                            Paused since: {{ user_profile.paused_at|date:"F j, Y, g:i a" }}
+                        </div>
+                        <!-- Resume Subscription button if pause is approved -->
+                        <form action="{% url 'resume_subscription' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success w-100 mt-2 resume">Resume Subscription</button>
+                        </form>
+                    {% elif user_profile.pause_requested %}
+                        <div class="alert alert-info">
+                            Your request to pause the subscription is awaiting admin approval.
+                        </div>
+                    {% else %}
+                        {% if user_profile.subscription_plan.is_active %}
+                            <form action="{% url 'request_pause_subscription' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning w-100 mt-2 request" {% if user_profile.pause_requested or user_profile.pause_approved %}disabled{% endif %}>
+                                    Request Pause
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <!-- Other subscription options -->
+                {% if user_profile.subscription_plan.is_active %}
+                    <form action="{% url 'cancel_subscription' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100">Cancel Subscription</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'subscription_plans' %}" class="btn btn-primary w-100">Choose a Subscription Plan</a>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p>You do not have an active subscription.</p>
+        <a href="{% url 'subscription_plans' %}" class="btn btn-primary">Browse Subscription Plans</a>
+    {% endif %}
+</div>
+
+{% endblock %}

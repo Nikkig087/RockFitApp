@@ -20,122 +20,47 @@
 <meta name="twitter:description" content="{{ product.description|truncatewords:30 }}... Purchase {{ product.name }} for €{{ product.price }} now.">
 <meta name="twitter:image" content="{{ product.image.url }}">
 
+<!-- Product Section -->
+<section class="product-details">
+    <article class="card">
+        <img src="{{ product.image.url }}" class="card-img-top" alt="Image of {{ product.name }} - {{ product.category }}" style="object-fit: cover;">
+        <div class="card-body">
+            <h1 class="card-title">{{ product.name }}</h1>
+            <p class="card-text">{{ product.description }}</p>
+            <p class="card-text">€{{ product.price }}</p>
 
-<!-- Product Card -->
-<div class="card">
-    <img src="{{ product.image.url }}" class="card-img-top" alt="Image of {{ product.name }} - {{ product.category }}" style="object-fit: cover;">
-    <div class="card-body">
-        <h1 class="card-title">{{ product.name }}</h1>
-        <p class="card-text">{{ product.description }}</p>
-        <p class="card-text">€{{ product.price }}</p>
-
-        <!-- Buttons Container -->
-        <div class="d-flex justify-content-between mt-3">
-            {% if user.is_authenticated %}
-            <div class="button-container-detail">
-                <!-- Add to Cart Button -->
-                <form action="{% url 'cart:add_to_cart' product.id 'product' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-success">Add to Cart</button>
-                </form>
-
-                <!-- Add to Wishlist Button -->
-                <form method="POST" action="{% url 'add_to_wishlist' product.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-secondary">Add to Wishlist</button>
-                </form>
-            </div>  
-            {% else %}
-                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-warning">Login to Add to Cart</a>
-            {% endif %}
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between mt-3">
+                {% if user.is_authenticated %}
+                    <form action="{% url 'cart:add_to_cart' product.id 'product' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Add to Cart</button>
+                    </form>
+                    <form method="POST" action="{% url 'add_to_wishlist' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Add to Wishlist</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-warning">Login to Add to Cart</a>
+                {% endif %}
+            </div>
         </div>
-    </div>
-</div>
+    </article>
+</section>
 
 <!-- Review Section -->
-<h3 class="review_rule">Write a Review</h3>
-{% if user.is_authenticated %}
-<form method="post" action="{% url 'create_review' product.id %}">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="comment" class="form-label">Your Review</label>
-        <textarea name="comment" id="comment" class="form-control" rows="4" required></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="rating" class="form-label">Rating</label>
-        <select name="rating" id="rating" class="form-control" required>
-            <option value="1">1 Star</option>
-            <option value="2">2 Stars</option>
-            <option value="3">3 Stars</option>
-            <option value="4">4 Stars</option>
-            <option value="5">5 Stars</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit Review</button>
-</form>
-{% else %}
-<p class="review_rule">Please <a href="{% url 'account_login' %}">log in</a> to leave a review.</p>
-{% endif %}
-
-<h3 class="review_rule">Reviews:</h3>
-{% for review in reviews %}
-    <div class="review">
-        <p>{{ review.comment }}</p>
-        <p>Rating: {{ review.rating }} stars</p>
-        <p>By: {{ review.user.username }}</p>
-
-        {% if review.approved and review.user == user %}
-            <!-- Edit Review Button -->
-            <button class="btn btn-primary btn-sm" onclick="showEditModal({{ review.id }}, '{{ review.comment }}', {{ review.rating }})">Edit Review</button>
-
-            <!-- Delete Review Button -->
-            <button class="btn btn-danger btn-sm" onclick="showDeleteModal({{ review.id }})">Delete Review</button>
-        {% endif %}
-    </div>
-{% empty %}
-    <p>No reviews yet.</p>
-{% endfor %}
-
-<!-- Modal for Deletion Confirmation -->
-<div class="modal" id="deleteModal" style="display:none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirm Deletion</h5>
-        <button type="button" class="btn-close" onclick="closeDeleteModal()"></button>
-      </div>
-      <div class="modal-body">
-        <p class="review_delete">Are you sure you want to delete this review?</p>
-      </div>
-      <div class="modal-footer">
-        <form method="post" action="" id="deleteForm">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Delete</button>
-            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal for Editing Review -->
-<div class="modal" id="editModal" style="display:none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit Review</h5>
-        <button type="button" class="btn-close" onclick="closeEditModal()"></button>
-      </div>
-      <div class="modal-body">
-        <form method="post" action="" id="editForm">
+<section class="reviews">
+    <h3>Write a Review</h3>
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'create_review' product.id %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="editComment" class="form-label">Your Review</label>
-                <textarea name="comment" id="editComment" class="form-control" rows="4" required></textarea>
+                <label for="comment" class="form-label">Your Review</label>
+                <textarea name="comment" id="comment" class="form-control" rows="4" required></textarea>
             </div>
             <div class="mb-3">
-                <label for="editRating" class="form-label">Rating</label>
-                <select name="rating" id="editRating" class="form-control" required>
+                <label for="rating" class="form-label">Rating</label>
+                <select name="rating" id="rating" class="form-control" required>
                     <option value="1">1 Star</option>
                     <option value="2">2 Stars</option>
                     <option value="3">3 Stars</option>
@@ -143,20 +68,87 @@
                     <option value="5">5 Stars</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
         </form>
-      </div>
+    {% else %}
+        <p>Please <a href="{% url 'account_login' %}">log in</a> to leave a review.</p>
+    {% endif %}
+
+    <h3>Reviews:</h3>
+    {% for review in reviews %}
+        <article class="review">
+            <p>{{ review.comment }}</p>
+            <p>Rating: {{ review.rating }} stars</p>
+            <p>By: {{ review.user.username }}</p>
+
+            {% if review.approved and review.user == user %}
+                <button class="btn btn-primary btn-sm" onclick="showEditModal({{ review.id }}, '{{ review.comment }}', {{ review.rating }})">Edit Review</button>
+                <button class="btn btn-danger btn-sm" onclick="showDeleteModal({{ review.id }})">Delete Review</button>
+            {% endif %}
+        </article>
+    {% empty %}
+        <p>No reviews yet.</p>
+    {% endfor %}
+</section>
+
+<!-- Modals -->
+<div class="modal" id="deleteModal" style="display:none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close" onclick="closeDeleteModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this review?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="" id="deleteForm">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
+
+<div class="modal" id="editModal" style="display:none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Review</h5>
+                <button type="button" class="btn-close" onclick="closeEditModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="" id="editForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="editComment" class="form-label">Your Review</label>
+                        <textarea name="comment" id="editComment" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRating" class="form-label">Rating</label>
+                        <select name="rating" id="editRating" class="form-control" required>
+                            <option value="1">1 Star</option>
+                            <option value="2">2 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="5">5 Stars</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    // Show Delete Modal
     function showDeleteModal(reviewId) {
         const deleteForm = document.getElementById('deleteForm');
-        const actionUrl = "{% url 'delete_review' 0 %}".replace('0', reviewId);
-        deleteForm.action = actionUrl;
+        deleteForm.action = "{% url 'delete_review' 0 %}".replace('0', reviewId);
         document.getElementById('deleteModal').style.display = 'block';
     }
 
@@ -166,8 +158,7 @@
 
     function showEditModal(reviewId, comment, rating) {
         const editForm = document.getElementById('editForm');
-        const actionUrl = "{% url 'edit_review' 0 %}".replace('0', reviewId);
-        editForm.action = actionUrl;
+        editForm.action = "{% url 'edit_review' 0 %}".replace('0', reviewId);
         document.getElementById('editComment').value = comment;
         document.getElementById('editRating').value = rating;
         document.getElementById('editModal').style.display = 'block';
