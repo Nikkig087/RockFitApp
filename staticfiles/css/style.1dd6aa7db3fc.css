@@ -125,7 +125,7 @@ ol, ul {
 
 .btn-secondary {
   color: black;
-  background-color:#FF5722;
+  background-color: gold;
   border: none;
 }
 
@@ -220,10 +220,6 @@ p {
   margin-bottom: 10px;
   color: #fff;
 }
-
-.review_delete {
-  color: black;
-}
 .modal-header {
   background-color: silver;
   position: relative;
@@ -231,7 +227,6 @@ p {
   padding: 1rem;
   color: black;
   z-index: 1;
-  font-weight: bold;
 }
 .modal-body {
   background-color: silver;
@@ -247,12 +242,6 @@ p {
   flex: 1 1 auto;
   padding: 1rem;
   z-index: 1;
-  font-weight: bold;
-  display: flex;
-  flex-shrink: 0;
-  flex-wrap: nowrap;
-  justify-content: space-around;
-  flex-direction: column;
 }
 
 /* The popup container */
@@ -310,16 +299,8 @@ p {
 
 .form-label {
   margin-bottom: .5rem;
-  color:black;
-  font-weight: bold;
+  color: #fff;
 }
-
-/* contact us */
-
-.contact {
-  color: black;
-}
-
 
 /* Shopping Cart Container */
 .cart-container {

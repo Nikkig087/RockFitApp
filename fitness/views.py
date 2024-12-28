@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import ExercisePlan, NutritionPlan, Product, Review, CommunityUpdate, SubscriptionPlan, UserProfile, Wishlist, WishlistItem
+from .models import ExercisePlan, Product, Review, CommunityUpdate, SubscriptionPlan, UserProfile, Wishlist, WishlistItem
 from django.views.decorators.csrf import csrf_exempt
 from .forms import UserProfileForm
 from django.conf import settings
@@ -236,7 +236,7 @@ def home(request):
     Display the home page with featured content.
     """
     exercise_plans = ExercisePlan.objects.all()
-    nutrition_plans = NutritionPlan.objects.all()
+    #nutrition_plans = NutritionPlan.objects.all()
     products = Product.objects.all()[:6]
     spotlight_products = Product.objects.filter(is_spotlight=True)[:6]
     community_updates = CommunityUpdate.objects.order_by('-created_at')[:5]
@@ -244,7 +244,7 @@ def home(request):
 
     return render(request, 'fitness/home.html', {
         'exercise_plans': exercise_plans,
-        'nutrition_plans': nutrition_plans,
+        #'nutrition_plans': nutrition_plans,
         'products': products,
         'spotlight_products': spotlight_products,
         'community_updates': community_updates,

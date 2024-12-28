@@ -172,8 +172,8 @@ class ExercisePlanAdmin(admin.ModelAdmin):
     list_display = ('title', 'duration', 'created_at')
     search_fields = ('title',)
 
-@admin.register(NutritionPlan)
-class NutritionPlanAdmin(admin.ModelAdmin):
+#@admin.register(NutritionPlan)
+#class NutritionPlanAdmin(admin.ModelAdmin):
     """
     Admin interface for managing NutritionPlan instances.
 
@@ -184,8 +184,8 @@ class NutritionPlanAdmin(admin.ModelAdmin):
         list_display (tuple): Fields to display in the NutritionPlan list view.
         search_fields (tuple): Fields to search by in the NutritionPlan admin interface.
     """
-    list_display = ('title', 'calories', 'created_at')
-    search_fields = ('title',)
+ #   list_display = ('title', 'calories', 'created_at')
+  #  search_fields = ('title',)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

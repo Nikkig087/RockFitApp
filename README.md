@@ -328,13 +328,15 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 I utilized Times New Roman for my site as this font is the most browser compatible font.
 
 ## Colour Scheme
-I chose a brown and burlywood color scheme for the website to create a specific atmosphere that resonates with both trust and confidence. Brown, being an earthy tone, is often associated with feelings of warmth, calm, and stability. When visitors come to the site, I want them to feel grounded and reassured, almost as if the site itself is something solid and dependable. Brown has that quality of being strong yet inviting, which helps in building a sense of trust in the information presented. It subtly conveys that the content is reliable and backed by a firm foundation.
+I chose the Urban Chic color palette for the website to create a look that is sleek, modern, and dynamic, while still being welcoming and approachable. The black background is the main foundation, demonstrating sophistication. Black is often associated with strength and professionalism, and here it sets the design, creating a sense of seriousness and confidence. It sets the tone for a space where users feel they are engaging with something purposeful and refined.
 
-On the other hand, Burlywood brings a different energy to the design. Known for its associations with subtle sophistication and warmth, I want to use burlywood to signal the richness of the knowledge available on the site. Whether visitors are exploring the benefits of different exercises or learning new techniques, the use of burlywood is meant to inspire confidence. It’s there to communicate that the knowledge shared is valuable and that by engaging with it, users can feel empowered to try new things and experiment with their fitness journey.
+White and light gray accents, such as #FFFFFF and #F5F5F5, create sense of balance and clarity to the design. These lighter colours ensure the interface remains clean and uncluttered, allowing users to focus on content without feeling overwhelmed. They bring elegance and act as a neutral canvas that highlights key information and visuals, making the website feel organized and intuitive.
 
-In combining these two colors, I aim to create an experience where users not only feel they are accessing trustworthy and solid information but are also encouraged to take bold, confident steps in applying what they learn. Brown sets the stage with a calm, reliable foundation, while burlywood brings in a sense of warmth and assurance to explore new possibilities. Together, these colors balance warmth and sophistication, creating a space that feels both welcoming and empowering.
+The touch of gold (#FFAB00) and orange (#FF5722) add warmth and energy, drawing attention to important elements like buttons and call-to-action areas. gives the design with warmth and energy, bringing life and vibrancy to the overall aesthetic. Gold is often associated with optimism, creativity, and success, which aligns perfectly with the aspirations of the Rockfit App. It draws attention to crucial interactive elements like buttons and calls to action, inviting users to engage and explore further. Its presence adds a sense of luxury, signaling that the experience is not just functional but also enjoyable and rewarding.
 
-<img src="docs/colour/colour_palette.webp" alt="Colour Palette" width="50%"/>
+By combining these colours, I wanted to create a design that is both stylish and functional. Black provides the solid, modern foundation, white and gray keep the layout clean and easy to navigate, and gold and orange offers just the right amount of energy and excitement to encourage exploration. Additionally, the hover effects, such as gold transitioning to silver, create dynamic interactions that make the design feel lively without overwhelming the user. Together, these elements work to ensure users feel both confident and inspired as they visit the Rockfit App.
+
+<img src="docs/features/colour_palette.webp" alt="Colour Palette" width="50%"/>
 
 ## DataBase Diagram
 
@@ -342,9 +344,48 @@ The project's data model is based on an Entity-Relationship Diagram (ERD) that m
 
 Registered Users can also leave reviews on Products, with fields for the content of the review, when it was created, and whether it’s been approved. There’s also a ContactMessage model, which allows visitors to send messages to the site admins.
 
-In terms of relationships
+### Relationships 
+Fitness-Related Tables:<br>
+fitness_userprofile and Other Tables<br>
+Relationship: 1:N
+One fitness_userprofile links with:
+- fitness_order: A user can place multiple orders.
+- fitness_wishlist: A user can have multiple wishlists.
+- fitness_review: A user can write multiple product reviews.
 
-<img src="docs/erd/erd.png" alt="ERD Diagram" width="50%"/> 
+fitness_wishlist and fitness_wishlistitem
+Relationship: 1:N
+- One fitness_wishlist contains multiple fitness_wishlistitem.
+
+<br>
+
+fitness_product and fitness_order<br>
+Relationship: M:N
+- Products are ordered by multiple users. This would likely require an intermediary table (e.g., fitness_order_items), though it's not explicitly listed.
+
+
+<br>
+fitness_subscriptionplan and fitness_userprofile<br>
+Relationship: 1:N
+
+- One subscription plan (e.g., monthly, yearly) can apply to multiple users.
+<br>
+<br>
+
+Shopping Cart Tables:<br>
+
+cart_cart and cart_cartitem<br>
+Relationship: 1:N
+- One shopping cart (cart_cart) contains multiple cart items (cart_cartitem).
+
+<br>
+cart_cartitem and fitness_product<br>
+Relationship: 1:N
+
+- Each cart item (cart_cartitem) refers to a single fitness_product.
+
+
+<img src="docs/design/ERD.webp" alt="ERD Diagram" width="50%"/> 
 
 ## Features:
 
@@ -352,148 +393,243 @@ In terms of relationships
 The Navigation Bar contains the Company Name, links to the Home page, Register Page and Login Page.
 #### Navigation Desktop for user not logged in
 
-<img src="docs/screenshots/nav_desktop.webp" alt="Navigation Desktop" width="50%"/> 
+<img src="docs/features/nav_desktop_notloggedin.webp" alt="Navigation Desktop" width="50%"/> 
 
 #### Navigation Mobile for user not logged in
 
-<img src="docs/screenshots/nav_mobile.webp" alt="Navigation Mobile" width="50%"/> 
+<img src="docs/features/nav_mobile_notloggedin.webp" alt="Navigation Mobile" width="50%"/> 
 
 
 #### Navigation Desktop for user logged in
 
-<img src="docs/screenshots/nav_desktop_loggedin.webp" alt="Navigation Desktop Logged In" width="50%"/> 
+<img src="docs/features/nav_desktop_loggedin.webp" alt="Navigation Desktop Logged In" width="50%"/> 
 
 #### Navigation Mobile for user logged in
 
-<img src="docs/screenshots/nav_mobile_loggedin.webp" alt="Navigation Mobile Logged In" width="50%"/> 
+<img src="docs/features/nav_mobile_loggedin.webp" alt="Navigation Mobile Logged In" width="50%"/> 
 
 #### Footer
 
-<img src="docs/screenshots/footer.webp" alt="Footer" width="50%"/> 
+<img src="docs/features/footer.webp" alt="Footer" width="50%"/> 
 
 #### Home-page Desktop
 
-<img src="docs/screenshots/home_desktop.webp" alt="Home-page Desktop" width="50%"/> 
+<img src="docs/features/homepage_desktop.webp" alt="Home-page Desktop" width="50%"/> 
 
 #### Home-page Mobile
 
-<img src="docs/screenshots/home_mobile.webp" alt="Home-page Mobile" width="50%"/> 
+<img src="docs/features/homepage_mobile.webp" alt="Home-page Mobile" width="50%"/> 
 
 #### Products Details Page Desktop
 
-<img src="docs/screenshots/product_detail_desktop.webp" alt="Product Details Desktop" width="50%"/>
+<img src="docs/features/product_details.webp" alt="Product Details Desktop" width="50%"/>
 
 #### Products Details Page Mobile
 
-<img src="docs/screenshots/product_detail_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/product_details_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
-### CRUD User
-#### Create Comment Desktop Page
+#### Products Page Desktop
 
-<img src="docs/screenshots/comment_desktop.webp" alt="Comments Desktop" width="50%"/>
+<img src="docs/features/products.webp" alt="Products Desktop" width="50%"/>
 
-#### Create Comment Mobile Page
+#### Products Page Mobile
 
-<img src="docs/screenshots/comment_mobile.webp" alt="Comments Mobile" width="50%"/>
+<img src="docs/features/products_mobile.webp" alt="Products Mobile" width="50%"/>
 
-#### Edit Comment Desktop Page
+#### Cart Page Desktop
 
-<img src="docs/screenshots/edit_comment_desktop.webp" alt="Edit Comment Desktop" width="50%"/>
+<img src="docs/features/cart_desktop.webp" alt="Product Details Desktop" width="50%"/>
 
-#### Edit Comment Mobile Page
+#### Cart Page Mobile
 
-<img src="docs/screenshots/edit_comment_mob.webp" alt="Edit Comment Mobile" width="50%"/>
+<img src="docs/features/cart_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
-#### Delete Comment Page
+#### Community Updates Page Desktop
 
-<img src="docs/screenshots/delete_comment.webp" alt="Delete Comment" width="50%"/>
+<img src="docs/features/community_updates.webp" alt="Product Details Desktop" width="50%"/>
 
-#### Report Comment Page
-Note you must be a registered User to log a comment if not then you will be redirected to the login page as per the view snippet below.  Here you can register or sign in, there is also an option to recover your password if you have forgotten it.
+#### Community Updates Page Mobile
 
-![Javascript for redirecting part one](docs/screenshots/reportjs_redirect_onload.webp)
+<img src="docs/features/community_updates_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
-![Javascript for redirecting part two](docs/screenshots/reportjs_redirect_submission.webp)
+#### Sign in Page Desktop 
 
-### CRUD Admin
-#### Create Exercise Post 
+<img src="docs/features/signin.webp" alt="Sign In Desktop" width="50%"/>
 
-<img src="docs/screenshots/create_exercise_admin.webp" alt="Create Exercise Post in Admin Panel" width="50%"/>
+#### Sign in Page Mobile 
 
-#### Edit Exercise Post 
+<img src="docs/features/signin_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
-<img src="docs/screenshots/update_exercise_admin.webp" alt="Edit Exercise Post in Admin Panel" width="50%"/>
+#### Sign Up Page Desktop 
 
-#### Delete Exercise Comment 
+<img src="docs/features/signup.webp" alt="Sign In Desktop" width="50%"/>
 
-<img src="docs/screenshots/delete_comment_admin.webp" alt="Delete Exercise Post in Admin Panel" width="50%"/>
+#### Sign Up Page Mobile 
 
-#### Approve Comment 
+<img src="docs/features/signup_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
-<img src="docs/screenshots/approve_comment_admin.webp" alt="Approve Comment for Post in Admin Panel" width="50%"/>
+#### logout Page Desktop
 
-#### Login Page Admin
+<img src="docs/features/logout.webp" alt="Product Details Desktop" width="50%"/>
 
-<img src="docs/screenshots/login_screen_admin.webp" alt="Login Page Admin" width="50%"/>
+#### Logout Page Mobile
 
-![Login Page Admin](docs/screenshots/login_screen_admin.webp)
+<img src="docs/features/logout_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
-#### Sign in Page Desktop
+#### Password Reset Page Desktop
 
-<img src="docs/screenshots/signin_desktop.webp" alt="Sign-in Page Desktop" width="50%"/>
+<img src="docs/features/password_reset.webp" alt="Product Details Desktop" width="50%"/>
 
-#### Login Page Mobile
+#### Password Reset Page Mobile
 
-<img src="docs/screenshots/signin_mob.webp" alt="Sign-in Page Mobile" width="50%"/>
+<img src="docs/features/password_reset_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
-### Sign Up Page Desktop
+#### Password Reset Confirmation Page Desktop
 
-<img src="docs/screenshots/signup_desktop.webp" alt="Sign-Up Page Desktop" width="50%"/>
+<img src="docs/features/password_reset_confirmation.webp" alt="Product Details Desktop" width="50%"/>
 
-### Sign Up Page Mobile
+#### Password Reset Confirmation Page Mobile
 
-<img src="docs/screenshots/signup_mob.webp" alt="Sign-Up Page Mobile" width="50%"/>
+<img src="docs/features/password_reset_confirmation_mob.webp" alt="Product Details Mobile" width="50%"/>
 
-### Password Reset Page Desktop
+#### Password Reset Known Email 
 
-<img src="docs/screenshots/password_reset_desktop.webp" alt="Password Reset Page Desktop" width="50%"/>
+<img src="docs/features/password_reset_known_email.webp" alt="Product Details Desktop" width="50%"/>
 
-### Password Reset Page Mobile
+#### Password Reset Unknown Email 
 
-<img src="docs/screenshots/password_reset_mob.webp" alt="Password Reset Page Mobile" width="50%"/>
+<img src="docs/features/password_reset_unknown_email.webp" alt="Product Details Mobile" width="50%"/>
 
-### Password Reset Confirmation Page Desktop
+#### Profile Page Desktop (logged in User)
 
-<img src="docs/screenshots/password_reset_confirmation_desktop.webp" alt="Password Reset Confirmation Page Desktop" width="50%"/>
+<img src="docs/features/profile.webp" alt="Profile Desktop" width="50%"/>
 
-### Password Reset Confirmation Page Mobile
+#### Profile Page Mobile (logged in User)
 
-<img src="docs/screenshots/password_reset_confirmation_mob.webp" alt="Password Reset Confirmation Page Mobile" width="50%"/>
+<img src="docs/features/profile_mobile.webp" alt="Product Details Mobile" width="50%"/>
+
+#### Profile Page Desktop (No logged in User)
+
+<img src="docs/features/profile_notlogged_in.webp" alt="Profile Desktop" width="50%"/>
+
+#### Profile Page Mobile (No logged in User)
+
+<img src="docs/features/profile_notlogged_in_mob.webp" alt="Product Details Mobile" width="50%"/>
+
+#### Subscription Page Desktop (logged in User)
+
+<img src="docs/features/subscription.webp" alt="Sign In Desktop" width="50%"/>
+
+#### Subscription Page Mobile (logged in User)
+
+<img src="docs/features/subscription_mobile.webp" alt="Product Details Mobile" width="50%"/>
+
+#### Subscription Page Desktop (No logged in User)
+
+<img src="docs/features/subscription_not_loggedin.webp" alt="Sign In Desktop" width="50%"/>
+
+#### Subscription Page Mobile (No logged in User)
+
+<img src="docs/features/subscription_not_loggedin_mob.webp" alt="Product Details Mobile" width="50%"/>
+
+#### Wishlist Page Desktop (logged in User)
+
+<img src="docs/features/wishlist.webp" alt="Sign In Desktop" width="50%"/>
+
+#### Wishlist Page Mobile (logged in User)
+
+<img src="docs/features/wishlist_mobile.webp" alt="Product Details Mobile" width="50%"/>
+
+#### Wishlist Page Desktop (No logged in User)
+
+<img src="docs/features/wishlist_not_loggedin.webp" alt="Sign In Desktop" width="50%"/>
+
+#### Wishlist Page Mobile (No logged in User)
+
+<img src="docs/features/wishlist_not_loggedin_mob.webp" alt="Product Details Mobile" width="50%"/>
 
 ### 404 Page Desktop
 
-<img src="docs/screenshots/page404_desktop.webp" alt="Page 404 Desktop" width="50%"/>
+<img src="docs/features/page404_desktop.webp" alt="Page 404 Desktop" width="50%"/>
 
 ### 404 Page Mobile
 
-<img src="docs/screenshots/page404_mob.webp" alt="Page 404 Mobile" width="50%"/>
+<img src="docs/screenshots/page404_mobile.webp" alt="Page 404 Mobile" width="50%"/>
 
-### Admin Create User
+### CRUD User
+#### Create Review Desktop Page
 
-<img src="docs/screenshots/admin_create_user.webp" alt="Create User Admin Panel" width="50%"/>
+<img src="docs/features/review_desktop.webp" alt="Comments Desktop" width="50%"/>
 
-### Admin Update User
+#### Create Review Mobile Page
 
-<img src="docs/screenshots/admin_update_user.webp" alt="Update User Admin Panel" width="50%"/>
+<img src="docs/features/review_mobile.webp" alt="Comments Mobile" width="50%"/>
 
-### Admin Delete User
+#### Edit or Delete Review Buttons Desktop Page
 
-<img src="docs/screenshots/admin_delete_user.webp" alt="Delete User Admin Panel" width="50%"/>
+<img src="docs/features/edit_delete_review_desktop.webp" alt="Edit or Delete Review Buttons Desktop" width="50%"/>
 
-### Admin Update exercise
+#### Edit or Delete Review Buttons Mobile Page
 
-<img src="docs/screenshots/update_exercise_admin.webp" alt="Update Exercise Admin Panel" width="50%"/>
+<img src="docs/features/edit_delete_review_mob.webp" alt="Edit or Delete Review Buttons Mobile" width="50%"/>
 
+
+#### Edit Review Desktop Page
+
+<img src="docs/features/edit_review_desktop.webp" alt="Edit Comment Desktop" width="50%"/>
+
+#### Edit Review Mobile Page
+
+<img src="docs/features/edit_review_mob.webp" alt="Edit Comment Mobile" width="50%"/>
+
+
+#### Delete Review Desktop Page
+
+<img src="docs/features/delete_review.webp" alt="Delete Review" width="50%"/>
+
+#### Delete Review Mobile Page
+
+<img src="docs/features/delete_review_mob.webp" alt="Delete Review" width="50%"/>
+
+#### Create a Review
+Note you must be a registered User to create a review if not then you will be redirected to the login page as per the view snippet below.  Here you can register or sign in, there is also an option to recover your password if you have forgotten it.
+
+<img src="docs/features/loggedin_review.webp" alt="Code to ensure user is logged in to review product" width="50%"/>
+
+
+### CRUD Admin
+
+#### Remove Users
+
+<img src="docs/features/remove_users_admin.webp" alt="Remove Users in Admin Panel" width="50%"/>
+
+#### Edit Users
+
+<img src="docs/features/edit_users_admin.webp" alt="Edit Users in Admin Panel" width="50%"/>
+
+#### Add Users
+
+<img src="docs/features/add_user_admin.webp" alt="Add Users in Admin Panel" width="50%"/>
+
+#### Create Product Post 
+
+<img src="docs/features/create_product_admin.webp" alt="Create Product in Admin Panel" width="50%"/>
+
+#### Edit Product  
+
+<img src="docs/features/update_product_admin.webp" alt="Edit Product in Admin Panel" width="50%"/>
+
+#### Delete Review  
+
+<img src="docs/features/delete_review_admin.webp" alt="Delete Review Post in Admin Panel" width="50%"/>
+
+#### Approve Review 
+
+<img src="docs/features/approve_review_admin.webp" alt="Approve Review for Post in Admin Panel" width="50%"/>
+
+#### Login Page Admin
+
+<img src="docs/features/login_screen_admin.webp" alt="Login Page Admin" width="50%"/>
 
 
 ## Technologies Used
