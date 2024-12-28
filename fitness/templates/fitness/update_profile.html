@@ -1,18 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Update Profile{% endblock %}
+<head>
+  {% block title %}Update Profile{% endblock %}
+</head>
 
-{% block content %}
-<div class="container mt-4">
-    <h2>Update Profile</h2>
+<body>
+  {% block content %}
+  <div class="container mt-4">
+    <header>
+      <h2>Update Profile</h2>
+    </header>
 
-    <form method="POST" enctype="multipart/form-data">
+    <main>
+      <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-
         <button type="submit" class="btn btn-primary mt-3">Update Profile</button>
-    </form>
+      </form>
 
-    <a href="{% url 'profile' %}" class="btn btn-secondary mt-3">Back to Profile</a>
-</div>
-{% endblock %}
+      <nav>
+        <a href="{% url 'profile' %}" class="btn btn-secondary mt-3">Back to Profile</a>
+      </nav>
+    </main>
+  </div>
+  {% endblock %}
+</body>

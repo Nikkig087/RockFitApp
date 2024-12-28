@@ -1,56 +1,62 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block content %}
-<!-- SEO Meta Tags -->
-<meta name="description" content="Keep track of your favorite fitness products in your wishlist. Easily revisit and purchase items you love, all in one place.">
-<meta name="keywords" content="fitness wishlist, favorite fitness products, workout gear, gym equipment, save fitness items, fitness shop favorites">
+<head>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Keep track of your favorite fitness products in your wishlist. Easily revisit and purchase items you love, all in one place.">
+  <meta name="keywords" content="fitness wishlist, favorite fitness products, workout gear, gym equipment, save fitness items, fitness shop favorites">
 
-<!-- Open Graph Tags -->
-<meta property="og:title" content="Your Fitness Wishlist - Save Your Favorite Products">
-<meta property="og:description" content="Your personalized wishlist for fitness products. Save and manage your favorite workout gear and equipment for easy shopping.">
-<meta property="og:image" content="{% static 'images/wishlist-banner.jpg' %}">
-<meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="Your Fitness Wishlist - Save Your Favorite Products">
+  <meta property="og:description" content="Your personalized wishlist for fitness products. Save and manage your favorite workout gear and equipment for easy shopping.">
+  <meta property="og:image" content="{% static 'images/wishlist-banner.jpg' %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Your Fitness Wishlist - Save Your Favorite Products">
-<meta name="twitter:description" content="View and manage your wishlist of fitness products. Save the best gear for your workout journey.">
-<meta name="twitter:image" content="{% static 'images/wishlist-banner.jpg' %}">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your Fitness Wishlist - Save Your Favorite Products">
+  <meta name="twitter:description" content="View and manage your wishlist of fitness products. Save the best gear for your workout journey.">
+  <meta name="twitter:image" content="{% static 'images/wishlist-banner.jpg' %}">
+</head>
 
+<body>
+  {% block content %}
+  <div class="container wish">
+    <header class="page-header text-center my-4">
+      <h2>Your Wishlist</h2>
+    </header>
+    
+    <main class="row">
+      {% for item in wishlist_items %}
+      <article class="col-md-4 mb-4">
+        <div class="card h-100">
+          {% if item.product.image %}
+          <img src="{{ item.product.image.url }}" class="card-img-top" alt="{{ item.product.name }}">
+          {% else %}
+          <img src="{% static 'images/default-product.jpg' %}" class="card-img-top" alt="Default Image">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ item.product.name }}</h5>
+            <p class="card-text">{{ item.product.description|truncatewords:20 }}</p>
+            <div class="mt-auto">
+              <!-- Button to view product details -->
+              <a href="{% url 'product_detail' item.product.id %}" class="btn btn-primary btn-sm w-100 mb-2">View Product</a>
 
-<div class="container wish">
-    <h2 class="page-header text-center my-4">Your Wishlist</h2>
-    <div class="row">
-        {% for item in wishlist_items %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if item.product.image %}
-                <img src="{{ item.product.image.url }}" class="card-img-top" alt="{{ item.product.name }}">
-                {% else %}
-                <img src="{% static 'images/default-product.jpg' %}" class="card-img-top" alt="Default Image">
-                {% endif %}
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ item.product.name }}</h5>
-                    <p class="card-text">{{ item.product.description|truncatewords:20 }}</p>
-                    <div class="mt-auto">
-                        <!-- Button to view product details -->
-                        <a href="{% url 'product_detail' item.product.id %}" class="btn btn-primary btn-sm w-100 mb-2">View Product</a>
-
-                        <!-- Form to remove item from wishlist -->
-                        <form action="{% url 'remove_from_wishlist' item.product.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm w-100">Remove</button>
-                        </form>
-                    </div>
-                </div>
+              <!-- Form to remove item from wishlist -->
+              <form action="{% url 'remove_from_wishlist' item.product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm w-100">Remove</button>
+              </form>
             </div>
+          </div>
         </div>
-        {% empty %}
-        <div class="col-12">
-            <p class="text-center">Your wishlist is empty.</p>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{% endblock %}
+      </article>
+      {% empty %}
+      <div class="col-12">
+        <p class="text-center">Your wishlist is empty.</p>
+      </div>
+      {% endfor %}
+    </main>
+  </div>
+  {% endblock %}
+</body>

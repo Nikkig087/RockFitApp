@@ -3,11 +3,20 @@
 {% block title %}Post Community Update{% endblock %}
 
 {% block content %}
-<h2>Post Community Update</h2>
-<form method="post">
-    {% csrf_token %}
-    <textarea name="update_text" rows="4" cols="50" placeholder="Write your update here..."></textarea>
-    <button type="submit">Post Update</button>
-</form>
-<a href="{% url 'community_updates' %}">Back to Community Updates</a>
+<main>
+    <section>
+        <h2>Post Community Update</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="updateText" class="sr-only">Community Update</label>
+                <textarea id="updateText" name="update_text" rows="4" cols="50" placeholder="Write your update here..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Post Update</button>
+        </form>
+        <nav aria-label="Back to Community Updates">
+            <a href="{% url 'community_updates' %}" class="btn btn-link">Back to Community Updates</a>
+        </nav>
+    </section>
+</main>
 {% endblock %}

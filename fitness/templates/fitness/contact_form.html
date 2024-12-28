@@ -20,7 +20,6 @@
 <meta name="twitter:title" content="Contact Us - Rockfit">
 <meta name="twitter:description" content="Reach out to Rockfit using our contact form. We’re here to help with your inquiries and support needs.">
 <meta name="twitter:image" content="{% static 'images/contact-us.jpg' %}">
-
 {% endblock %}
 
 {% block nav %}
@@ -28,45 +27,53 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="contact">{% trans "Contact Rockfit" %}</h1> <!-- Improved heading for SEO -->
+<main>
+    <header>
+        <h1 class="contact">{% trans "Contact Rockfit" %}</h1> <!-- Improved heading for SEO -->
+    </header>
 
-<form method="post" id="contactForm" action="{% url 'contact_form' %}">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="name" class="form-label"></label>
-        {{ form.name|as_crispy_field }}
-        {% if form.name.errors %}
-            <div class="invalid-feedback">
-                {% for error in form.name.errors %}
-                    <div>{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
-    <div class="mb-3">
-        <label for="email" class="form-label"></label>
-        {{ form.email|as_crispy_field }}
-        {% if form.email.errors %}
-            <div class="invalid-feedback">
-                {% for error in form.email.errors %}
-                    <div>{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
-    <div class="mb-3">
-        <label for="message" class="form-label"></label>
-        {{ form.message|as_crispy_field }}
-        {% if form.message.errors %}
-            <div class="invalid-feedback">
-                {% for error in form.message.errors %}
-                    <div>{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
-    <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-</form>
+    <section>
+        <form method="post" id="contactForm" action="{% url 'contact_form' %}">
+            {% csrf_token %}
+            <fieldset>
+                <div class="mb-3">
+                    <label for="name" class="form-label">{% trans "Your Name" %}</label>
+                    {{ form.name|as_crispy_field }}
+                    {% if form.name.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.name.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">{% trans "Your Email" %}</label>
+                    {{ form.email|as_crispy_field }}
+                    {% if form.email.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">{% trans "Your Message" %}</label>
+                    {{ form.message|as_crispy_field }}
+                    {% if form.message.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.message.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            </fieldset>
+        </form>
+    </section>
+</main>
 {% endblock %}
 
 {% block footer %}
