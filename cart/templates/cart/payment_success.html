@@ -1,14 +1,19 @@
 {% extends "base.html" %}
 
-{% block extra_title %} - Payment Success {% endblock %}
+<head>
+  {% block extra_title %} - Payment Success {% endblock %}
+</head>
 
-{% block content %}
-<div class="success-container">
-<h2>Payment Successful</h2>
-<p class="Thanks">Thank you for your purchase! Your order has been completed.</p>
-
-<a href="{% url 'product_list' %}" class="btn btn-primary">Go to Product List</a>
-
-</div>
-
-{% endblock %}
+<body>
+  {% block content %}
+  <div class="success-container">
+    <header>
+      <h2>Payment Successful</h2>
+    </header>
+    <main>
+      <p class="Thanks">Thank you for your purchase! Your order has been completed.</p>
+      <a href="{% url 'product_list' %}" class="btn btn-primary">Go to Product List</a>
+    </main>
+  </div>
+  {% endblock %}
+</body>

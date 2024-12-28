@@ -1,14 +1,22 @@
 {% extends "base.html" %}
 
-{% block extra_title %} - Payment Cancelled {% endblock %}
+<head>
+  {% block extra_title %} - Payment Cancelled {% endblock %}
+</head>
 
-{% block content %}
-<div class="cancel-container">
-    <h1>Payment Canceled</h1>
-    <p>It looks like you canceled your payment. What would you like to do next?</p>
-    <div class="button-group">
+<body>
+  {% block content %}
+  <div class="cancel-container">
+    <header>
+      <h1>Payment Canceled</h1>
+    </header>
+    <main>
+      <p>It looks like you canceled your payment. What would you like to do next?</p>
+      <div class="button-group">
         <a href="{% url 'cart:view_cart' %}">Go Back to Cart</a>
         <a href="{% url 'product_list' %}" class="secondary">Go to Product List</a>
-    </div>
-</div>
-{% endblock %}
+      </div>
+    </main>
+  </div>
+  {% endblock %}
+</body>
