@@ -125,7 +125,7 @@ ol, ul {
 
 .btn-secondary {
   color: black;
-  background-color:#FF5722;
+  background-color: #FF5722;
   border: none;
 }
 
@@ -252,8 +252,12 @@ p {
   flex-shrink: 0;
   flex-wrap: nowrap;
   justify-content: space-around;
+  align-content: space-around;
   flex-direction: column;
 }
+
+
+  
 
 /* The popup container */
 .popup {
@@ -313,13 +317,6 @@ p {
   color:black;
   font-weight: bold;
 }
-
-/* contact us */
-
-.contact {
-  color: black;
-}
-
 
 /* Shopping Cart Container */
 .cart-container {
