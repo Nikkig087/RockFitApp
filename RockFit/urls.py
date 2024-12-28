@@ -9,7 +9,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    
+    path('fitness/', include(('fitness.urls', 'fitness'), namespace='fitness')),
     path('admin/', admin.site.urls),
     path('', include('fitness.urls')),  
     path('cart/', include('cart.urls', namespace='cart')),  
