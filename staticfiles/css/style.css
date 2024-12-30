@@ -30,11 +30,6 @@ body {
 .navbar-toggler {
   border: none;  
 }
-.container.mt-4 img {
-  width: 100%;
-  height: auto; /* Adjust as per aspect ratio */
-}
-
 
 /*Home*/
 .hero-section {
@@ -43,6 +38,13 @@ body {
   background-position: center;
   object-fit: cover;
 }
+
+.container.mt-4 img {
+  width: 100%;
+  height: auto; /* Adjust as per aspect ratio */
+  min-height: 300px; /* Adjust height to match content */
+}
+
 
 /* Container */
 .container {
@@ -173,6 +175,12 @@ ol, ul {
   background-color:silver;
   color: black;
 }
+
+.card-img-top{
+  width:300px;
+  height:200px;
+}
+
 /* Newsletter */
 .newsletter-signup {
   padding: 20px;
