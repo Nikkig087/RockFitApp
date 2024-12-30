@@ -1,1 +1,1 @@
-web: gunicorn Rockfitapp.wsgi
+web: gunicorn RockFitApp.wsgi
