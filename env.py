@@ -2,7 +2,7 @@ import os
 
 os.environ.setdefault(
 "DATABASE_URL", "postgresql://neondb_owner:MfO0HFB1Dscj@ep-tiny-math-a23qqho1.eu-central-1.aws.neon.tech/hers_aged_hedge_850059")
-os.environ.setdefault("SECRET_KEY", "<my_secret_key>")
+os.environ.setdefault("SECRET_KEY", "MY_KEY")
 
 # Cloudinary config
 CLOUDINARY_STORAGE = {
