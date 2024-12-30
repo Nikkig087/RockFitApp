@@ -33,11 +33,12 @@ body {
 
 /*Home*/
 .hero-section {
-  background-image: url('{% static "images/hero-bg.webp" %}');
+  background-image: url('../images/hero-bg.webp');
   background-size: cover;
   background-position: center;
   object-fit: cover;
 }
+
 /* Container */
 .container {
   margin-top: 60px; 
@@ -132,7 +133,7 @@ ol, ul {
 
 .btn-secondary {
   color: black;
-  background-color:#FF5722;
+  background-color: #FF5722;
   border: none;
 }
 
@@ -262,6 +263,9 @@ p {
   flex-direction: column;
 }
 
+
+  
+
 /* The popup container */
 .popup {
   display: none; 
@@ -326,7 +330,6 @@ p {
 .contact {
   color: black;
 }
-
 
 /* Shopping Cart Container */
 .cart-container {
