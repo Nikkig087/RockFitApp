@@ -31,6 +31,14 @@ body {
   border: none;  
 }
 
+/*Home*/
+.hero-section {
+  background-image: url('{% static "/images/hero-bg.webp" %}');
+  background-size: cover;
+  background-position: center;
+  object-fit: cover;
+}
+
 /* Container */
 .container {
   margin-top: 60px; 
