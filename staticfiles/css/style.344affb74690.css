@@ -1,0 +1,817 @@
+/* Global font style */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: black;
+  color: #333;
+  padding-top: 80px; 
+}
+
+/* Navbar colors */
+.navbar {
+  background-color: black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: black;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  color: #FF5722;
+}
+
+.navbar-toggler {
+  border: none;  
+}
+
+/*Home*/
+.hero-section {
+  background-image: url("../images/hero-bg.53f94cd78d37.webp");
+  background-size: cover;
+  background-position: center;
+  object-fit: cover;
+}
+
+.container.mt-4 img {
+  width: 100%;
+  height: auto; /* Adjust as per aspect ratio */
+}
+
+
+/* Container */
+.container {
+  margin-top: 60px; 
+  max-width: 1200px;
+  margin-top: 100px; 
+  padding: 20px;
+
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  display: list-item;
+  text-align: justify;
+  unicode-bidi: isolate;
+}
+
+ol, ul {
+  padding-left: 0;
+}
+
+/* Styling for the subscription cards */
+
+
+.card-body {
+  padding: 20px; 
+}
+
+.card-title {
+  font-size: 1.5rem;
+}
+
+.card-text {
+  font-size: 1rem; 
+  color: black;
+}
+
+.btn {
+  font-size: 1.1rem; 
+}
+
+.mt-3 {
+  margin-top: 15px; 
+}
+
+.mb-4 {
+  margin-bottom: 30px; 
+}
+
+/* Card & Button Styling */
+.card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+  list-style-type: none;
+  border-radius: 8px; 
+}
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+.btn-outline-primary {
+  color: black;
+  background-color: gold;
+  border: none;
+
+}
+
+.btn-outline-primary:hover {
+  color: black;
+  background-color: silver;
+  border: none;
+
+}
+
+.btn-outline-secondary {
+  color: black;
+  background-color: #FF5722;
+  border: none;
+}
+
+.btn-outline-secondary:hover {
+  color: black;
+  background-color: silver;
+  border: none;
+
+}
+
+.btn-secondary {
+  color: black;
+  background-color: #FF5722;
+  border: none;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #5c636a;
+  border: #565e64;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #FF5722;
+  border:none;
+  color: white;
+}
+
+.btn-success:hover {
+  color: silver;
+  background-color: silver;
+  border:none;
+  color: black;
+}
+
+.btn-primary {
+  background-color: gold;
+  border: none;
+  margin-right: 0px;
+  color: black;
+}
+
+.btn-primary:hover {
+  background-color:silver;
+  color: black;
+}
+/* Newsletter */
+.newsletter-signup {
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+.newsletter-signup h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.newsletter-signup p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: black;
+  text-align: center;
+}
+
+.newsletter-signup form {
+  display: flex;
+  flex-direction: column;
+}
+
+.newsletter-signup input[type="email"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.newsletter-signup button {
+  padding: 10px;
+  background-color: silver;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.newsletter-signup button:hover {
+  background-color: gold;
+}
+
+/*Spotlights */
+.spotlight, .subscription, .products, .wish, .community, .profile, .signout, .signin{
+  color: #fff;
+}
+/*review area */
+.review_rule {
+  color: #fff;
+  padding-top: 10px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.review_delete {
+  color: black;
+}
+.modal-header {
+  background-color: silver;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  color: black;
+  z-index: 1;
+  font-weight: bold;
+}
+.modal-body {
+  background-color: silver;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  z-index: 1;
+  color: black;
+}
+.modal-footer {
+  background-color: silver;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  z-index: 1;
+  font-weight: bold;
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+
+  
+
+/* The popup container */
+.popup {
+  display: none; 
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 9999;
+  text-align: center;
+}
+
+/* Popup content */
+.popup-content {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 20%;
+  display: inline-block;
+  min-width: 300px;
+}
+
+.toast-body {
+  padding: .75rem;
+  word-wrap: break-word;
+  background-color: rgba(255, 217, 0, 0.732);
+  color: black;
+}
+
+.pop {
+  background-color: gold;
+  color: black;
+
+}
+
+/* Close button */
+.close-btn {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form-label {
+  margin-bottom: .5rem;
+  color:black;
+  font-weight: bold;
+}
+
+/* contact us */
+
+.contact {
+  color: black;
+}
+
+/* Shopping Cart Container */
+.cart-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.cart_status {
+  color: black;
+}
+
+/* Heading Style */
+.cart-heading {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Cart Table */
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.cart-table th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+.cart-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Quantity Input and Buttons */
+.quantity-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-input {
+  width: 60px;
+  padding: 8px;
+  text-align: center;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style for the buttons container */
+.button-container {
+  display: flex;
+  flex-direction: column; 
+  gap: 10px; 
+}
+
+.button-container-detail {
+  display: flex;
+  flex-direction: row; 
+  gap: 10px; 
+}
+/* Buttons */
+.button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.button.remove {
+  background-color: #dc3545;
+}
+
+.button.update:hover,
+.button.remove:hover {
+  background-color: #0056b3;
+}
+
+.button.remove:hover {
+  background-color: #c82333;
+}
+
+.btn-signup {
+  background-color: #fff;
+}
+
+/* Total Cost */
+.total-cost {
+  font-size: 1.5rem;
+  margin: 20px 0;
+  color: #333;
+}
+
+/* Checkout Button */
+.checkout-btn-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.stripe-button {
+  background-color: #28a745;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+
+.stripe-button:hover {
+  background-color: #218838;
+}
+
+/* static/css/404.css */
+.server-error-page {
+  display: flow;
+  text-align: center;
+  min-height: 90vh;
+  background-color: black; 
+  margin: 0;
+}
+
+
+.server-error-page h1 {
+  font-size: 3rem; 
+}
+
+.server-error-text {
+  margin-top: 10px;
+  color: #fff;
+}
+
+.server-error-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.server-error-text a:hover {
+  text-decoration: underline;
+}
+
+/* Privacy Page */
+.private-li {
+  padding-left: 5%;
+  list-style: disc;
+  color: white;
+}
+
+.privacy-text {
+  color: #fff;
+}
+
+.title {
+  margin-bottom: .5rem;
+  color: #fff;
+}
+
+h1 {
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cart-container {
+      padding: 20px;
+  }
+  .cart-table th,
+  .cart-table td {
+      padding: 10px;
+      font-size: 0.9rem;
+  }
+  .quantity-column {
+      flex-direction: column;
+  }
+  .quantity-input {
+      margin-bottom: 5px;
+  }
+
+
+}
+
+/* Style for the container */
+.cancel-container, .success-container {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  max-width: 50%;
+  width: 100%;
+  align-content: center;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Header styling */
+.cancel-container h1 {
+  font-size: 2em;
+  color: #dc3545; 
+  margin-bottom: 15px;
+}
+
+/* Paragraph styling */
+.cancel-container p {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  color: #555; 
+}
+
+/* Button group styling */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Buttons */
+.button-group a {
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  color: #fff;
+  background-color: #FF5722;
+  border:none;
+  color: black;
+}
+
+/* Button hover effect */
+.button-group a:hover {
+  background-color: #565e64; 
+}
+
+/* Secondary button style */
+.button-group a.secondary {
+  background-color: gold;
+  color: black;
+}
+
+.button-group a.secondary:hover {
+  background-color: #565e64;
+}
+
+.Thanks {
+  color: black;
+}
+
+.plan {
+  color: black;
+}
+
+.container.community-updates-newsletter {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title-newsletter {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.updates-list-newsletter {
+  margin-bottom: 40px;
+}
+
+.update-newsletter {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.newsletter-section-newsletter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.card-newsletter {
+  flex: 1 1 calc(50% - 10px);
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-newsletter h2 {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  font-weight: bolder;
+}
+
+.card-newsletter p {
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  color: black;
+}
+
+.form-control-newsletter {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn-newsletter {
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.btn-primary-newsletter {
+  background-color: gold;
+  color: black;
+}
+
+.btn-danger-newsletter {
+  background-color: #FF5722;
+  color: black;
+}
+
+
+.card-newsletter form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-newsletter {
+  width: auto; 
+}
+
+.btn-warning:hover {
+background-color: silver;
+border: none;
+}
+
+.btn-danger:hover {
+  background-color: silver;
+border: none;
+color: black;
+}
+
+.btn-danger {
+ background-color: lightcoral;
+border: none;
+color: black;
+}
+
+/*profile */
+
+.profile-text {
+  color: white;
+  margin: 15px 0px 20px 0px;
+}
+
+.status {
+  background-color: lightgreen;
+  color: black;
+}
+
+.resume {
+  margin-bottom: 10px;
+  background-color: lightgreen;
+  color: black;
+}
+
+.request {
+  margin-bottom: 10px;
+  background-color: lightgreen;
+  color: black;
+}
+
+.pause_alert {
+  color: black;
+}
+
+.pause_alert:hover {
+  background-color: silver;
+}
+
+.resume:hover {
+  background-color: silver;
+}
+
+.request:hover {
+  background-color: silver;
+}
+
+.cancel {
+  color: black;
+  background-color: lightcoral;
+}
+.cancel:hover {
+  background-color: silver;
+  color: black;
+}
+
+.upgrade:hover {
+  background-color: silver;
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .newsletter-section-newsletter {
+      flex-direction: column;
+  }
+
+  .card-newsletter {
+      flex: 1 1 100%;
+  }
+}
+
+
+/* Mobile responsiveness */
+@media (max-width: 576px) {
+  .container {
+      margin-top: 80px;
+  }
+  .button-container-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+  }
+
+  .btn {
+      width: 100%;
+  }
+
+  .btn-outline-primary {
+    color: black;
+    background-color: gold;
+    border: none;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  
+  }
+
+  .btn-outline-secondary {
+    color: black;
+    background-color: #FF5722;
+    border: none;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  }
+
+  
+}
