@@ -1,1 +1,1 @@
-web: gunicorn RockFit.wsgi
+web: gunicorn --workers 3 RockFit.wsgi
