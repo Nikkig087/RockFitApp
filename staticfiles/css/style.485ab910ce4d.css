@@ -33,7 +33,7 @@ body {
 
 /*Home*/
 .hero-section {
-  background-image: url('../images/hero-bg.webp');
+  background-image: url("../images/hero-bg.53f94cd78d37.webp");
   background-size: cover;
   background-position: center;
   object-fit: cover;
