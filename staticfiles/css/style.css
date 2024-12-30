@@ -30,6 +30,11 @@ body {
 .navbar-toggler {
   border: none;  
 }
+.container.mt-4 img {
+  width: 100%;
+  height: auto; /* Adjust as per aspect ratio */
+}
+
 
 /*Home*/
 .hero-section {
