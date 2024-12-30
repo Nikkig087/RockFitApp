@@ -149,7 +149,7 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-WSGI_APPLICATION = 'RockFitApp.wsgi.application'
+WSGI_APPLICATION = 'RockFit.wsgi.application'
 
 
 # Database
