@@ -39,6 +39,12 @@ body {
   object-fit: cover;
 }
 
+.container.mt-4 img {
+  width: 100%;
+  height: auto; /* Adjust as per aspect ratio */
+}
+
+
 /* Container */
 .container {
   margin-top: 60px; 
