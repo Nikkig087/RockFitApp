@@ -508,3 +508,8 @@ def custom_404_view(request, exception):
 
 def privacy_policy(request):
     return render(request, 'fitness/privacy_policy.html')  # Adjust the path if needed
+
+def csp_view(request): 
+    context = {} 
+    context.update(csrf(request)) # This adds a nonce to the context 
+    return render(request, 'base.html', context)

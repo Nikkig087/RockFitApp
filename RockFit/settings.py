@@ -29,7 +29,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 
@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'fitness',
     'RockFit',
     'cart',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +78,20 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
+    
 ]
+
+GZIP_CONTENT_TYPES = [
+    'text/html',
+    'text/css',
+    'application/javascript',
+    'application/json',
+    'text/xml',
+    'application/xml',
+    'application/rss+xml',
+]
+
 
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net',
@@ -252,6 +266,13 @@ site_name = 'Rockfit.com'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SESSION_COOKIE_SECURE = True  # Ensures cookies are sent over HTTPS only
+SESSION_COOKIE_HTTPONLY = True  # Prevents JavaScript access to cookies
+CSRF_COOKIE_SECURE = True  # Ensures CSRF cookies are sent over HTTPS only
+CSRF_COOKIE_HTTPONLY = True  # Prevents JavaScript access to CSRF cookies
+SESSION_COOKIE_SAMESITE = 'Lax'  # Use 'Strict' if appropriate
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 
 FREE_DELIVERY_THRESHOLD = 50

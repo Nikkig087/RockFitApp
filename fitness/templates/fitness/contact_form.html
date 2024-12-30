@@ -37,7 +37,7 @@
             {% csrf_token %}
             <fieldset>
                 <div class="mb-3">
-                    <label for="name" class="form-label">{% trans "Your Name" %}</label>
+                    <label for="name"></label>
                     {{ form.name|as_crispy_field }}
                     {% if form.name.errors %}
                         <div class="invalid-feedback">
@@ -48,8 +48,8 @@
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">{% trans "Your Email" %}</label>
-                    {{ form.email|as_crispy_field }}
+                    <label for="email">{{ form.email|as_crispy_field }}</label>
+                    
                     {% if form.email.errors %}
                         <div class="invalid-feedback">
                             {% for error in form.email.errors %}
@@ -59,8 +59,8 @@
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    <label for="message" class="form-label">{% trans "Your Message" %}</label>
-                    {{ form.message|as_crispy_field }}
+                    <label for="message">{{ form.message|as_crispy_field }}</label>
+                    
                     {% if form.message.errors %}
                         <div class="invalid-feedback">
                             {% for error in form.message.errors %}
