@@ -1,6 +1,6 @@
 # Welcome to Our Rockfit Store!
 
-Our Store is your go-to source for fitness plans and products. Our blog features a variety of products and plans to help you achieve a healthier lifestyle. Whether you’re a fitness pro or a beginner we have the plans and equipment to get you started. 
+Our Store is your go-to source for fitness plans and products. Our website features a variety of products and plans to help you achieve a healthier lifestyle. Whether you’re a fitness pro or a beginner we have the plans and equipment to get you started. 
 
 ## Table Of Contents:
 1. [Design & Planning](#design-&-planning)
