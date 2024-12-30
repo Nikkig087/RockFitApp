@@ -32,11 +32,12 @@ body {
 }
 
 /*Home*/
-.hero-section {
+header.hero-section {
   background-image: url('../images/hero-bg.webp');
   background-size: cover;
   background-position: center;
   object-fit: cover;
+  min-height: 400px; 
 }
 
 .container.mt-4 img {
