@@ -16,11 +16,11 @@
 
     <link rel="preload" href="{% static 'css/style.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{% static 'css/style.css' %}"></noscript>
-    {% compress css %}
+    {% endcompress css %}
         <!-- SEO Meta Tags -->
         <meta name="description" content="Welcome to our Fitness Center. Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
         <meta name="keywords" content="fitness center, health products, fitness subscriptions, workout gear, gym equipment, online fitness store">
-        {% endcompress css %}
+      
         <!-- Open Graph Tags -->
         <meta property="og:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
         <meta property="og:description" content="Shop fitness products, explore spotlight items, and discover the best fitness subscriptions to kickstart your health and wellness journey.">
