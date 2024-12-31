@@ -135,12 +135,6 @@ TEMPLATES = [
                 'fitness.context_processors.cart_count',
                 'fitness.context_processors.wishlist_count',
             ],
-            'loaders': [
-                ('django.template.loaders.cached.Loader', [
-                    'django.template.loaders.filesystem.Loader',
-                    'django.template.loaders.app_directories.Loader',
-                ]),
-            ],
         },
     },
 ]
