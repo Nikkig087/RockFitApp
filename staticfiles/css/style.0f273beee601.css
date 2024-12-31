@@ -33,7 +33,7 @@ body {
 
 /*Home*/
 header.hero-section {
-  background-image:url(../images/hero-bgold.jpg);
+  background-image:url("../images/hero-bgold.1b07438bcb97.jpg");
   background-size: cover;
   background-position: center;
   min-height: 400px;
