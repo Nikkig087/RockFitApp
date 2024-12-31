@@ -34,13 +34,11 @@ body {
 /*Home*/
 header.hero-section {
   background-image: none;
-  background-size: cover;
-  background-position: center;
-  min-height: 400px;
-  max-width: 100%;
+  background-size: cover; background-position: center; min-height: 400px; max-width: 100%;
   object-fit: cover;
   text-align: center;
 }
+
 .container.mt-4 img {
   width: 100%;
   height: auto; /* Adjust as per aspect ratio */
@@ -50,10 +48,10 @@ header.hero-section {
 
 /* Container */
 .container {
-  margin-top: 0px; 
+  margin-top: 60px; 
   max-width: 1200px;
   margin-top: 100px; 
-  padding: 0px;
+  padding: 20px;
 
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

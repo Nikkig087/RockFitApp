@@ -19,13 +19,16 @@
 <meta name="twitter:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
 <meta name="twitter:description" content="Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
 <meta name="twitter:image" content="{% static 'images/hero-bg.webp' %}">
+<link rel="preload" href="/static/images/hero-bg.webp?6226785dca0b" as="image">
 </head>
 
 {% block content %}
 
 <main>
     <!-- Hero Section -->
-    <header class="hero-section text-white text-center py-5">        
+   
+    <header class="hero-section" loading="lazy" style="background-image: url(/static/images/hero-bg.webp?6226785dca0b);">
+     
         <div class="container">
             <h1 class="display-4">Welcome to Our Fitness Center</h1>
             <p class="lead">Your journey to health and fitness starts here.</p>
