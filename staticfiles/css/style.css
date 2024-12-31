@@ -32,13 +32,11 @@ body {
 }
 
 /*Home*/
-header.hero-section {
+.hero-section {
   background-image:url(../images/hero-bgold.jpg);
   background-size: cover;
   background-position: center;
-  min-height: 400px;
-  max-width: 100%;
-  object-fit: cover;
+  
   text-align: center;
 }
 .container.mt-4 img {
@@ -783,6 +781,13 @@ color: black;
   .newsletter-section-newsletter {
       flex-direction: column;
   }
+  .hero-section {
+    background-image:url(../images/hero-bgold.jpg);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    text-align: center;
+  }
 
   .card-newsletter {
       flex: 1 1 100%;
@@ -794,6 +799,13 @@ color: black;
 @media (max-width: 576px) {
   .container {
       margin-top: 80px;
+  }
+  .hero-section {
+    background-image:url(../images/hero-bgold.jpg);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    text-align: center;
   }
   .button-container-detail {
     display: flex;
