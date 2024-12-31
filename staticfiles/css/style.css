@@ -33,7 +33,7 @@ body {
 
 /*Home*/
 header.hero-section {
-  background-image: url(https://res.cloudinary.com/dvgozeo62/image/upload/v1735660913/hero-bg_2_p5uw4b.webp);
+  background-image:url(../images/hero-bg.webp);
   background-size: cover;
   background-position: center;
   object-fit: cover;
