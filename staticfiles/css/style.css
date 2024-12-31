@@ -537,6 +537,18 @@ h1 {
   }
   
 }
+@media (min-width: 768px){
+  .container {
+ 
+    max-width: 1200px;
+    
+    padding: 5px;
+   
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
