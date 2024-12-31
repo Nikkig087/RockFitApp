@@ -33,7 +33,7 @@ body {
 
 /*Home*/
 .hero-section {
-  background-image:url(../images/hero-bgcomp.webp);
+  background-image:url("../images/hero-bgcomp.c085ceba016c.webp");
 
   background-size: cover;
   background-position: center;
@@ -783,7 +783,7 @@ color: black;
       flex-direction: column;
   }
   .hero-section {
-    background-image:url(../images/hero-bgcomp.webp);
+    background-image:url("../images/hero-bgcomp.c085ceba016c.webp");
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -802,7 +802,7 @@ color: black;
       margin-top: 80px;
   }
   .hero-section {
-    background-image:url(../images/hero-bgcomp.webp);
+    background-image:url("../images/hero-bgcomp.c085ceba016c.webp");
     background-size: cover;
     background-position: center;
     width: 100%;
