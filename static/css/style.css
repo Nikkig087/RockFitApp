@@ -34,7 +34,7 @@ body {
 /*Home*/
 .hero-section {
   background-image:url(../images/hero-bgcomp.webp);
-
+  min-height: 500px;
   background-size: cover;
   background-position: center;
   
@@ -49,10 +49,10 @@ body {
 
 /* Container */
 .container {
-  margin-top: 60px; 
+ 
   max-width: 1200px;
   margin-top: 100px; 
-  padding: 20px;
+  padding: 5px;
 
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
