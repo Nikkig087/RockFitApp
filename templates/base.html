@@ -17,11 +17,11 @@
     
     <! Preload the appropriate hero image for larger screens --
     <link rel="preload" href="{% static 'images/hero-bg.webp' %}" as="image" type="image/we4" media="(min-width: 601px)" crossorigin="anonymous">-->
-    {% compress css %}
+ 
     <link rel="preload" href="{% static 'css/style.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{% static 'css/style.css' %}"></noscript>
 
-    {% endcompress css %}
+    
         <!-- SEO Meta Tags -->
         <meta name="description" content="Welcome to our Fitness Center. Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
         <meta name="keywords" content="fitness center, health products, fitness subscriptions, workout gear, gym equipment, online fitness store">
