@@ -783,7 +783,7 @@ color: black;
   .newsletter-section-newsletter {
       flex-direction: column;
   }
-  .hero-section {
+  header.hero-section {
     background-image:url(../images/hero-bgcomp.webp);
     background-size: cover;
     background-position: center;
