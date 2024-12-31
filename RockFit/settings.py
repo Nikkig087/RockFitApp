@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     'fitness',
     'RockFit',
     'cart',
-    
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -212,25 +212,15 @@ ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
 LOGOUT_REDIRECT_URL = '/'  # Redirect path after successful logout
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# Enable compression
-COMPRESS_ENABLED = True
 
-# Use offline compression to precompile files during deployment
-COMPRESS_OFFLINE = True
 
-# Define the static URL (Heroku serves static files from this path)
-STATIC_URL = '/static/'
-
-# Directory where static files are collected
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Ensure COMPRESS_URL matches STATIC_URL
-COMPRESS_URL = STATIC_URL
 
 #STATICFILES_STORAGE = 'compressor.storage.CompressorFileStorage'
-  
+COMPRESS_ENABLED = True  # Enable compression
+COMPRESS_URL = '/static/'  
 COMPRESS_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
+COMPRESS_OFFLINE = True  #  pre-compress files
 COMPRESS_PRECOMPILERS = [
     ('text/x-scss', 'sass {infile} {outfile}'),
 ]
