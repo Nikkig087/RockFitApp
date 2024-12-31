@@ -37,7 +37,8 @@ body {
 
   background-size: cover;
   background-position: center;
-  
+  object-fit: cover;
+  min-height: 400px; 
   text-align: center;
 }
 .container.mt-4 img {
