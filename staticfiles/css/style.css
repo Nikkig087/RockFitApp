@@ -34,11 +34,10 @@ body {
 /*Home*/
 .hero-section {
   background-image:url(../images/hero-bgcomp.webp);
-
+  min-height: 500px;
   background-size: cover;
   background-position: center;
   
-  min-height: 500px; 
   text-align: center;
 }
 .container.mt-4 img {
@@ -52,9 +51,9 @@ body {
 .container {
  
   max-width: 1200px;
-  
+  margin-top: 100px; 
   padding: 5px;
- 
+
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -526,6 +525,19 @@ h1 {
   color: #fff;
 }
 
+@media (max-width: 1400px){
+  .container {
+ 
+    max-width: 1200px;
+    
+    padding: 5px;
+   
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .cart-container {
@@ -789,6 +801,8 @@ color: black;
     background-position: center;
     width: 100%;
     text-align: center;
+    object-fit: cover;
+    min-height: 400px; 
   }
 
   .card-newsletter {
