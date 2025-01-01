@@ -3,39 +3,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>{% block title %}Rockfit App{% endblock %}</title>
-    
-    <!-- Preload Hero Image -->
-    <link rel="preload" as="image" href="{% static 'images/default-hero-bg.webp' %}">
-    
-    <!-- Stylesheets -->
-    {% compress css %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% block extra_css %}{% endblock %}
-    {% endcompress %}
+   <!-- <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>-->
+   <link rel:="preconnect" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">-->
+ <!---<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">-->
+ 
 
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Welcome to our Fitness Center. Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
-    <meta name="keywords" content="fitness center, health products, fitness subscriptions, workout gear, gym equipment, online fitness store">
+   {% compress css %}
+   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+   {% block extra_css %}{% endblock %}
+   {% endcompress %}
+
     
-    <!-- Open Graph Tags -->
-    <meta property="og:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
-    <meta property="og:description" content="Shop fitness products, explore spotlight items, and discover the best fitness subscriptions to kickstart your health and wellness journey.">
-    <meta property="og:image" content="{% static 'images/default-hero-bg.webp' %}">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
-    <meta name="twitter:description" content="Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
-    <meta name="twitter:image" content="{% static 'images/default-hero-bg.webp' %}">
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="Welcome to our Fitness Center. Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
+        <meta name="keywords" content="fitness center, health products, fitness subscriptions, workout gear, gym equipment, online fitness store">
+        
+        <!-- Open Graph Tags -->
+        <meta property="og:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
+        <meta property="og:description" content="Shop fitness products, explore spotlight items, and discover the best fitness subscriptions to kickstart your health and wellness journey.">
+        <meta property="og:image" content="{% static 'images/default-hero-bg.webp' %}">
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
+        <meta name="twitter:description" content="Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
+        <meta property="og:image" content="{% static 'images/default-hero-bg.webp' %}">
+        
+    <title>{% block title %}Rockfit App{% endblock %}</title>
 </head>
-<body>
+
     {% block nav %}
-    <!-- Navbar -->
     <nav class="navbar main-nav navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}">Rockfit App</a>
@@ -65,11 +67,13 @@
             </div>
         </div>
     </nav>
+    
     {% endblock %}
     
-    <!-- Toast container for messages -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
-        {% for message in messages %}
+
+<!-- Toast container for messages -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+    {% for message in messages %}
         <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex pop">
                 <div class="toast-body">
@@ -78,42 +82,127 @@
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
+</div>
 
-    <!-- Hero Section -->
-    <header class="hero-section">
-        <div class="container text-center">
-            <h1>Welcome to Rockfit</h1>
-            <p>Your journey to health and fitness starts here.</p>
-        </div>
-    </header>
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
 
-    <!-- Main Content -->
-    <div class="container mt-4">
-        {% block content %}{% endblock %}
-    </div>
+  
+        <!-- Footer Section -->
+        {% block footer %}
+        <footer class="footer">
+            <div class="container text-center">
+                <p>&copy; 2025 Rock<i>fit</i>. All Rights Reserved.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener"
+                  aria-label="Visit our Instagram page (opens in a new tab)"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://x.com/?lang=en" target="_blank" rel="noopener"
+                    aria-label="Visit our X page (opens in a new tab)"><i class="fa-brands fa-x"></i></a>
 
-    <!-- Footer -->
-    {% block footer %}
-    <footer class="footer">
-        <div class="container text-center">
-            <p>&copy; 2025 Rock<i>fit</i>. All Rights Reserved.</p>
-            <div class="social-links">
-                <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Visit our Instagram page"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://x.com/?lang=en" target="_blank" rel="noopener" aria-label="Visit our X page"><i class="fa-brands fa-x"></i></a>
-                <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="Visit our YouTube page"><i class="fa-brands fa-youtube"></i></a>
-                <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Visit our Facebook page"><i class="fa-brands fa-facebook"></i></a>
+
+                    <a href="https://www.youtube.com/" target="_blank" rel="noopener"
+                    aria-label="Visit our Youtube page (opens in a new tab)"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://www.facebook.com/" target="_blank" rel="noopener"
+                      aria-label="Visit our Facebook page (opens in a new tab)"><i class="fa-brands fa-facebook"></i></a>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button id="contactButton" class="btn btn-primary mt-3 contact">Contact Us</button>
+                    
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+                </div>
+            </div>
+        </footer>
+        {% endblock %}
+   
+
+    <!-- Django Messages Modal -->
+    {% if messages %}
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" style="display: block;" inert>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
-    </footer>
-    {% endblock %}
-    
-    <!-- Scripts -->
+    </div>
+    {% endif %}
+
+    <!-- Contact Form Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalLabel">Contact Us</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content will be loaded via AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">Report Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Form will be loaded here dynamically via AJAX -
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <!-- Additional Scripts -->
     {% block extra_scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
-    <script src="{% static 'fitness/js/contact.js' %}" defer></script>
-    <script src="{% static 'fitness/js/modal.js' %}" defer></script>
-    {% endblock %}
-</body>
+<!--    <script src="https://cdn.jsdelivr.net/bootstrap.bundle.min.js" defer></script>-->
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
+  {% compress js %}  
+    <script src="{% static 'fitness/js/contact.js' %}"></script>
+    <script src="{% static 'fitness/js/modal.js' %}"></script>
+    {% endcompress %}
+    <script>
+        var contactFormUrl = "{% url 'contact_form' %}";
+    </script>
+      <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin>
+      <script src="https://kit.fontawesome.com/38e26af2b7.js" crossorigin="anonymous"></script>
+   
+
+<!-- Updated Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl).show();
+        });
+    });
+</script>
+
+
+{% endblock %}
+
+
 </html>

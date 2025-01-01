@@ -12,7 +12,7 @@ from django.db.models.signals import pre_save
 from django.contrib import admin
 from .models import UserProfile
 from django.utils.timezone import now
-
+from django.utils.html import format_html
 
 class UserProfileInline(admin.StackedInline):
     """
@@ -200,9 +200,20 @@ class ProductAdmin(admin.ModelAdmin):
         search_fields (tuple): Fields to search by in the Product admin interface.
         list_filter (tuple): Fields to filter products by in the admin view.
     """
-    list_display = ('name', 'price', 'stock_quantity', 'created_at')
+    
+
+
+    list_display = ('name', 'price', 'stock_quantity', 'created_at', 'image_tag')
     search_fields = ('name', 'description')
     list_filter = ('is_spotlight',)
+
+    def image_tag(self, obj):
+            if obj.image:
+                return format_html('<img src="{}" style="height: 50px; width: auto;" loading="lazy"/>', obj.image.url)
+            return "No Image"
+
+    image_tag.short_description = 'Image'
+
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
