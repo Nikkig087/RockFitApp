@@ -28,13 +28,28 @@
 
 <main>
     <!-- Hero Section -->
-    <header class="hero-section">
-        <div class="container">
-            <h1 class="display-4">Welcome to Our Fitness Center</h1>
-            <p class="lead">Your journey to health and fitness starts here.</p>
-            <a href="{% url 'products' %}" class="btn btn-primary btn-lg mt-3">Shop Now</a>
-        </div>
-    </header>
+    <main>
+        <!-- Hero Section -->
+        <header class="hero-section text-center text-white py-5" style="background-color: #000;">
+            <div class="container">
+                <img src="{% static 'images/hero-bg.webp' %}" 
+                     srcset="{% static 'images/hero-bg-small.webp' %} 480w, 
+                             {% static 'images/hero-bg-medium.webp' %} 768w, 
+                             {% static 'images/hero-bg-large.webp' %} 1200w" 
+                     sizes="(max-width: 480px) 100vw, 
+                            (max-width: 768px) 100vw, 
+                            1200px" 
+                     alt="Welcome to Our Fitness Center" 
+                     class="img-fluid" 
+                     style="max-height: 400px; object-fit: cover; width: 100%;" 
+                     loading="lazy">
+                <h1 class="display-4 mt-3">Welcome to Our Fitness Center</h1>
+                <p class="lead">Your journey to health and fitness starts here.</p>
+                <a href="{% url 'products' %}" class="btn btn-primary btn-lg mt-3">Shop Now</a>
+            </div>
+        </header>
+    
+    
 
     <!-- Spotlight Products Section -->
     {% if spotlight_products %}
