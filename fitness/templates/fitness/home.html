@@ -21,35 +21,45 @@
     <meta name="twitter:image" content="{% static 'images/hero-bg.webp' %}">
 
     <!-- Preload Hero Background Image -->
-    <link rel="preload" href="{% static 'images/hero-bg.webp' %}?6226785dca0b" as="image">
+    <link rel="preload" href="{% static 'images/hero-bgnew.webp' %}" as="image">
+
+    <!-- Inline Critical CSS -->
+    <style>
+        .hero-section {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .hero-section img {
+            max-height: 400px;
+            object-fit: cover;
+            width: 100%;
+        }
+    </style>
 </head>
 
 {% block content %}
 
 <main>
     <!-- Hero Section -->
-    <main>
-        <!-- Hero Section -->
-        <header class="hero-section text-center text-white py-5" style="background-color: #000;">
-            <div class="container">
-                <img src="{% static 'images/hero-bgnew.webp' %}" 
-                     srcset="{% static 'images/hero-bg-small.webp' %} 480w, 
-                             {% static 'images/hero-bg-medium.webp' %} 768w, 
-                             {% static 'images/hero-bg-large.webp' %} 1200w" 
-                     sizes="(max-width: 480px) 100vw, 
-                            (max-width: 768px) 100vw, 
-                            1200px" 
-                     alt="Welcome to Our Fitness Center" 
-                     class="img-fluid" 
-                     style="max-height: 400px; object-fit: cover; width: 100%;" 
-                     loading="lazy">
-                <h1 class="display-4 mt-3">Welcome to Our Fitness Center</h1>
-                <p class="lead">Your journey to health and fitness starts here.</p>
-                <a href="{% url 'products' %}" class="btn btn-primary btn-lg mt-3">Shop Now</a>
-            </div>
-        </header>
-    
-    
+    <header class="hero-section">
+        <div class="container">
+            <img src="{% static 'images/hero-bgnew.webp' %}" 
+                 srcset="{% static 'images/hero-bg-small.webp' %} 480w, 
+                         {% static 'images/hero-bg-medium.webp' %} 768w, 
+                         {% static 'images/hero-bg-large.webp' %} 1200w" 
+                 sizes="(max-width: 480px) 100vw, 
+                        (max-width: 768px) 100vw, 
+                        1200px" 
+                 alt="Welcome to Our Fitness Center" 
+                 class="img-fluid">
+            <h1 class="display-4 mt-3">Welcome to Our Fitness Center</h1>
+            <p class="lead">Your journey to health and fitness starts here.</p>
+            <a href="{% url 'products' %}" class="btn btn-primary btn-lg mt-3">Shop Now</a>
+        </div>
+    </header>
 
     <!-- Spotlight Products Section -->
     {% if spotlight_products %}
