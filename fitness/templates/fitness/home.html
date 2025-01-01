@@ -24,75 +24,47 @@
     <link rel="preload" href="{% static 'images/hero-bg-large.webp' %}" as="image">
 
     <!-- Inline Critical CSS -->
-    <style>
-        /* Hero Section Base Styles */
-        .hero-section {
-            background-image: url("{% static 'images/hero-bg-large.webp' %}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            text-align: center;
-            color: white;
-            padding: 4rem 1rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 400px;
-        }
-
-        .hero-section h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero-section p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .hero-section {
-                height: 300px;
-                padding: 3rem 1rem;
-            }
-
-            .hero-section h1 {
-                font-size: 2rem;
-            }
-
-            .hero-section p {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-section {
-                height: 200px;
-                padding: 2rem 1rem;
-            }
-
-            .hero-section h1 {
-                font-size: 1.75rem;
-            }
-
-            .hero-section p {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
 </head>
 
 {% block content %}
 
 <main>
     <!-- Hero Section -->
-    <header class="hero-section">
-        <h1>Welcome to Our Fitness Center</h1>
-        <p>Your journey to health and fitness starts here.</p>
-        <a href="{% url 'products' %}" class="btn btn-primary btn-lg">Shop Now</a>
-    </header>
+    <header class="hero-section" 
+    style="
+        background-image: url('{% static 'images/hero-bg-large.webp' %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-align: center;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 400px;
+        padding: 4rem 1rem;
+    ">
+<h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Welcome to Our Fitness Center</h1>
+<p style="font-size: 1.25rem; margin-bottom: 2rem;">Your journey to health and fitness starts here.</p>
+<a href="{% url 'products' %}" class="btn btn-primary btn-lg">Shop Now</a>
+</header>
+
+<!-- Responsive Inline Styles -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const heroSection = document.querySelector('.hero-section');
+    if (window.innerWidth <= 768) {
+        heroSection.style.height = '300px';
+        heroSection.style.padding = '3rem 1rem';
+    }
+    if (window.innerWidth <= 480) {
+        heroSection.style.height = '200px';
+        heroSection.style.padding = '2rem 1rem';
+    }
+});
+</script>
+
 
     <!-- Spotlight Products Section -->
     {% if spotlight_products %}
