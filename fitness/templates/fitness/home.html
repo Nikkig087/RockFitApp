@@ -11,31 +11,75 @@
     <!-- Open Graph Tags -->
     <meta property="og:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
     <meta property="og:description" content="Shop fitness products, explore spotlight items, and discover the best fitness subscriptions to kickstart your health and wellness journey.">
-    <meta property="og:image" content="{% static 'images/hero-bg.webp' %}">
+    <meta property="og:image" content="{% static 'images/hero-bg-large.webp' %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
     <meta name="twitter:description" content="Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
-    <meta name="twitter:image" content="{% static 'images/hero-bg.webp' %}">
+    <meta name="twitter:image" content="{% static 'images/hero-bg-large.webp' %}">
 
     <!-- Preload Hero Background Image -->
-    <link rel="preload" href="{% static 'images/hero-bgnew.webp' %}" as="image">
+    <link rel="preload" href="{% static 'images/hero-bg-large.webp' %}" as="image">
 
     <!-- Inline Critical CSS -->
     <style>
+        /* Hero Section Base Styles */
         .hero-section {
-            background-color: #000;
-            color: #fff;
+            background-image: url("{% static 'images/hero-bg-large.webp' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             text-align: center;
-            padding: 2rem 0;
+            color: white;
+            padding: 4rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
         }
 
-        .hero-section img {
-            max-height: 400px;
-            object-fit: cover;
-            width: 100%;
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 300px;
+                padding: 3rem 1rem;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                height: 200px;
+                padding: 2rem 1rem;
+            }
+
+            .hero-section h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero-section p {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -45,20 +89,9 @@
 <main>
     <!-- Hero Section -->
     <header class="hero-section">
-        <div class="container">
-            <img src="{% static 'images/hero-bgnew.webp' %}" 
-                 srcset="{% static 'images/hero-bg-small.webp' %} 480w, 
-                         {% static 'images/hero-bg-medium.webp' %} 768w, 
-                         {% static 'images/hero-bg-large.webp' %} 1200w" 
-                 sizes="(max-width: 480px) 100vw, 
-                        (max-width: 768px) 100vw, 
-                        1200px" 
-                 alt="Welcome to Our Fitness Center" 
-                 class="img-fluid">
-            <h1 class="display-4 mt-3">Welcome to Our Fitness Center</h1>
-            <p class="lead">Your journey to health and fitness starts here.</p>
-            <a href="{% url 'products' %}" class="btn btn-primary btn-lg mt-3">Shop Now</a>
-        </div>
+        <h1>Welcome to Our Fitness Center</h1>
+        <p>Your journey to health and fitness starts here.</p>
+        <a href="{% url 'products' %}" class="btn btn-primary btn-lg">Shop Now</a>
     </header>
 
     <!-- Spotlight Products Section -->
