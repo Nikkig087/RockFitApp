@@ -46,6 +46,11 @@ body {
   min-height: 300px; /* Adjust height to match content */
 }
 
+.profile {
+  width: 29%;
+  height: auto; /* Adjust as per aspect ratio */
+  min-height: 300px; /* Adjust height to match content */
+}
 
 /* Container */
 .container {
