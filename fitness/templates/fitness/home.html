@@ -34,6 +34,15 @@
     <!-- Hero Section with Preloaded Background Image -->
     <header class="hero-section">
         <div class="container">
+            <picture>
+                <source srcset="{% static 'images/hero-bg-small.webp' %}" media="(max-width: 480px)">
+                <source srcset="{% static 'images/hero-bg-medium.webp' %}" media="(max-width: 768px)">
+                <img src="{% static 'images/hero-bg-large.webp' %}"
+                    alt="Welcome to Our Fitness Center"
+                    class="img-fluid"
+                    style="max-height: 400px; object-fit: cover; width: 100%;" 
+                    loading="lazy">
+            </picture>
             <h1 class="display-4 mt-3">Welcome to Our Fitness Center</h1>
             <p class="lead">Your journey to health and fitness starts here.</p>
             <a href="{% url 'products' %}" class="btn btn-primary btn-lg">Shop Now</a>
