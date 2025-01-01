@@ -208,9 +208,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('is_spotlight',)
 
     def image_tag(self, obj):
-            if obj.image:
-                return format_html('<img src="{}" style="height: 50px; width: auto;" loading="lazy"/>', obj.image.url)
-            return "No Image"
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="height: 50px; width: auto; aspect-ratio: 1/1;" loading="lazy"/>',
+                obj.image.url
+            )
+        return "No Image"
 
     image_tag.short_description = 'Image'
 
