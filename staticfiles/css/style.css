@@ -40,9 +40,9 @@ body {
   text-align: center;
 }
 .container.mt-4 img {
-  width: 100%;
-  height: auto; /* Adjust as per aspect ratio */
-  min-height: 300px; /* Adjust height to match content */
+  width: 29%;
+  height: 29%; /* Adjust as per aspect ratio */
+  min-height: 29%; /* Adjust height to match content */
 }
 
 

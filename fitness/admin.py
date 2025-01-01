@@ -73,6 +73,15 @@ class UserProfileAdmin(admin.ModelAdmin):
 
     list_display = ['user', 'pause_requested', 'pause_approved', 'subscription_plan']
     list_filter = ['pause_requested', 'pause_approved']
+    def profile_picture_tag(self, obj):
+        if obj.profile_picture:  # Check if a profile picture exists
+            return format_html(
+                '<img src="{}" style="height: 50px; width: auto; aspect-ratio: 1/1;" loading="lazy" alt="Profile Picture"/>',
+                obj.profile_picture.url  # Access the URL of the profile picture
+            )
+        return "No Image"
+
+    profile_picture_tag.short_description = 'Profile Picture'
     
     actions = ['approve_pause', 'reject_pause']
 
