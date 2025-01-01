@@ -1,4 +1,4 @@
-body{font-family:'Montserrat',sans-serif;background-color:black;color:#333;padding-top:80px}.navbar{background-color:black;box-shadow:0 2px 4px rgba(0,0,0,0.1);position:fixed;width:100%;top:0;background-color:rgba(255,255,255,0.9);backdrop-filter:blur(10px);box-shadow:0 2px 4px rgba(0,0,0,0.1);z-index:1000}.navbar-light .navbar-nav .nav-link{color:black}.navbar-light .navbar-nav .nav-link:hover{color:#FF5722}.navbar-toggler{border:none}header.hero-section{background-image: url('{% static 'images/hero-bg-large.webp' %}');
+body{font-family:'Montserrat',sans-serif;background-color:black;color:#333;padding-top:80px}.navbar{background-color:black;box-shadow:0 2px 4px rgba(0,0,0,0.1);position:fixed;width:100%;top:0;background-color:rgba(255,255,255,0.9);backdrop-filter:blur(10px);box-shadow:0 2px 4px rgba(0,0,0,0.1);z-index:1000}.navbar-light .navbar-nav .nav-link{color:black}.navbar-light .navbar-nav .nav-link:hover{color:#FF5722}.navbar-toggler{border:none}header.hero-section{background-image: url('/static/images/hero-bg-large.webp');
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
