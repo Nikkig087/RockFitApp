@@ -182,6 +182,7 @@
   {% compress js %}  
     <script src="{% static 'fitness/js/contact.js' %}"></script>
     <script src="{% static 'fitness/js/modal.js' %}"></script>
+    <script src="{% static 'fitness/js/lazyload.js' %}"></script>
     {% endcompress %}
     <script>
         var contactFormUrl = "{% url 'contact_form' %}";
