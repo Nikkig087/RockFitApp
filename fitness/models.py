@@ -6,6 +6,7 @@ from django.db.models.signals import pre_save
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
+from PIL import Image
 
 class SubscriptionPlan(models.Model):
     """
@@ -141,28 +142,37 @@ class NutritionPlan(models.Model):
 
 class Product(models.Model):
     """
-    Represents a product available for purchase, such as merchandise or nutrition products.
-
-    Attributes:
-        name (str): The name of the product.
-        description (str): A detailed description of the product.
-        price (Decimal): The price of the product.
-        image (ImageField): An image of the product.
-        stock_quantity (int): The quantity of the product in stock.
-        is_spotlight (bool): Highlights the product as a featured item.
-        created_at (datetime): The date and time when the product was added.
+    Represents a product available for purchase.
     """
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/')
+    image_thumbnail = ImageSpecField(
+        source='image',
+        processors=[ResizeToFill(300, 300)],
+        format='JPEG',
+        options={'quality': 85}
+    )
     stock_quantity = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)  
-    is_spotlight = models.BooleanField(default=False)  
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_spotlight = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Resize image on upload
+        if self.image:
+            img = Image.open(self.image.path)
+            max_size = (800, 800)
+            img.thumbnail(max_size, Image.ANTIALIAS)
+            img.save(self.image.path, quality=85, optimize=True)
+
+    def get_absolute_url(self):
+        return reverse('product_detail', kwargs={'id': self.id})
 
     def __str__(self):
-        """Returns the name of the product."""
         return self.name
+
 
 class Order(models.Model):
     """

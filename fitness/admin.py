@@ -200,26 +200,34 @@ class ExercisePlanAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     """
     Admin interface for managing Product instances.
-
-    This class configures the admin interface for the Product model, including the fields
-    to display, search, and filter by in the admin view.
-
-    Attributes:
-        list_display (tuple): Fields to display in the Product list view.
-        search_fields (tuple): Fields to search by in the Product admin interface.
-        list_filter (tuple): Fields to filter products by in the admin view.
     """
-    
-
 
     list_display = ('name', 'price', 'stock_quantity', 'created_at', 'image_tag')
     search_fields = ('name', 'description')
     list_filter = ('is_spotlight',)
+    list_per_page = 20  # Pagination to improve load time for large datasets
 
     def image_tag(self, obj):
         if obj.image:
             return format_html(
-                '<img src="{}" style="height: 50px; width: auto; aspect-ratio: 1/1;" loading="lazy"/>',
+                '''
+                <div style="
+                    height: 50px;
+                    width: 50px;
+                    overflow: hidden;
+                    position: relative;
+                    padding-top: 100%; /* fallback for aspect-ratio */
+                ">
+                    <img src="{}" style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    " loading="lazy"/>
+                </div>
+                ''',
                 obj.image.url
             )
         return "No Image"
