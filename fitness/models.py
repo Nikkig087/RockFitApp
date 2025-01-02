@@ -150,7 +150,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/')
     image_thumbnail = ImageSpecField(
         source='image',
-        processors=[ResizeToFill(300, 300)],
+        processors=[ResizeToFill(300, 300)],  # Adjust size as per your design
         format='JPEG',
         options={'quality': 85}
     )
@@ -159,20 +159,34 @@ class Product(models.Model):
     is_spotlight = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
+        # Save the product first
         super().save(*args, **kwargs)
-        # Resize image on upload
+
+        # Convert to WebP and resize images to optimize them
         if self.image:
             img = Image.open(self.image.path)
+            
+            # Resize the image to the max size of 800x800 (optional)
             max_size = (800, 800)
             img.thumbnail(max_size, Image.ANTIALIAS)
+            
+            # Save the resized image in JPEG format
             img.save(self.image.path, quality=85, optimize=True)
+            
+            # Convert to WebP format for better compression and quality
+            webp_image_path = os.path.splitext(self.image.path)[0] + '.webp'
+            img.save(webp_image_path, format='WebP', quality=85)
+            
+            # Optionally, you can update the path to the WebP image
+            self.image.name = os.path.relpath(webp_image_path, start='media/')
+            super().save(*args, **kwargs)
 
     def get_absolute_url(self):
+        # Update the URL method since we no longer have a slug
         return reverse('product_detail', kwargs={'id': self.id})
 
     def __str__(self):
         return self.name
-
 
 class Order(models.Model):
     """
