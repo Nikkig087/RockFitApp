@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 class SubscriptionPlan(models.Model):
     """
@@ -74,7 +76,7 @@ class UserProfile(models.Model):
     resume_requested = models.BooleanField(default=False)
     resume_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-  
+    profile_picture_webp = ImageSpecField(source='profile_picture', format='WEBP', options={'quality': 90})
 
     def is_paused(self):
         """Returns if the subscription is paused."""

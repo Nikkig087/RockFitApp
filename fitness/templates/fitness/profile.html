@@ -3,6 +3,8 @@
 {% load compress %}
 <head>
   {% block extra_title %} - Your Profile{% endblock %}
+  <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image" />
+
 </head>
 
 <body>
