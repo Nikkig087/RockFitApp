@@ -57,6 +57,26 @@ body {
   .title {
     color: #fff;
   }
+
+  /* Products Page */
+  /* Search and Sort Section */
+.search-sort-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-sort-section .search-bar,
+.search-sort-section .sort-dropdown {
+  flex: 1 1 100%;
+  margin-bottom: 15px;
+}
+
+.search-sort-section .input-group {
+  display: flex;
+  flex-wrap: nowrap;
+}
   /* Profile Section */
   .profile {
     width: 100px;
@@ -159,6 +179,7 @@ body {
     border: none;
     margin-right: 0;
     color: #000;
+    background-color: gold;
   }
   
   .btn-primary:hover {
@@ -481,7 +502,12 @@ body {
       background-color: gold;
       color: #000;
     }
-  
+   /* products page */
+   .search-sort-section .search-bar,
+   .search-sort-section .sort-dropdown {
+     flex: 1 1 48%;
+     margin-bottom: 0;
+   }
     .profile {
       width: 60px;
       height: 60px;
