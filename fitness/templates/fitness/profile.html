@@ -3,6 +3,7 @@
 {% load compress %}
 <head>
   {% block extra_title %} - Your Profile{% endblock %}
+  
   <!-- Meta Tags for SEO -->
   <meta name="description" content="Manage your personal information, subscription details, and account settings. View your active subscription plan, request pauses, and cancel your subscription if needed.">
   <meta name="keywords" content="user profile, subscription management, subscription plans, account settings, subscription pause, resume subscription, cancel subscription, personal information">
@@ -14,46 +15,41 @@
   <meta name="twitter:title" content="User Profile - Manage Your Subscription">
   <meta name="twitter:description" content="Manage your personal information, subscription details, and account settings.">
 
+  <!-- Preload CSS and images -->
+  <link rel="preload" href="{% static 'css/output.css' %}" as="style" type="text/css">
   <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
 
+  <!-- Preload FontAwesome CSS -->
+  <link rel="preload" href="{% static 'fontawesome/css/all.min.css' %}" as="style">
+  
+  <!-- Async Load CSS to avoid render-blocking -->
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" media="all" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{% static 'css/output.css' %}"></noscript>
+
+  <!-- Defer non-critical JavaScript -->
+  <script src="{% static 'js/some-script.js' %}" defer></script>
 </head>
 
 <body>
   {% block content %}
-
+  
   <!-- Profile Page Content -->
   <div class="container mt-5">
     <header class="text-center mb-4">
       <h1>Your Profile</h1>
     </header>
 
-  <!-- Profile Picture -->
-<div class="text-center profile">
-  
- 
-    <img 
-      src="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" 
-      alt="Profile Picture" 
-      class="rounded-circle" 
-      width="100" 
-      height="100" 
-      style="object-fit: cover;" 
-      loading="lazy">
-  
-  
- 
- 
-</div>
-
-
-    <!-- Display any messages --
-    {% if messages %}
-        <div class="alert alert-info">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}-->
+    <!-- Profile Picture -->
+    <div class="text-center profile">
+      <img 
+        src="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" 
+        alt="Profile Picture" 
+        class="rounded-circle" 
+        width="100" 
+        height="100" 
+        style="object-fit: cover;" 
+        loading="lazy">
+    </div>
 
     <!-- Personal Information Section -->
     <section>
@@ -67,7 +63,7 @@
       <h3 class="profile-info">Your Subscription</h3>
       {% if user_profile.subscription_plan %}
         <div class="card shadow-sm mb-3">
-          <div class="card-body ">
+          <div class="card-body">
             <h4 class="card-title">Active Subscription</h4>
             <p class="plan profile-text"><strong>Subscription Plan:</strong> {{ user_profile.subscription_plan.name }}</p>
             <p class="plan profile-text"><strong>Price:</strong> €{{ user_profile.subscription_plan.price }}</p>
@@ -127,5 +123,6 @@
       {% endif %}
     </section>
   </div>
+  
   {% endblock %}
 </body>
