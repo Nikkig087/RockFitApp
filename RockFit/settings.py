@@ -29,11 +29,11 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net','.herokuapp.com','https://rockfit-8312b918d693.herokuapp.com/profile/']
+ALLOWED_HOSTS = ['8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net','.herokuapp.com',]
 CSRF_TRUSTED_ORIGINS = [
     "https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net",
     "https://*.codeanyapp.com",
