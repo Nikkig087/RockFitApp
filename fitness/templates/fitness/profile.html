@@ -16,6 +16,7 @@
   <meta name="twitter:description" content="Manage your personal information, subscription details, and account settings.">
 
   <!-- Preload Critical Resources -->
+  <link rel="preload" href="{% static 'css/style.css' %}" as="style">
   <link rel="preload" href="{% static 'css/output.css' %}" as="style">
   <link rel="preload" href="{% static 'fontawesome/css/all.min.css' %}" as="style">
   <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
@@ -26,8 +27,21 @@
 
   <!-- Asynchronous JS loading -->
   <script src="https://kit.fontawesome.com/38e26af2b7.js" defer></script>
+   <!-- Ensure fonts load faster -->
+   <style>
+    @font-face {
+      font-family: "FontAwesome";
+      font-display: swap;
+      src: url('...') format('woff2');
+    }
 
-  <style>
+    body {
+      font-family: system-ui, sans-serif; /* Fallback font */
+    }
+
+    h1 {
+      font-family: 'Times New Roman', Times, serif, sans-serif;
+    }
     .profile img {
       width: 100px;
       height: 100px;
