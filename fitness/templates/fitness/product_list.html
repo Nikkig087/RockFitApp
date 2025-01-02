@@ -32,31 +32,31 @@
   </header>
 
   <!-- Search and Sort Section -->
-  <section class="row mb-4">
-    <!-- Search Bar -->
-    <div class="col-md-6">
-      <form method="get" action="{% url 'products' %}" class="input-group">
-        <input type="text" name="search" value="{{ query }}" placeholder="Search products..." class="form-control" aria-label="Search for products">
-        <button type="submit" class="btn btn-outline-primary">Search</button>
-      </form>
-    </div>
+<!-- Search and Sort Section -->
+<section class="row mb-4 search-sort-section">
+  <!-- Search Bar -->
+  <div class="col-md-6 search-bar">
+    <form method="get" action="{% url 'products' %}" class="d-flex align-items-center">
+      <input type="text" name="search" value="{{ query }}" placeholder="Search products..." class="form-control" aria-label="Search for products">
+      <button type="submit" class="btn btn-primary ms-2">Search</button>
+    </form>
+  </div>
 
-    <!-- Sort Dropdown -->
-    <div class="col-md-6">
-      <form method="get" action="{% url 'products' %}">
-        <div class="input-group">
-          <select name="sort" onchange="this.form.submit()" class="form-select" aria-label="Sort products">
-            <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
-            <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Sort by Price (Low to High)</option>
-            <option value="-price" {% if request.GET.sort == '-price' %}selected{% endif %}>Sort by Price (High to Low)</option>
-            <option value="created_at" {% if request.GET.sort == 'created_at' %}selected{% endif %}>Sort by Date Added</option>
-            <option value="-created_at" {% if request.GET.sort == '-created_at' %}selected{% endif %}>Sort by Date Added (Newest First)</option>
-          </select>
-          <button type="submit" class="btn btn-outline-secondary">Sort</button>
-        </div>
-      </form>
-    </div>
-  </section>
+  <!-- Sort Dropdown -->
+  <div class="col-md-6 sort-dropdown">
+    <form method="get" action="{% url 'products' %}" class="d-flex align-items-center">
+      <select name="sort" onchange="this.form.submit()" class="form-select" aria-label="Sort products">
+        <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
+        <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>Sort by Price (Low to High)</option>
+        <option value="-price" {% if request.GET.sort == '-price' %}selected{% endif %}>Sort by Price (High to Low)</option>
+        <option value="created_at" {% if request.GET.sort == 'created_at' %}selected{% endif %}>Sort by Date Added</option>
+        <option value="-created_at" {% if request.GET.sort == '-created_at' %}selected{% endif %}>Sort by Date Added (Newest First)</option>
+      </select>
+      <button type="submit" class="btn btn-secondary ms-2">Sort</button>
+    </form>
+  </div>
+</section>
+
 
   <!-- Product Grid Section -->
   <main class="row">
