@@ -1,14 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% load compress %}
-
 <head>
   {% block extra_title %} - Your Profile{% endblock %}
   <link rel="preload" href="{% static 'css/output.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{% static 'css/output.css' %}"></noscript>
-  <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image" />
-  <meta name="description" content="Manage your personal information, subscription details, and account settings.">
-  <meta property="og:title" content="User Profile">
+  <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
+  <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 </head>
 
 <body>
@@ -19,38 +16,35 @@
     </header>
 
     <!-- Profile Picture -->
-    <div class="text-center mb-4 profile">
+    <div class="text-center mb-4" style="width: 150px; height: 150px; margin: 0 auto;">
       <img 
         src="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" 
         alt="Profile Picture" 
         class="rounded-circle" 
-        style="object-fit: cover; width: 150px; height: 150px;" 
-        width="150" 
-        height="150" 
+        style="object-fit: cover; width: 100%; height: 100%;" 
         loading="lazy">
     </div>
 
     <!-- Personal Information -->
-    <section>
+    <section style="min-height: 150px;">
       <h3>Personal Information</h3>
       <p><strong>Name:</strong> {{ user.username }}</p>
       <p><strong>Email:</strong> {{ user.email }}</p>
     </section>
 
     <!-- Subscription Section -->
-    <section>
+    <section style="min-height: 200px;">
       <h3>Your Subscription</h3>
       {% if user_profile.subscription_plan %}
-      <div class="card shadow-sm mb-3">
-        <div class="card-body">
-          <h4>Active Subscription</h4>
-          <p><strong>Plan:</strong> {{ user_profile.subscription_plan.name }}</p>
-          <p><strong>Price:</strong> €{{ user_profile.subscription_plan.price }}</p>
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h4 class="card-title">Active Subscription</h4>
+            <p><strong>Plan:</strong> {{ user_profile.subscription_plan.name }}</p>
+            <p><strong>Price:</strong> €{{ user_profile.subscription_plan.price }}</p>
+          </div>
         </div>
-      </div>
       {% else %}
-      <p>You do not have an active subscription.</p>
-      <a href="{% url 'subscription_plans' %}" class="btn btn-primary">Browse Plans</a>
+        <p>You do not have an active subscription.</p>
       {% endif %}
     </section>
   </div>
