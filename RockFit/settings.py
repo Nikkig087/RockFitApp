@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     'RockFit',
     'cart',
     'csp',
-    'imagekit'
+    'imagekit',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
