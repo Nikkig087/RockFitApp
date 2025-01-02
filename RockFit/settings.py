@@ -94,11 +94,6 @@ GZIP_CONTENT_TYPES = [
 ]
 
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net',
-]
-
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
