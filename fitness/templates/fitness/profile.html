@@ -3,7 +3,7 @@
 {% load compress %}
 <head>
   {% block extra_title %} - Your Profile{% endblock %}
-  
+
   <!-- Meta Tags for SEO -->
   <meta name="description" content="Manage your personal information, subscription details, and account settings. View your active subscription plan, request pauses, and cancel your subscription if needed.">
   <meta name="keywords" content="user profile, subscription management, subscription plans, account settings, subscription pause, resume subscription, cancel subscription, personal information">
@@ -15,19 +15,30 @@
   <meta name="twitter:title" content="User Profile - Manage Your Subscription">
   <meta name="twitter:description" content="Manage your personal information, subscription details, and account settings.">
 
-  <!-- Preload CSS and images -->
+  <!-- Preload Critical Resources -->
   <link rel="preload" href="{% static 'css/output.css' %}" as="style" type="text/css">
-  <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
-
-  <!-- Preload FontAwesome CSS -->
   <link rel="preload" href="{% static 'fontawesome/css/all.min.css' %}" as="style">
+  <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
+  <link rel="preload" href="https://kit.fontawesome.com/38e26af2b7.js" as="script">
   
-  <!-- Async Load CSS to avoid render-blocking -->
+  <!-- Async Load FontAwesome JS to avoid blocking -->
+  <script src="https://kit.fontawesome.com/38e26af2b7.js" defer></script>
+
+  <!-- Asynchronous Loading of CSS -->
   <link rel="stylesheet" href="{% static 'css/output.css' %}" media="all" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{% static 'css/output.css' %}"></noscript>
 
-  <!-- Defer non-critical JavaScript -->
+  <!-- Use async loading for other critical JS -->
   <script src="{% static 'js/some-script.js' %}" defer></script>
+
+  <!-- Reduce layout shifts for mobile images -->
+  <style>
+    .profile img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+
 </head>
 
 <body>
