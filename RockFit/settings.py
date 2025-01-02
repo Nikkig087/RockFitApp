@@ -16,7 +16,6 @@ import dj_database_url
 if os.path.isfile("env.py"):
     import env
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
@@ -24,22 +23,19 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = "django-insecure"
-#"-+p1u592@#(4hl_3we%cick#(duz**l9sw2qz9$*_sthoa_!d#b"
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEVELOPMENT' in os.environ
 
-
-
-ALLOWED_HOSTS = ['8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net','.herokuapp.com',]
+ALLOWED_HOSTS = [
+    '8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net',
+    '.herokuapp.com',
+]
 CSRF_TRUSTED_ORIGINS = [
     "https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net",
     "https://*.codeanyapp.com",
     "https://*.herokuapp.com",
-
-
 ]
 
 # Application definition
@@ -60,7 +56,6 @@ INSTALLED_APPS = [
     "django_summernote",
     "cloudinary",
     "cloudinary_storage",
-    "compressor",
     'fitness',
     'RockFit',
     'cart',
@@ -71,6 +66,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,10 +74,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.gzip.GZipMiddleware',
-    
 ]
 
 GZIP_CONTENT_TYPES = [
@@ -94,12 +87,7 @@ GZIP_CONTENT_TYPES = [
     'application/rss+xml',
 ]
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
-
-
 
 ACCOUNT_PASSWORD_RESET_REDIRECT_URL = '/accounts/password_reset_done/'
 ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = '/accounts/password_change_done/'
@@ -109,19 +97,14 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# settings.py
-# settings.py
-
 ADMIN_EMAIL = 'Nikki@Rockfit.com'  # Dummy admin email for testing
-
-
 
 ROOT_URLCONF = 'RockFit.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Add this line
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,7 +119,6 @@ TEMPLATES = [
     },
 ]
 
-# Message tags to integrate with Bootstrap
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',
@@ -148,26 +130,12 @@ MESSAGE_TAGS = {
 
 WSGI_APPLICATION = 'RockFit.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-#DATABASES = {
- #  'default': {
-  #     'ENGINE': 'django.db.backends.sqlite3',
-   #    'NAME': BASE_DIR / 'db.sqlite3',
-    #}
-#}
 DATABASES = {
-     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
- }
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -186,72 +154,25 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-LOGIN_URL = 'accounts/login/'  # Default path for login if authentication fails
-LOGIN_REDIRECT_URL = '/'  # Home page or your desired page
-ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
-LOGOUT_REDIRECT_URL = '/'  # Redirect path after successful logout
+LOGIN_URL = 'accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-
-#STATICFILES_STORAGE = 'compressor.storage.CompressorFileStorage'
-COMPRESS_ENABLED = True  # Enable compression
-COMPRESS_URL = '/static/'  
-COMPRESS_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
-
-COMPRESS_OFFLINE = True  #  pre-compress files
-COMPRESS_PRECOMPILERS = [
-    ('text/x-scss', 'sass {infile} {outfile}'),
-]
-
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',  # Add this line
-]
-
-STORAGES = {
-    'default': {
-        'BACKEND': "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    'staticfiles': {
-        'BACKEND': "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-
-
-
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": "dvgozeo62",
-    "API_KEY": "877696538918354",
-    "API_SECRET": "83XoStnIJI0Ux0Snby6soXqGmaE",
-}
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -259,18 +180,14 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 SITE_ID = 1
 site_name = 'Rockfit.com'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SESSION_COOKIE_SECURE = True  # Ensures cookies are sent over HTTPS only
-SESSION_COOKIE_HTTPONLY = True  # Prevents JavaScript access to cookies
-CSRF_COOKIE_SECURE = True  # Ensures CSRF cookies are sent over HTTPS only
-CSRF_COOKIE_HTTPONLY = True  # Prevents JavaScript access to CSRF cookies
-SESSION_COOKIE_SAMESITE = 'Lax'  # Use 'Strict' if appropriate
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
-
 
 FREE_DELIVERY_THRESHOLD = 50
 STANDARD_DELIVERY_PERCENTAGE = 10
