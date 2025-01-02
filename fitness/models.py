@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from imagekit.models import ProcessedImageField
 
 class SubscriptionPlan(models.Model):
     """
@@ -62,7 +63,13 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=100, blank=True)  
     username = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(blank=True)  # Add email field
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    profile_picture = ProcessedImageField(
+        upload_to='profile_pictures/',
+        processors=[ResizeToFill(100, 100)],
+        format='JPEG',
+        options={'quality': 80},
+        blank=True,
+        null=True)
     fitness_goal = models.CharField(max_length=255, blank=True)
     age = models.PositiveIntegerField(blank=True, null=True) 
     phone = models.CharField(max_length=15, blank=True, null=True) 
