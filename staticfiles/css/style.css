@@ -54,6 +54,9 @@ body {
     min-height: 300px;
   }
   
+  .title {
+    color: #fff;
+  }
   /* Profile Section */
   .profile {
     width: 100px;
