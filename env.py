@@ -14,3 +14,5 @@ CLOUDINARY_STORAGE = {
 # Stripe keys
 os.environ.setdefault("STRIPE_SECRET_KEY", "sk_test_51QHVRTP6jjl6eQa56KMCjpY5cQVBxX4swobPhydo9eEMDpZNSwWqDSwBMclpjP5FTyEJKm9K09gAK1FyqgGEahbT00mymfZtVt")
 os.environ.setdefault("STRIPE_PUBLISHABLE_KEY", "pk_test_51QHVRTP6jjl6eQa5VVNVsvHFTocZeM0Wre7JUfFr43tdGLY1hYDYAXyY3R3eIhpE1KAUWqP1sUN0lU6WVk9e6TRy00L7ait3Sq")
+
+os.environ["DEVELOPMENT"] = "1"
