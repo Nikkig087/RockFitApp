@@ -2,38 +2,47 @@
 {% load static %}
 <head>
   {% block extra_title %} - Your Profile{% endblock %}
+  
+  <!-- Preload CSS -->
   <link rel="preload" href="{% static 'css/output.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{% static 'css/output.css' %}"></noscript>
+
+  <!-- Preload Profile Picture -->
   <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
+  
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 </head>
 
 <body>
   {% block content %}
   <div class="container mt-5">
+    <!-- Header -->
     <header class="text-center mb-4">
       <h1>Your Profile</h1>
     </header>
 
     <!-- Profile Picture -->
-    <div class="text-center mb-4" style="width: 150px; height: 150px; margin: 0 auto;">
+    <div class="profile">
       <img 
         src="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" 
         alt="Profile Picture" 
         class="rounded-circle" 
-        style="object-fit: cover; width: 100%; height: 100%;" 
+        width="150" 
+        height="150" 
+        style="object-fit: cover;" 
         loading="lazy">
     </div>
 
     <!-- Personal Information -->
-    <section style="min-height: 150px;">
+    <section class="mt-4">
       <h3>Personal Information</h3>
       <p><strong>Name:</strong> {{ user.username }}</p>
       <p><strong>Email:</strong> {{ user.email }}</p>
     </section>
 
     <!-- Subscription Section -->
-    <section style="min-height: 200px;">
+    <section class="mt-4">
       <h3>Your Subscription</h3>
       {% if user_profile.subscription_plan %}
         <div class="card shadow-sm mb-3">
