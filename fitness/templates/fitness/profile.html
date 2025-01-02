@@ -21,21 +21,30 @@
   <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
   <link rel="preload" href="https://kit.fontawesome.com/38e26af2b7.js" as="script">
   
-  <!-- Async Load FontAwesome JS to avoid blocking -->
+  <!-- Use FontAwesome CSS directly, avoid blocking JS load -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  
+  <!-- Asynchronous JS loading -->
   <script src="https://kit.fontawesome.com/38e26af2b7.js" defer></script>
 
-  <!-- Asynchronous Loading of CSS -->
-  <link rel="stylesheet" href="{% static 'css/output.css' %}" media="all" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="{% static 'css/output.css' %}"></noscript>
-
-  <!-- Use async loading for other critical JS -->
-  <script src="{% static 'js/some-script.js' %}" defer></script>
-
-  <!-- Reduce layout shifts for mobile images -->
   <style>
     .profile img {
-      max-width: 100%;
-      height: auto;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    /* Reserve space for icon */
+    i {
+      font-family: FontAwesome;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+    }
+
+    /* Set a min-height for containers that load content dynamically */
+    .profile-info, .plan, .alert {
+      min-height: 30px;
     }
   </style>
 
@@ -43,7 +52,6 @@
 
 <body>
   {% block content %}
-  
   <!-- Profile Page Content -->
   <div class="container mt-5">
     <header class="text-center mb-4">
@@ -134,6 +142,5 @@
       {% endif %}
     </section>
   </div>
-  
   {% endblock %}
 </body>
