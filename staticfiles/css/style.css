@@ -583,7 +583,7 @@ h1 {
   }
 
 
-}
+
 
 /* Style for the container */
 .cancel-container, .success-container {
@@ -765,6 +765,18 @@ color: black;
 }
 
 /*profile */
+.profile {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 50%; /* Ensures circular shape */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5; /* Optional placeholder background */
+}
 
 .profile-text {
   color: white;
@@ -817,6 +829,7 @@ color: black;
   background-color: silver;
   color: black;
 }
+}
 
 @media (max-width: 768px) {
   .newsletter-section-newsletter {
@@ -834,6 +847,18 @@ color: black;
 
   .card-newsletter {
       flex: 1 1 100%;
+  }
+  .profile {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 50%; /* Ensures circular shape */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f5f5f5; /* Optional placeholder background */
   }
 }
 
@@ -876,6 +901,17 @@ color: black;
     margin-bottom: 30px;
     margin-top: 10px;
   }
-
+  .profile {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 50%; /* Ensures circular shape */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f5f5f5; /* Optional placeholder background */
+  }
   
 }
