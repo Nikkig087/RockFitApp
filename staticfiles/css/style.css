@@ -45,18 +45,16 @@ body {
   height: auto; /* Adjust as per aspect ratio */
   min-height: 300px; /* Adjust height to match content */
 }
-
 .profile {
-  width: 100px;
-  height: 100px;
+  width: 100px;  /* Fixed width */
+  height: 100px; /* Fixed height */
   margin: 0 auto;
+  overflow: hidden;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  border-radius: 50%; /* Ensures circular shape */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #f5f5f5; /* Optional placeholder background */
+  min-height: 100px;  /* Ensures space is reserved even if image loads late */
 }
 
 

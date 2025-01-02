@@ -3,10 +3,6 @@
 {% load compress %}
 <head>
   {% block extra_title %} - Your Profile{% endblock %}
-</head>
-
-<body>
-  {% block content %}
   <!-- Meta Tags for SEO -->
   <meta name="description" content="Manage your personal information, subscription details, and account settings. View your active subscription plan, request pauses, and cancel your subscription if needed.">
   <meta name="keywords" content="user profile, subscription management, subscription plans, account settings, subscription pause, resume subscription, cancel subscription, personal information">
@@ -18,6 +14,13 @@
   <meta name="twitter:title" content="User Profile - Manage Your Subscription">
   <meta name="twitter:description" content="Manage your personal information, subscription details, and account settings.">
 
+  <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
+
+</head>
+
+<body>
+  {% block content %}
+
   <!-- Profile Page Content -->
   <div class="container mt-5">
     <header class="text-center mb-4">
@@ -27,14 +30,17 @@
   <!-- Profile Picture -->
 <div class="text-center profile">
   
+ 
     <img 
-       src="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" 
-       alt="Profile Picture" 
-       class="rounded-circle" 
-       width="100" 
-       height="100" 
-       style="object-fit: cover;" 
-       loading="lazy">
+      src="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" 
+      alt="Profile Picture" 
+      class="rounded-circle" 
+      width="100" 
+      height="100" 
+      style="object-fit: cover;" 
+      loading="lazy">
+  
+  
  
  
 </div>
