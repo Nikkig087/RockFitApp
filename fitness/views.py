@@ -396,24 +396,33 @@ def community_updates(request):
         'form': form
     })
 
-@login_required(login_url='login') 
+@login_required(login_url='login')
 def profile_view(request):
     if not request.user.is_authenticated:
-        return redirect('login')  # Make sure 'login' is the correct URL name for the login page
+        return redirect('login')  # Ensure 'login' is the correct URL name for the login page
 
     try:
-        user_profile = request.user.userprofile
+        user_profile = request.user.userprofile  # Get the user profile
     except UserProfile.DoesNotExist:
-        # Handle case where the user does not have a profile (optional)
-        user_profile = None
+        user_profile = None  # Handle case where the user doesn't have a profile (optional)
 
-    # Your existing code for handling the profile view goes here.
+    # Check if the user profile exists
+    if user_profile:
+        subscription = user_profile.subscription_plan
+        pause_requested = user_profile.pause_requested
+        pause_approved = user_profile.pause_approved
+    else:
+        subscription = None
+        pause_requested = False
+        pause_approved = False
+
     return render(request, 'fitness/profile.html', {
         'user_profile': user_profile,
-        'subscription': user_profile.subscription_plan if user_profile else None,
-        'pause_requested': user_profile.pause_requested if user_profile else False,
-        'pause_approved': user_profile.pause_approved if user_profile else False,
+        'subscription': subscription,
+        'pause_requested': pause_requested,
+        'pause_approved': pause_approved,
     })
+
     
 def update_profile(request):
     """
