@@ -74,7 +74,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'django.middleware.gzip.GZipMiddleware',  # Only if needed for other purposes
+
 ]
 
 GZIP_CONTENT_TYPES = [
