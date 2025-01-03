@@ -74,17 +74,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-
-]
-
-GZIP_CONTENT_TYPES = [
-    'text/html',
-    'text/css',
-    'application/javascript',
-    'application/json',
-    'text/xml',
-    'application/xml',
-    'application/rss+xml',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
