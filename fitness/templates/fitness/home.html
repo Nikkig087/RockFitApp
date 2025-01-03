@@ -4,17 +4,17 @@
 
 <head>
     {% block extra_title %} - Home | RockFitApp{% endblock %}
-    <!-- SEO Meta Tags -->
+  
     <meta name="description" content="Welcome to our Fitness Center. Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
     <meta name="keywords" content="fitness center, health products, fitness subscriptions, workout gear, gym equipment, online fitness store">
 
-    <!-- Open Graph Tags -->
+  
     <meta property="og:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
     <meta property="og:description" content="Shop fitness products, explore spotlight items, and discover the best fitness subscriptions to kickstart your health and wellness journey.">
     <meta property="og:image" content="{% static 'images/hero-bg.webp' %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
 
-    <!-- Twitter Card -->
+   
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Fitness Center - Your Journey to Health and Fitness Starts Here">
     <meta name="twitter:description" content="Shop high-quality fitness products, explore spotlight items, and choose subscriptions for a healthier lifestyle.">
@@ -25,7 +25,7 @@
 {% block content %}
 
 <main>
-    <!-- Hero Section -->
+  
     <header class="hero-section">
         <div class="container">
             <h1 class="display-4 mt-3">Welcome to Our Fitness Center</h1>
@@ -34,7 +34,7 @@
         </div>
     </header>
 
-    <!-- Spotlight Products Section -->
+    
     {% if spotlight_products %}
     <section class="container my-5">
         <h2 class="text-center mb-4 spotlight title">Spotlight Products</h2>
@@ -56,7 +56,7 @@
     </section>
     {% endif %}
 
-    <!-- Spotlight Subscriptions Section -->
+   
     <section class="container my-5">
         <h2 class="text-center mb-4 spotlight title">Spotlight Subscriptions</h2>
         {% if spotlight_subscriptions %}
@@ -79,7 +79,7 @@
         {% endif %}
     </section>
 
-    <!-- General Product Grid Section -->
+   
     <section class="container my-5">
         <h2 class="text-center mb-4 spotlight title">Our Products</h2>
         <div class="row">

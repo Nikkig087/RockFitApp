@@ -10,7 +10,6 @@
                 {{ form.non_field_errors }}
                 {{ form.hidden_fields }}
 
-                <!-- Review Comment Field -->
                 <div class="mb-3">
                     <label for="id_comment" class="form-label">Your Review</label>
                     {{ form.comment }}
@@ -21,7 +20,6 @@
                     {% endif %}
                 </div>
 
-                <!-- Rating Field -->
                 <div class="mb-3">
                     <label for="id_rating" class="form-label">Rating</label>
                     {{ form.rating }}
@@ -32,9 +30,7 @@
                     {% endif %}
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit" class="btn btn-success">Update Review</button>
-                <!-- Cancel Button -->
                 <a href="{% url 'product_detail' review.product.id %}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>

@@ -4,23 +4,19 @@
 
 {% block content %}
 
-<!-- SEO Meta Tags -->
 <meta name="description" content="{{ product.description|truncatewords:30 }}... Buy {{ product.name }} for €{{ product.price }}. High-quality product with reliable delivery options.">
 <meta name="keywords" content="{{ product.name }}, buy {{ product.name }}, fitness products, gym equipment, workout gear, online store, product details, {{ product.category }}">
 
-<!-- Open Graph Tags -->
 <meta property="og:title" content="{{ product.name }} - Buy Online at Our Store">
 <meta property="og:description" content="{{ product.description|truncatewords:30 }}... Purchase {{ product.name }} for €{{ product.price }} with fast shipping and easy returns.">
 <meta property="og:image" content="{{ product.image.url }}">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
 
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ product.name }} - Buy Online at Our Store">
 <meta name="twitter:description" content="{{ product.description|truncatewords:30 }}... Purchase {{ product.name }} for €{{ product.price }} now.">
 <meta name="twitter:image" content="{{ product.image.url }}">
 
-<!-- Product Section -->
 <section class="product-details">
     <article class="card">
         <img src="{{ product.image.url }}" 
@@ -52,7 +48,6 @@
     </article>
 </section>
 
-<!-- Review Section -->
 <section class="reviews">
     <h3>Write a Review</h3>
     {% if user.is_authenticated %}
@@ -95,7 +90,6 @@
     {% endfor %}
 </section>
 
-<!-- Modals -->
 <div class="modal" id="deleteModal" style="display:none;" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -150,27 +144,8 @@
 </div>
 
 <script>
-    function showDeleteModal(reviewId) {
-        const deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = "{% url 'delete_review' 0 %}".replace('0', reviewId);
-        document.getElementById('deleteModal').style.display = 'block';
-    }
-
-    function closeDeleteModal() {
-        document.getElementById('deleteModal').style.display = 'none';
-    }
-
-    function showEditModal(reviewId, comment, rating) {
-        const editForm = document.getElementById('editForm');
-        editForm.action = "{% url 'edit_review' 0 %}".replace('0', reviewId);
-        document.getElementById('editComment').value = comment;
-        document.getElementById('editRating').value = rating;
-        document.getElementById('editModal').style.display = 'block';
-    }
-
-    function closeEditModal() {
-        document.getElementById('editModal').style.display = 'none';
-    }
+   function showDeleteModal(e){let t=document.getElementById("deleteForm");t.action="{% url 'delete_review' 0 %}".replace("0",e),document.getElementById("deleteModal").style.display="block"}function closeDeleteModal(){document.getElementById("deleteModal").style.display="none"}function showEditModal(e,t,l){let d=document.getElementById("editForm");d.action="{% url 'edit_review' 0 %}".replace("0",e),document.getElementById("editComment").value=t,document.getElementById("editRating").value=l,document.getElementById("editModal").style.display="block"}function closeEditModal(){document.getElementById("editModal").style.display="none"}
+       
 </script>
 
 {% endblock %}
