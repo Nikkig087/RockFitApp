@@ -378,14 +378,10 @@ p {
 
 .button.remove {
   background-color: #dc3545;
-  border: none;
-  border-radius: 5px;
 }
 
 .button.update {
   background-color: gold;
-  border: none;
-  border-radius: 5px;
 }
 
 .button.update:hover {

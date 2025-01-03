@@ -349,7 +349,7 @@ p {
 }
 
 .cart-table th {
-  background-color: #007bff;
+  background-color: black;
   color: #fff;
   font-weight: bold;
 }
@@ -378,10 +378,14 @@ p {
 
 .button.remove {
   background-color: #dc3545;
+  border: none;
+  border-radius: 5px;
 }
 
 .button.update {
   background-color: gold;
+  border: none;
+  border-radius: 5px;
 }
 
 .button.update:hover {
