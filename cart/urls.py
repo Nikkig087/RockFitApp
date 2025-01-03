@@ -17,7 +17,6 @@ from .views import (
 from .views import (
     create_checkout_session,
     payment_success,
-    # payment_cancel,
     cancel_view,
 )
 from . import views

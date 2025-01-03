@@ -5,18 +5,15 @@
   {% block title %}Subscription Plans - Rockfit App{% endblock %}
 
   {% block meta %}
-  <!-- SEO Meta Tags -->
   <meta name="description" content="Explore our wide range of fitness products. Sort and search by price, name, or newest arrivals. Find the best products for your fitness journey.">
   <meta name="keywords" content="fitness products, workout gear, gym equipment, buy fitness products, online fitness shop, sports equipment">
 
-  <!-- Open Graph Meta Tags (For Facebook and other platforms) -->
   <meta property="og:title" content="Fitness Products - Shop the Best Gear for Your Workout">
   <meta property="og:description" content="Browse a variety of fitness products. Sort by price, name, or newest arrivals and shop now to enhance your fitness journey.">
   <meta property="og:image" content="https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net/static/images/product-list-banner.jpg">
   <meta property="og:url" content="https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net/">
   <meta property="og:type" content="website">
 
-  <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Fitness Products - Shop the Best Gear for Your Workout">
   <meta name="twitter:description" content="Browse our fitness products collection, sorted by price, name, and more. Shop the best workout gear and equipment for all levels.">
@@ -40,22 +37,13 @@
         <article class="col-md-4 mb-4">
           <div class="card shadow-sm">
             <div class="card-body">
-              <!-- Plan Name -->
               <h2 class="card-title">{{ plan.name }}</h2>
-
-              <!-- Plan Price -->
               <p class="card-text"><strong>Price:</strong> €{{ plan.price }}</p>
-
-              <!-- Plan Duration -->
               <p class="card-text"><strong>Duration:</strong> {{ plan.duration }} days</p>
-
-              <!-- Plan Benefits -->
               <div class="card-text">
                 <strong>Benefits:</strong>
                 {{ plan.benefits|safe }}
               </div>
-
-              <!-- Subscription Actions -->
               <div class="mt-3">
                 {% if user.is_authenticated %}
                   {% if user.userprofile.subscription_plan %}
