@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title> Shopping Cart | Rockfit App</title>
+    <title>Shopping Cart | Rockfit App</title>
     <meta name="description" content="{% if cart_items %}View and manage your shopping cart, check the products and subscriptions you've added to your cart, and proceed to checkout with ease.{% else %}Your cart is empty. Browse and add products to your cart for a smooth shopping experience.{% endif %}">
     <meta name="robots" content="index, follow">
 
@@ -12,93 +12,97 @@
 {% endblock %}
 
 {% block content %}
-<div class="cart-container">
-    <header>
+<div class="cart-container container py-5">
+    <header class="mb-4">
         <h2>Your Shopping Cart</h2>
     </header>
 
     <main>
         {% if cart_items %}
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Type</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart_items %}
-                    <tr class="cart-item" data-item-id="{{ item.id }}" data-item-type="{% if item.product %}product{% else %}subscription{% endif %}">
-                        <td>
-                            {% if item.product %}
-                                {{ item.product.name }}
-                            {% elif item.subscription %}
-                                {{ item.subscription.name }}
-                            {% endif %}
-                        </td>
+            <div class="table-responsive">
+                <table class="cart-table table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Type</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr class="cart-item" data-item-id="{{ item.id }}" data-item-type="{% if item.product %}product{% else %}subscription{% endif %}">
+                            <td>
+                                {% if item.product %}
+                                    {{ item.product.name }}
+                                {% elif item.subscription %}
+                                    {{ item.subscription.name }}
+                                {% endif %}
+                            </td>
 
-                        <td>
-                            {% if item.product %}
-                                Product
-                            {% elif item.subscription %}
-                                Subscription
-                            {% endif %}
-                        </td>
+                            <td>
+                                {% if item.product %}
+                                    Product
+                                {% elif item.subscription %}
+                                    Subscription
+                                {% endif %}
+                            </td>
 
-                        <td class="quantity-column">
-                            {% if item.product %}
-                                <form method="POST" action="{% url 'cart:update_cart_item' item.id %}">
+                            <td class="quantity-column">
+                                {% if item.product %}
+                                    <form method="POST" action="{% url 'cart:update_cart_item' item.id %}">
+                                        {% csrf_token %}
+                                        <input type="number" name="quantity" class="quantity-input form-control" value="{{ item.quantity }}" min="1">
+                                        <button type="submit" class="button update btn btn-sm btn-outline-primary mt-2">Update</button>
+                                    </form>
+                                {% else %}
+                                    1 (Fixed)
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                €{% if item.product %}{{ item.product.price }}{% elif item.subscription %}{{ item.subscription.price }}{% endif %}
+                            </td>
+
+                            <td>
+                                €{{ item.total_price }}
+                            </td>
+
+                            <td>
+                                <form method="POST" action="{% url 'cart:remove_from_cart' item.id %}">
                                     {% csrf_token %}
-                                    <input type="number" name="quantity" class="quantity-input" value="{{ item.quantity }}" min="1">
-                                    <button type="submit" class="button update">Update</button>
+                                    <button type="submit" class="button remove btn btn-sm btn-outline-danger">Remove</button>
                                 </form>
-                            {% else %}
-                                1 (Fixed)
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            €{% if item.product %}{{ item.product.price }}{% elif item.subscription %}{{ item.subscription.price }}{% endif %}
-                        </td>
-
-                        <td>
-                            €{{ item.total_price }}
-                        </td>
-
-                        <td>
-                            <form method="POST" action="{% url 'cart:remove_from_cart' item.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="button remove">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <div class="total-cost">
-                <strong>Total Cost: €{{ total_cost }}</strong>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
 
-            {% if total_cost >= 50 %}
-                <div class="free-delivery">
-                    <strong>Free Delivery!</strong>
+            <div class="d-flex justify-content-between">
+                <div class="total-cost">
+                    <strong>Total Cost: €{{ total_cost }}</strong>
                 </div>
-            {% else %}
-                <div class="delivery-fee">
-                    <strong>Delivery Fee: €{{ delivery_fee }} <br> (Free Delivery on orders over €50.00)</strong>
-                </div>
-            {% endif %}
 
-            <div class="final-total">
+                {% if total_cost >= 50 %}
+                    <div class="free-delivery">
+                        <strong>Free Delivery!</strong>
+                    </div>
+                {% else %}
+                    <div class="delivery-fee">
+                        <strong>Delivery Fee: €{{ delivery_fee }} <br> (Free Delivery on orders over €50.00)</strong>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="final-total my-3">
                 <strong>Final Total: €{{ final_total }}</strong>
             </div>
 
-            <a href="{% url 'cart:checkout' %}" class="btn btn-primary stripe-button">Checkout with Stripe</a>
+            <a href="{% url 'cart:checkout' %}" class="btn btn-primary btn-lg stripe-button w-100">Checkout with Stripe</a>
 
         {% else %}
             <p class="cart_status">Your cart is currently empty. Please add some items to your cart.</p>
