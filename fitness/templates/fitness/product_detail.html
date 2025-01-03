@@ -23,7 +23,11 @@
 <!-- Product Section -->
 <section class="product-details">
     <article class="card">
-        <img src="{{ product.image.url }}" class="card-img-top" alt="Image of {{ product.name }} - {{ product.category }}" style="object-fit: cover;">
+        <img src="{{ product.image.url }}" 
+     alt="Image of {{ product.name }} - {{ product.category }}" 
+     style="object-fit: cover; width: 300px; height: 300px; border-radius: 8px; border: 2px solid #ddd; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin: 0 auto; display: block;">
+
+
         <div class="card-body">
             <h1 class="card-title">{{ product.name }}</h1>
             <p class="card-text">{{ product.description }}</p>
@@ -74,7 +78,7 @@
         <p>Please <a href="{% url 'account_login' %}">log in</a> to leave a review.</p>
     {% endif %}
 
-    <h3>Reviews:</h3>
+    <h3 class="reviews">Reviews:</h3>
     {% for review in reviews %}
         <article class="review">
             <p>{{ review.comment }}</p>
@@ -87,7 +91,7 @@
             {% endif %}
         </article>
     {% empty %}
-        <p>No reviews yet.</p>
+        <p class="reviews">No reviews yet.</p>
     {% endfor %}
 </section>
 

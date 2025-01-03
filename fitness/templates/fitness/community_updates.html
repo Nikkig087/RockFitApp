@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n static %} <!-- Load 'i18n' and 'static' tags here -->
+{% load i18n static %} 
 
 {% block head_title %}{% trans "Community Updates - Rockfit" %}{% endblock %}
 
@@ -36,9 +36,9 @@
             <header>
                 <strong>{{ update.user.username }}</strong>
             </header>
-            <p>{{ update.content }}</p> <!-- Change from update_text to content -->
+            <p>{{ update.content }}</p> 
             <footer>
-                <p><small>{{ update.created_at }}</small></p> <!-- Change from date to created_at -->
+                <p><small>{{ update.created_at }}</small></p> 
             </footer>
         </article>
         {% empty %}
