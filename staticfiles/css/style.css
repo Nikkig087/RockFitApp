@@ -203,6 +203,96 @@ h1 {
   color: #000;
 }
 
+/* Newsletter and Community Updates */
+.container.community-updates-newsletter {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title-newsletter {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.updates-list-newsletter {
+  margin-bottom: 40px;
+}
+
+.update-newsletter {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.newsletter-section-newsletter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.card-newsletter {
+  flex: 1 1 calc(50% - 10px);
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-newsletter h2 {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  font-weight: bolder;
+}
+
+.card-newsletter p {
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  color: black;
+}
+
+.form-control-newsletter {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn-newsletter {
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.btn-primary-newsletter {
+  background-color: gold;
+  color: black;
+}
+
+.btn-danger-newsletter {
+  background-color: #FF5722;
+  color: black;
+}
+
+
+.card-newsletter form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-newsletter {
+  width: auto; 
+}
+
 /* Responsive Styles */
 
 /* Mobile Styles (default for small screens) */
