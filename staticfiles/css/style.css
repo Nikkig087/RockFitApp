@@ -204,6 +204,7 @@ h1 {
 }
 
 /* Newsletter and Community Updates */
+
 .container.community-updates-newsletter {
   max-width: 800px;
   margin: 0 auto;
@@ -291,6 +292,12 @@ h1 {
 
 .btn-newsletter {
   width: auto; 
+}
+
+/*footer*/
+.social-links {
+  margin-right: 10px;
+  color: gold;
 }
 
 /* Responsive Styles */
