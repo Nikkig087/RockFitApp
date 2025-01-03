@@ -202,6 +202,20 @@ h1 {
   background-color: silver;
   color: #000;
 }
+/*review area */
+.reviews {
+  color: #fff;
+  padding-top: 10px;
+}
+
+p {
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.review_delete {
+  color: black;
+}
 
 /* Newsletter and Community Updates */
 
@@ -295,7 +309,7 @@ h1 {
 }
 
 /*footer*/
-.social-links {
+a {
   margin-right: 10px;
   color: gold;
 }
