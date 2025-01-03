@@ -15,13 +15,7 @@
   <meta name="twitter:title" content="User Profile - Manage Your Subscription">
   <meta name="twitter:description" content="Manage your personal information, subscription details, and account settings.">
 
-  <link rel="preload" href="{% static 'css/style.css' %}" as="style">
-  <link rel="preload" href="{% static 'css/output.css' %}" as="style">
-  <link rel="preload" href="{% static 'fontawesome/css/all.min.css' %}" as="style">
   <link rel="preload" href="{% if user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" as="image">
- <!-- <link rel="preload" href="https://kit.fontawesome.com/38e26af2b7.js" as="script">-->
- 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
   <style>
     @font-face {
