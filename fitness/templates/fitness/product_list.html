@@ -7,18 +7,15 @@
 
   {% block content %}
 
-  <!-- SEO Meta Tags -->
   <meta name="description" content="Explore our wide range of fitness products. Sort and search by price, name, or newest arrivals. Find the best products for your fitness journey.">
   <meta name="keywords" content="fitness products, workout gear, gym equipment, buy fitness products, online fitness shop, sports equipment">
 
-  <!-- Open Graph Meta Tags (For Facebook and other platforms) -->
   <meta property="og:title" content="Fitness Products - Shop the Best Gear for Your Workout">
   <meta property="og:description" content="Browse a variety of fitness products. Sort by price, name, or newest arrivals and shop now to enhance your fitness journey.">
   <meta property="og:image" content="{{ product_banner_url }}">
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
   <meta property="og:type" content="website">
 
-  <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Fitness Products - Shop the Best Gear for Your Workout">
   <meta name="twitter:description" content="Browse our fitness products collection, sorted by price, name, and more. Shop the best workout gear and equipment for all levels.">
@@ -26,15 +23,11 @@
 </head>
 
 <body>
-  <!-- Page Title -->
   <header>
     <h2 class="mb-4 title">Products <small class="title">(Total: {{ page_obj.paginator.count }})</small></h2>
   </header>
 
-  <!-- Search and Sort Section -->
-<!-- Search and Sort Section -->
 <section class="row mb-4 search-sort-section">
-  <!-- Search Bar -->
   <div class="col-md-6 search-bar">
     <form method="get" action="{% url 'products' %}" class="d-flex align-items-center">
       <input type="text" name="search" value="{{ query }}" placeholder="Search products..." class="form-control" aria-label="Search for products">
@@ -42,7 +35,6 @@
     </form>
   </div>
 
-  <!-- Sort Dropdown -->
   <div class="col-md-6 sort-dropdown">
     <form method="get" action="{% url 'products' %}" class="d-flex align-items-center">
       <select name="sort" onchange="this.form.submit()" class="form-select" aria-label="Sort products">
@@ -58,7 +50,6 @@
 </section>
 
 
-  <!-- Product Grid Section -->
   <main class="row">
     {% for product in page_obj %}
     <div class="col-md-4 mb-4">
@@ -69,17 +60,14 @@
           <p class="card-text text-muted">{{ product.description|truncatewords:15 }}</p>
           <p class="card-text text-primary fw-bold">€{{ product.price }}</p>
 
-          <!-- View Details Button -->
           <a href="{% url 'product_detail' product.id %}" class="btn btn-primary mt-auto mb-2" title="View details for {{ product.name }}">View Details</a>
 
-          <!-- Add to Cart Button (only for logged-in users) -->
           {% if user.is_authenticated %}
           <form action="{% url 'cart:add_to_cart' product.id 'product' %}" method="post" class="mt-2">
             {% csrf_token %}
             <button type="submit" class="btn btn-success w-100 mb-2">Add to Cart</button>
           </form>
           {% else %}
-          <!-- Button for non-logged-in users to log in -->
           <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-warning w-100 mb-2" title="Log in to add {{ product.name }} to your cart">Login to Add to Cart</a>
 
           {% endif %}
@@ -91,7 +79,6 @@
     {% endfor %}
   </main>
 
-  <!-- Pagination Controls -->
   <nav class="pagination mt-4 d-flex justify-content-center">
     {% if page_obj.has_previous %}
     <a href="?page={{ page_obj.previous_page_number }}&sort={{ sort_by }}&search={{ query }}" class="btn btn-outline-secondary me-2" title="Go to previous page">Previous</a>
