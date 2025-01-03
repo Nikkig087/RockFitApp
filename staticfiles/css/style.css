@@ -417,7 +417,10 @@ p {
   color: black;
 }
 
-
+/* sign out and sign in */ 
+.btn-signup {
+  background-color: #fff;
+}
 /*footer*/
 a {
   margin-right: 10px;
