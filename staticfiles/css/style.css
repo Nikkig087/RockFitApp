@@ -374,6 +374,25 @@ p {
   border-radius: 5px;
 }
 
+
+
+.button.remove {
+  background-color: #dc3545;
+}
+
+.button.update {
+  background-color: gold;
+}
+
+.button.update:hover {
+  background-color: #dc3545;
+}
+.button.remove:hover {
+  background-color: gold;
+}
+
+
+
 /*footer*/
 a {
   margin-right: 10px;
