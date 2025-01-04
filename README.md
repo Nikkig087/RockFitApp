@@ -671,44 +671,114 @@ Note you must be a registered User to create a review if not then you will be re
 
 ## Testing
 ### Lighthouse Homepage Desktop Test
-![Lighthouse Homepage Testing Desktop](docs/testing/lighthouse_desktop_exercise_home.webp)
+![Lighthouse Homepage Testing Desktop](docs/testing/lighthouse/homepage_desktop.webp)
 ### Lighthouse Homepage Mobile Test
-![Lighthouse Homepage Testing Mobile](docs/testing/lighthouse_mob_exercise_home.webp)
-### Lighthouse Exercise Detail Desktop Test
-![Lighthouse Homepage Testing Desktop](docs/testing/lighthouse_desktop_exercise_detail.webp)
-### Lighthouse Exercise Detail Mobile Test
-![Lighthouse Homepage Testing Mobile](docs/testing/lighthouse_mob_exercise_detail.webp)
+![Lighthouse Homepage Testing Mobile](docs/testing/lighthouse/homepage_mob.webp)
+### Lighthouse Cart Desktop Test
+![Lighthouse Cart Testing Desktop](docs/testing/lighthouse/cart_desktop.webp)
+### Lighthouse Cart Mobile Test
+![Lighthouse Cart Testing Mobile](docs/testing/lighthouse/cart_mob.webp)
+### Lighthouse Community Updates and Newsletter Desktop Test
+![Lighthouse Community Updates and Newsletter Testing Desktop](docs/testing/lighthouse/community_updates_desktop.webp)
+### Lighthouse Community Updates and Newsletter Mobile Test
+![Lighthouse Community Updates and Newsletter Testing Mobile](docs/testing/lighthouse/community_updates_mob.webp)
+### Lighthouse Sign in Desktop Test
+![Lighthouse Sign in Testing Desktop](docs/testing/lighthouse/login_desktop.webp)
+### Lighthouse Sign in Mobile Test
+![Lighthouse Sign in Testing Mobile](docs/testing/lighthouse/signin_mob.webp)
 
+### Lighthouse Payment Cancelled Desktop Test
+![Lighthouse Payment Cancelled Testing Desktop](docs/testing/lighthouse/payment_cancelled_desktop.webp)
+### Lighthouse Payment Cancelled Mobile Test
+![Lighthouse Payment Cancelled Testing Mobile](docs/testing/lighthouse/payment_cancelled_mob.webp)
+
+### Lighthouse Payment Successful Desktop Test
+![Lighthouse Payment Successful Testing Desktop](docs/testing/lighthouse/payment_successful_desktop.webp)
+### Lighthouse Payment Sucessful Mobile Test
+![Lighthouse Payment Successful Testing Mobile](docs/testing/lighthouse/payment_successful_mob.webp)
+
+### Lighthouse Product Details Desktop Test
+![Lighthouse Product Details Testing Desktop](docs/testing/lighthouse/Product_details_desktop.webp)
+### Lighthouse Product Details Mobile Test
+![Lighthouse Product Details Testing Mobile](docs/testing/lighthouse/Product_details_mob.webp)
+
+### Lighthouse Products Desktop Test
+![Lighthouse Products Testing Desktop](docs/testing/lighthouse/products_desktop.webp)
+### Lighthouse Products Mobile Test
+![Lighthouse Products Testing Mobile](docs/testing/lighthouse/product_mob.webp)
+
+### Lighthouse Profile Desktop Test
+![Lighthouse Profile Testing Desktop](docs/testing/lighthouse/profile_desktop.webp)
+### Lighthouse Profile Mobile Test
+![Lighthouse Profile Testing Mobile](docs/testing/lighthouse/profile_mob.webp)
+
+### Lighthouse Signout Desktop Test
+![Lighthouse Signout Testing Desktop](docs/testing/lighthouse/signout_desktop.webp)
+### Lighthouse Signout Mobile Test
+![Lighthouse Signout Testing Mobile](docs/testing/lighthouse/signout_mob.webp)
+
+### Lighthouse Subscription Desktop Test
+![Lighthouse Subscription Testing Desktop](docs/testing/lighthouse/subscription_desktop.webp)
+### Lighthouse Subscription Mobile Test
+![Lighthouse Subscription Testing Mobile](docs/testing/lighthouse/subscription_mob.webp)
+
+### Lighthouse Wishlist Desktop Test
+![Lighthouse Wishlist Testing Desktop](docs/testing/lighthouse/wishlist_desktop.webp)
+### Lighthouse Wishlist Mobile Test
+![Lighthouse Subscription Testing Mobile](docs/testing/lighthouse/subscription_mob.webp)
 
 ### Responsiveness
-![Am I Responsive Testing](docs/testing/amiresponsive.webp)
+![Am I Responsive Testing](docs/testing/responsive/amiresponsive.webp)
 ### Code Validation
 #### Jigsaw W3C Testing
-![Jigsaw W3C Testing](docs/testing/jigsaw_w3ctesting.webp)
+![Jigsaw W3C Testing](docs/testing/w3c/w3css_report.webp)
 #### HTML W3C Testing
-![HTML W3C Testing](docs/testing/html_w3ctesting.webp)
+![HTML W3C Testing](docs/testing/w3c/w3html_report.webp)
 #### JSHint Testing
-##### Comments.js
-![Comments JSHint Testing](docs/testing/jshint_commentsjs.webp)
 ##### Contact.js
-![Contact JSHint Testing](docs/testing/jshint_contactjs.webp)
-##### Report.js
-![Report JSHint Testing](docs/testing/jshint_reportjs.webp)
+![Contact JSHint Testing](docs/testing/jshint/contact_js.webp)
+##### lazyload.js
+![Contact JSHint Testing](docs/testing/jshint/lazyload_js.webp)
+##### modal.js
+![Contact JSHint Testing](docs/testing/jshint/modal_js.webp)
+
 #### CI Python Linter Testing (pep8)
-##### Admmin.py
+##### admmin.py - fitness
 ![Admin.py](docs/testing/adminpy_pep8.webp)
-##### forms.py
+##### apps.py - fitness
+![Admin.py](docs/testing/adminpy_pep8.webp)
+##### forms.py - fitness
 ![Forms.py](docs/testing/formspy_pep8.webp)
-##### Models.py
+##### Models.py - fitness
 ![Models.py](docs/testing/modelspy_pep8.webp)
-##### Urls.py
+##### Urls.py - fitness
 ![Urls.py](docs/testing/urlspy_pep8.webp)
-##### Views.py
+##### Views.py - fitness
+![Views.py](docs/testing/viewspy_pep8.webp)
+##### apps.py - Cart
+![Admin.py](docs/testing/adminpy_pep8.webp)
+##### admmin.py - Cart
+![Admin.py](docs/testing/adminpy_pep8.webp)
+##### Models.py - Cart
+![Models.py](docs/testing/modelspy_pep8.webp)
+##### Urls.py - Cart
+![Urls.py](docs/testing/urlspy_pep8.webp)
+##### Views.py - Cart
+![Views.py](docs/testing/viewspy_pep8.webp)
+##### Manage.py
+![Views.py](docs/testing/viewspy_pep8.webp)
+##### wgsi.py
+![Views.py](docs/testing/viewspy_pep8.webp)
+##### test_settings.py
+![Views.py](docs/testing/viewspy_pep8.webp)
+##### context_processors.py
+![Views.py](docs/testing/viewspy_pep8.webp)
+##### signals.py
 ![Views.py](docs/testing/viewspy_pep8.webp)
 
 ### Automated Testing
 Refer to Feature Screenshots and also automated testing for confirmation of successful testing.
-[Automated Testing](tests.md)
+[Automated Testing](fitness/test_fitness.py)
 ### Manual Testing User Stories
 
 | **User Story** | **Test** | **Pass** |
@@ -780,7 +850,58 @@ Refer to Feature Screenshots and also automated testing for confirmation of succ
 | Product Spotlight Filtering | Admins can filter and view spotlighted products. | ✓ |
 | Secure User Data | Ensure all sensitive user data is handled securely in models. | ✓ |
 
+## SEO Marketing Overview
 
+Rockfit offers a seamless and user-friendly platform for fitness enthusiasts to browse and purchase products, explore subscription plans, manage wishlists, and stay connected with community updates. It’s designed to promote an active and healthy lifestyle while offering a personalized shopping experience.
+
+---
+
+## Features
+
+- **Product Catalog**: Browse a curated selection of fitness products, including workout gear, supplements, and equipment.
+- **Subscriptions**: Choose from tailored fitness plans designed to meet individual health goals.
+- **Wishlist Management**: Save your favorite products for future purchases.
+- **Community Engagement**: Stay informed about the latest fitness trends, tips, and news.
+- **User-Friendly Design**: A responsive platform optimized for both desktop and mobile use.
+- **Secure Payments**: Enjoy safe and seamless transactions.
+
+---
+
+## E-Commerce Business Model
+
+### Core Business Model
+Rockfit operates on a **product and subscription-based model**:
+- **Direct Product Sales**: Offers fitness products that cater to various user needs, from beginners to professionals.
+- **Subscription Plans**: Provides ongoing services like fitness Plans and Advice to support long-term fitness goals.
+
+### Target Audience
+- Fitness enthusiasts and beginners alike.
+- Health-conscious individuals seeking quality products and reliable fitness guidance.
+- Professionals in need of advanced fitness equipment and premium supplements.
+
+### Revenue Streams
+- **Product Sales**: Income from selling fitness products directly through the platform.
+- **Subscription Services**: Revenue generated from fitness Subsciptions.
+
+---
+
+## Marketing Strategies
+
+### Community Engagement
+- Encourage user interaction by sharing fitness tips and updates directly on the platform.
+- Build a sense of belonging by organizing fitness challenges and sharing success stories.
+
+### Social Media Presence
+- Leverage platforms like Facebook to connect with users. 
+- For more information, visit the **Rockfit Facebook Page Mockup**: [Facebook Mockup](fitness mockup img).
+
+### Organic Content Marketing
+- Publish fitness-related articles, product guides, and tips to educate users and improve SEO via the Community updates and Newsletter Signup Options.
+
+### Customer Reviews and Feedback
+- Showcase authentic user reviews to build trust and attract new customers.
+
+---
 
 ## To Do
 Images are not high quality therefore I would like to have a professional photographer for a real world website.  Also when password reset is completed, the email functionality is not fully set up however the terminal does confirm the functionality of the submission.

@@ -58,9 +58,13 @@ class ModelsTestCase(TestCase):
 
     def test_subscription_plan_creation(self):
         """Test the creation of a SubscriptionPlan instance."""
-        self.assertEqual(self.subscription_plan.name, "Basic Plan")
+        self.assertEqual(
+            self.subscription_plan.name, "Basic Plan"
+        )
         self.assertTrue(self.subscription_plan.is_active)
-        self.assertEqual(self.subscription_plan.price, Decimal("9.99"))
+        self.assertEqual(
+            self.subscription_plan.price, Decimal("9.99")
+        )
         self.assertEqual(self.subscription_plan.duration, 30)
 
     def test_user_profile_creation(self):
@@ -150,16 +154,18 @@ class ViewsTestCase(TestCase):
         self.plan = SubscriptionPlan.objects.create(
             name="Test Plan", price=10, duration=12
         )
-        self.user_profile, created = UserProfile.objects.get_or_create(
-            user=self.user,
-            defaults={
-                "name": "Test User",
-                "email": "test@example.com",
-                "subscription_plan": self.plan,
-                "subscription_start_date": date.today(),
-                "subscription_end_date": date.today()
-                + timedelta(days=self.plan.duration),
-            },
+        self.user_profile, created = (
+            UserProfile.objects.get_or_create(
+                user=self.user,
+                defaults={
+                    "name": "Test User",
+                    "email": "test@example.com",
+                    "subscription_plan": self.plan,
+                    "subscription_start_date": date.today(),
+                    "subscription_end_date": date.today()
+                    + timedelta(days=self.plan.duration),
+                },
+            )
         )
         self.product = Product.objects.create(
             name="Test Product",
@@ -170,13 +176,17 @@ class ViewsTestCase(TestCase):
 
     def test_subscription_view(self):
         """Test the subscription view for authenticated users."""
-        self.client.login(username=self.username, password=self.password)
+        self.client.login(
+            username=self.username, password=self.password
+        )
         response = self.client.get(reverse("subscription"))
         self.assertEqual(response.status_code, 200)
 
     def test_subscribe_view(self):
         """Test subscribing to a plan via POST request."""
-        self.client.login(username=self.username, password=self.password)
+        self.client.login(
+            username=self.username, password=self.password
+        )
         response = self.client.post(
             reverse("subscribe", args=[self.plan.id])
         )
@@ -189,39 +199,29 @@ class ViewsTestCase(TestCase):
             username=unique_username, password="password"
         )
 
-        # Log the user in
-
-        self.client.login(username=unique_username, password="password")
-
-        # Create a product to add to the wishlist
+        self.client.login(
+            username=unique_username, password="password"
+        )
 
         product = Product.objects.create(
             name="Test Product", price=10.99, stock_quantity=10
         )
 
-        # Ensure the wishlist is created for the user
-
-        wishlist, created = Wishlist.objects.get_or_create(user=self.user)
-
-        # Send the POST request to add the product to the wishlist
+        wishlist, created = Wishlist.objects.get_or_create(
+            user=self.user
+        )
 
         response = self.client.post(
             reverse("add_to_wishlist", args=[product.id])
         )
 
-        # Reload the wishlist to ensure it's updated
-
         wishlist.refresh_from_db()
-
-        # Ensure a WishlistItem exists linking the product and wishlist
 
         wishlist_item_exists = WishlistItem.objects.filter(
             wishlist=wishlist, product=product
         ).exists()
 
-        self.assertTrue(
-            wishlist_item_exists
-        )  # Check if the item was added to the wishlist
+        self.assertTrue(wishlist_item_exists)
 
     def test_community_updates(self):
         """Test retrieving community updates."""
@@ -230,9 +230,13 @@ class ViewsTestCase(TestCase):
         user = User.objects.create_user(
             username=unique_username, password="password"
         )
-        self.client.login(username=unique_username, password="password")
+        self.client.login(
+            username=unique_username, password="password"
+        )
         update = CommunityUpdate.objects.create(
-            user=user, content="Test update", created_at=timezone.now()
+            user=user,
+            content="Test update",
+            created_at=timezone.now(),
         )
         response = self.client.get(reverse("community_updates"))
         self.assertEqual(len(response.context["updates"]), 1)
@@ -263,35 +267,46 @@ class CartTests(TestCase):
             cart=self.cart, product=self.product, quantity=2
         )
         self.cart_item_subscription = CartItem.objects.create(
-            cart=self.cart, subscription=self.subscription, quantity=1
+            cart=self.cart,
+            subscription=self.subscription,
+            quantity=1,
         )
 
     def test_add_to_cart(self):
         """Test adding items to the Cart."""
-        self.assertEqual(self.cart_item_product.product.name, "Test Product")
+        self.assertEqual(
+            self.cart_item_product.product.name, "Test Product"
+        )
         self.assertEqual(self.cart_item_product.quantity, 2)
         self.assertEqual(
-            self.cart_item_subscription.subscription.name, "Monthly Plan"
+            self.cart_item_subscription.subscription.name,
+            "Monthly Plan",
         )
         self.assertEqual(self.cart_item_subscription.quantity, 1)
 
     def test_total_cost(self):
         """Test calculating the total cost of the Cart."""
-        expected_cost = Decimal(self.product.price * 2) + Decimal(
-            self.subscription.price * 1
+        expected_cost = Decimal(
+            self.product.price * 2
+        ) + Decimal(self.subscription.price * 1)
+        self.assertAlmostEqual(
+            self.cart.get_total_cost(), expected_cost
         )
-        self.assertAlmostEqual(self.cart.get_total_cost(), expected_cost)
 
     def test_total_items(self):
         """Test calculating the total number of items in the Cart."""
         expected_items = 2 + 1
-        self.assertEqual(self.cart.get_total_items(), expected_items)
+        self.assertEqual(
+            self.cart.get_total_items(), expected_items
+        )
 
     def test_remove_from_cart(self):
         """Test removing items from the Cart."""
         self.cart_item_product.delete()
         self.assertFalse(
-            CartItem.objects.filter(id=self.cart_item_product.id).exists()
+            CartItem.objects.filter(
+                id=self.cart_item_product.id
+            ).exists()
         )
         self.cart_item_subscription.delete()
         self.assertFalse(
@@ -306,5 +321,7 @@ class CartTests(TestCase):
         self.assertEqual(cart_items.count(), 2)
         product_item = cart_items.get(product=self.product)
         self.assertEqual(product_item.quantity, 2)
-        subscription_item = cart_items.get(subscription=self.subscription)
+        subscription_item = cart_items.get(
+            subscription=self.subscription
+        )
         self.assertEqual(subscription_item.quantity, 1)

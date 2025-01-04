@@ -1,3 +1,4 @@
+/* jslint esversion: 6 */
 document.addEventListener("DOMContentLoaded", function () {
     const lazyImages = document.querySelectorAll("img[loading='lazy']");
 

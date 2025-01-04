@@ -8,6 +8,7 @@ from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 from PIL import Image
 
+
 class SubscriptionPlan(models.Model):
     """
     Represents a subscription plan available for users.
@@ -21,26 +22,23 @@ class SubscriptionPlan(models.Model):
         is_spotlight (bool): Highlights the plan as a featured option.
         created_at (datetime): The date and time when the plan was created.
         pause_requested (bool): Indicates if a pause request has been made.
-        pause_approved (bool): Indicates if the pause request has been approved.
-        paused_at (datetime): The date and time when the subscription was paused (if applicable).
+        pause_approved (bool): Indicates if the pause request has been
+        approved.
+        paused_at (datetime): The date and time when the subscription was
+        paused (if applicable).
     """
+
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    duration = models.IntegerField()  # Duration in days
+    duration = models.IntegerField()
     benefits = models.TextField()
     is_active = models.BooleanField(default=True)
     is_spotlight = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
-    #pause_requested = models.BooleanField(default=False)
-    #pause_approved = models.BooleanField(default=False)
-    #paused_at = models.DateTimeField(null=True, blank=True)
-    #resume_requested = models.BooleanField(default=False)
-    #resume_approved = models.BooleanField(default=False)
 
     def __str__(self):
         """Returns the name of the subscription plan."""
         return self.name
-
 
 
 class UserProfile(models.Model):
@@ -57,34 +55,51 @@ class UserProfile(models.Model):
         age (int): The user's age.
         phone (str): The user's phone number.
         subscription_status (str): The status of the user's subscription.
-        subscription_plan (SubscriptionPlan): The subscription plan the user is enrolled in.
+        subscription_plan (SubscriptionPlan): The subscription plan the user
+        is enrolled in.
         created_at (datetime): The date and time when the profile was created.
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE) 
-    name = models.CharField(max_length=100, blank=True)  
-    username = models.CharField(max_length=100, null=True, blank=True)
-    email = models.EmailField(blank=True)  # Add email field
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, blank=True)
+    username = models.CharField(
+        max_length=100, null=True, blank=True
+    )
+    email = models.EmailField(blank=True)
     profile_picture = ProcessedImageField(
-        upload_to='profile_pictures/',
+        upload_to="profile_pictures/",
         processors=[ResizeToFill(100, 100)],
-        format='JPEG',
-        options={'quality': 80},
+        format="JPEG",
+        options={"quality": 80},
         blank=True,
-        null=True)
+        null=True,
+    )
     fitness_goal = models.CharField(max_length=255, blank=True)
-    age = models.PositiveIntegerField(blank=True, null=True) 
-    phone = models.CharField(max_length=15, blank=True, null=True) 
-    subscription_plan = models.ForeignKey(SubscriptionPlan, null=True, on_delete=models.SET_NULL)
-    subscription_start_date = models.DateField(null=True, blank=True)
-    subscription_end_date = models.DateField(null=True, blank=True)
+    age = models.PositiveIntegerField(blank=True, null=True)
+    phone = models.CharField(
+        max_length=15, blank=True, null=True
+    )
+    subscription_plan = models.ForeignKey(
+        SubscriptionPlan, null=True, on_delete=models.SET_NULL
+    )
+    subscription_start_date = models.DateField(
+        null=True, blank=True
+    )
+    subscription_end_date = models.DateField(
+        null=True, blank=True
+    )
     pause_requested = models.BooleanField(default=False)
     pause_approved = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)  
+    created_at = models.DateTimeField(auto_now_add=True)
     paused_at = models.DateTimeField(null=True, blank=True)
     resume_requested = models.BooleanField(default=False)
     resume_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    profile_picture_webp = ImageSpecField(source='profile_picture', format='WEBP', options={'quality': 90})
+    profile_picture_webp = ImageSpecField(
+        source="profile_picture",
+        format="WEBP",
+        options={"quality": 90},
+    )
 
     def is_paused(self):
         """Returns if the subscription is paused."""
@@ -93,6 +108,7 @@ class UserProfile(models.Model):
     def __str__(self):
         """Returns a string representation of the user's profile."""
         return f"{self.user.username}'s Profile"
+
 
 class ExercisePlan(models.Model):
     """
@@ -107,16 +123,22 @@ class ExercisePlan(models.Model):
         price (Decimal): The cost of the exercise plan.
         created_at (datetime): The date and time when the plan was created.
     """
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     difficulty = models.CharField(max_length=50)
-    duration = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    duration = models.DecimalField(
+        max_digits=6, decimal_places=2, default=0.00
+    )
     category = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    price = models.DecimalField(
+        max_digits=6, decimal_places=2, default=0.00
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
+
 
 class NutritionPlan(models.Model):
     """
@@ -130,63 +152,66 @@ class NutritionPlan(models.Model):
         calories (str): The total calorie content of the plan.
         created_at (datetime): The date and time when the plan was created.
     """
+
     title = models.CharField(max_length=255)
     description = models.TextField()
-    diet_type = models.CharField(max_length=100)  
-    price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
-    calories = models.CharField(max_length=100)  
+    diet_type = models.CharField(max_length=100)
+    price = models.DecimalField(
+        max_digits=6, decimal_places=2, default=0.00
+    )
+    calories = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
 
+
 class Product(models.Model):
     """
     Represents a product available for purchase.
     """
+
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='products/')
+    image = models.ImageField(upload_to="products/")
     image_thumbnail = ImageSpecField(
-        source='image',
-        processors=[ResizeToFill(300, 300)],  # Adjust size as per your design
-        format='JPEG',
-        options={'quality': 85}
+        source="image",
+        processors=[ResizeToFill(300, 300)],
+        format="JPEG",
+        options={"quality": 85},
     )
     stock_quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_spotlight = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        # Save the product first
         super().save(*args, **kwargs)
 
-        # Convert to WebP and resize images to optimize them
         if self.image:
             img = Image.open(self.image.path)
-            
-            # Resize the image to the max size of 800x800 (optional)
+
             max_size = (800, 800)
             img.thumbnail(max_size, Image.ANTIALIAS)
-            
-            # Save the resized image in JPEG format
+
             img.save(self.image.path, quality=85, optimize=True)
-            
-            # Convert to WebP format for better compression and quality
-            webp_image_path = os.path.splitext(self.image.path)[0] + '.webp'
-            img.save(webp_image_path, format='WebP', quality=85)
-            
-            # Optionally, you can update the path to the WebP image
-            self.image.name = os.path.relpath(webp_image_path, start='media/')
+
+            webp_image_path = (
+                os.path.splitext(self.image.path)[0] + ".webp"
+            )
+            img.save(webp_image_path, format="WebP", quality=85)
+
+            self.image.name = os.path.relpath(
+                webp_image_path, start="media/"
+            )
             super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        # Update the URL method since we no longer have a slug
-        return reverse('product_detail', kwargs={'id': self.id})
+        return reverse("product_detail", kwargs={"id": self.id})
 
     def __str__(self):
         return self.name
+
 
 class Order(models.Model):
     """
@@ -197,13 +222,17 @@ class Order(models.Model):
         order_date (datetime): The date and time when the order was placed.
         total_amount (Decimal): The total cost of the order.
     """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     order_date = models.DateTimeField(default=timezone.now)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount = models.DecimalField(
+        max_digits=10, decimal_places=2
+    )
 
     def __str__(self):
         """Returns a string representation of the order."""
         return f"Order {self.id} by {self.user.username}"
+
 
 class Review(models.Model):
     """
@@ -212,20 +241,26 @@ class Review(models.Model):
     Attributes:
         user (ForeignKey): The user who wrote the review.
         product (ForeignKey): The product being reviewed.
-        rating (IntegerField): The rating given to the product, usually on a scale (e.g., 1 to 5).
+        rating (IntegerField): The rating given to the product, usually on
+        a scale (e.g., 1 to 5).
         comment (TextField): The review text or comment provided by the user.
-        approved (BooleanField): Indicates whether the review has been approved (default is False).
+        approved (BooleanField): Indicates whether the review has been approved
+        (default is False).
         created_at (DateTimeField): The timestamp when the review was created.
     """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE
+    )
     rating = models.IntegerField()
     comment = models.TextField()
-    approved = models.BooleanField(default=False)  
+    approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Review by {self.user.username} for {self.product.name}"
+
 
 class CommunityUpdate(models.Model):
     """
@@ -236,14 +271,16 @@ class CommunityUpdate(models.Model):
         update_text (str): The text content of the update.
         created_at (datetime): The date and time when the update was posted.
     """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     update_text = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
-    content = models.TextField(default="No content")  # Set default value here
+    content = models.TextField(default="No content")
 
     def __str__(self):
-        """Returns a string representation of the community update.""" 
+        """Returns a string representation of the community update."""
         return f"Update by {self.user.username}"
+
 
 class Wishlist(models.Model):
     """
@@ -251,15 +288,19 @@ class Wishlist(models.Model):
 
     Attributes:
         user (OneToOneField): The user to whom the wishlist belongs.
-        created_at (DateTimeField): The timestamp when the wishlist was created.
-        products (ManyToManyField): A collection of products that the user has added to the wishlist.
+        created_at (DateTimeField): The timestamp when the wishlist was
+        created.
+        products (ManyToManyField): A collection of products that the user has
+        added to the wishlist.
     """
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     products = models.ManyToManyField(Product)
 
     def __str__(self):
         return f"{self.user.username}'s Wishlist"
+
 
 class WishlistItem(models.Model):
     """
@@ -269,19 +310,31 @@ class WishlistItem(models.Model):
         wishlist (ForeignKey): The wishlist to which the product belongs.
         product (ForeignKey): The product that has been added to the wishlist.
     """
-    wishlist = models.ForeignKey('Wishlist', on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    wishlist = models.ForeignKey(
+        "Wishlist",
+        on_delete=models.CASCADE,
+        related_name="items",
+    )
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE
+    )
 
     class Meta:
-        unique_together = ('wishlist', 'product')
+        unique_together = ("wishlist", "product")
 
     def __str__(self):
-        return f"{self.product.name} in {self.wishlist.user.username}'s wishlist"
+        return (
+            f"{self.product.name} in "
+            f"{self.wishlist.user.username}'s wishlist"
+            )
+
 
 class NewsletterSubscription(models.Model):
     """
     Represents a subscription to the newsletter.
     """
+
     email = models.EmailField(unique=True)
     subscribed_at = models.DateTimeField(auto_now_add=True)
 
@@ -293,6 +346,7 @@ class ContactMessage(models.Model):
     """
     Represents a message submitted via a contact form.
     """
+
     name = models.CharField(max_length=100)
     email = models.EmailField()
     message = models.TextField()

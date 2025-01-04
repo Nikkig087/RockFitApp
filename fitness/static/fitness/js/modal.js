@@ -1,3 +1,4 @@
+/* jslint esversion: 6 */
 document.addEventListener('DOMContentLoaded', function() {
     var modal = document.getElementById('contactModal');
     var openButton = document.getElementById('openModalButton');

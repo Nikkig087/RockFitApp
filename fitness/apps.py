@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
+
 class FitnessConfig(AppConfig):
     """
     Configuration class for the 'fitness' Django application.
@@ -18,4 +19,4 @@ class FitnessConfig(AppConfig):
         the 'signals' module to ensure that signal handlers are connected
         and ready to handle events such as model changes.
         """
-        import fitness.signals  
+        import fitness.signals
