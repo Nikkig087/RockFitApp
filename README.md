@@ -791,6 +791,8 @@ Also I would like to implement a feature that suggests similiar Products to the 
 - Shared tags or similar price ranges.
 
 ## Bugs
+I deployed the website on Heroku in the United States region instead of the European region, this can affect performance speeds.
+
 ## Deployment
 This website is deployed to Heroku from a GitHub repository, the following steps were taken:
 

@@ -6,7 +6,7 @@ Disallow: /register/
 
 Allow: /
 
-# Block specific bot user agents if needed (uncomment if required)
+
 # User-agent: Googlebot
 # Disallow: /private/
 

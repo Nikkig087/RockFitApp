@@ -62,7 +62,7 @@
     </header>
     {% endblock %}
 
-    <main>
+    <section>
         <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
             {% for message in messages %}
                 <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -79,7 +79,7 @@
         <div class="container mt-4">
             {% block content %}{% endblock %}
         </div>
-    </main>
+    </section>
 
     {% block footer %}
     <footer class="footer">
