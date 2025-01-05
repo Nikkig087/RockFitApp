@@ -6,157 +6,162 @@ Our Store is your go-to source for fitness plans and products. Our website featu
 1. [Design & Planning](#design-&-planning)
     * [Wireframes](#wireframes)
     * [Agile Methodology](#agile-methodology)
+    * [Epics](#epics)
     * [User Stories](#user-stories)
     * [Developer Stories](#developer-stories)
     * [Visitor Stories](#visitor-stories)
     * [Registered User Stories](#registered-user-stories)
     * [Admin Stories](#admin-user-stories)
+    * [Website Goals and Objectives](#website-goals-and-objectives)
     * [Typography](#typography)
     * [Colour Scheme](#colour-scheme)
     * [Database Diagram](#database-diagram)
     
 2. [Features](#features)
 3. [Technologies Used](#technologies-used)
-4. [Libraries](#libraries-used)
-5. [Testing](#testing)
-6. [Bugs](#bugs)
-7. [Deployment](#deployment)
-8. [Credits](#credits)
+3. [Framework and Software](#framework-and-software)
+4. [Testing](#testing)
+5. [E-Commerce Business Model](#e-commerce-business-model)
+6. [Marketing Strategies](#marketing-strategies)
+7. [To Do](#to-do)
+8. [Bugs](#bugs)
+9. [Deployment](#deployment)
+10. [Credits](#credits)
 
-## Design & Planning:
 
+# Design & Planning:
 
-### Wireframes
+## Wireframes
 
-#### Contact Us Desktop
+### Contact Us Desktop
 
 <img src="docs/wireframes/contactus.webp" alt="Contact Us Desktop" width="50%"/>
 
-#### Contact Us Mobile
+### Contact Us Mobile
 
 <img src="docs/wireframes/contactus_mobile.webp" alt="Contact Us Mobile" width="50%"/>
 
-#### Edit Review Desktop
+### Edit Review Desktop
 
 <img src="docs/wireframes/edit_review.webp" alt="Edit Review Desktop" width="50%"/>
 
-#### Edit Review Mobile
+### Edit Review Mobile
 
 <img src="docs/wireframes/edit_review_mobile.webp" alt="Edit Review Mobile" width="50%"/>
 
-#### Cart Desktop
+### Cart Desktop
 
 <img src="docs/wireframes/cart.webp" alt="Cart Page Desktop" width="50%"/>
 
-#### Cart Mobile
+### Cart Mobile
 
 <img src="docs/wireframes/cart_mobile.webp" alt="Cart Page Mobile" width="50%"/>
 
-#### Community Update
+### Community Update
 
 <img src="docs/wireframes/community_update.webp" alt="Community Update Page" width="50%"/>
 
-#### Community Update Mobile
+### Community Update Mobile
 
 <img src="docs/wireframes/community_update_mobile.webp" alt="Community Update Page Mobile" width="50%"/>
 
-#### Homepage
+### Homepage
 
 <img src="docs/wireframes/homepage.webp" alt="Home Page" width="50%"/>
 
-#### Homepage Mobile
+### Homepage Mobile
 
 <img src="docs/wireframes/homepage_mobile.webp" alt="Home Page Mobile" width="50%"/>
 
-#### Products Page 
+### Products Page 
 
 <img src="docs/wireframes/products.webp" alt="Products Page" width="50%"/>
 
-#### Products Page Mobile
+### Products Page Mobile
 
 <img src="docs/wireframes/products_mobile.webp" alt="Products Page Mobile" width="50%"/>
 
 
-#### Password Reset Desktop
+### Password Reset Desktop
 
 <img src="docs/wireframes/password_reset.webp" alt="Password Reset Page Desktop" width="50%"/>
 
-#### Password Reset Mobile
+### Password Reset Mobile
 
 <img src="docs/wireframes/password_reset_mobile.webp" alt="Password Reset Page Mobile" width="50%"/>
 
-#### Password Reset Confirmation Desktop
+### Password Reset Confirmation Desktop
 
 <img src="docs/wireframes/password_reset_confirmation.webp" alt="Password Reset Confirmation Page Desktop" width="50%"/>
 
-#### Password Reset Confirmation Mobile
+### Password Reset Confirmation Mobile
 
 <img src="docs/wireframes/password_reset_confirmation_mobile.webp" alt="Password Reset Confirmation Page Mobile" width="50%"/>
 
-#### Product Detail Desktop (Logged in)
+### Product Detail Desktop (Logged in)
 
 <img src="docs/wireframes/product_detail.webp" alt="Product Detail Page Desktop (logged in)" width="50%"/>
 
-#### Product Detail Desktop (Not Logged in)
+### Product Detail Desktop (Not Logged in)
 <img src="docs/wireframes/product_detail_not_loggedin.webp" alt="Product Detail Page Desktop (Not logged in)" width="50%"/>
 
-#### Product Detail Mobile
+### Product Detail Mobile
 
 <img src="docs/wireframes/product_detail_mobile.webp" alt="Product Detail Page Mobile" width="50%"/>
 
-#### Profile Desktop 
+### Profile Desktop 
 
 <img src="docs/wireframes/profile.webp" alt="Profile Page Desktop" width="50%"/>
 
-#### Profile Mobile
+### Profile Mobile
 
 <img src="docs/wireframes/profile_mobile.webp" alt="Profile Page Mobile" width="50%"/>
 
-#### Register Desktop 
+### Register Desktop 
 
 <img src="docs/wireframes/register.webp" alt="Register Page Desktop" width="50%"/>
 
-#### Sign in Desktop
+### Sign in Desktop
 
 <img src="docs/wireframes/signin.webp" alt="Sign in Page Desktop" width="50%"/>
 
-#### Sign in Mobile
+### Sign in Mobile
 
 <img src="docs/wireframes/signin_mobile.webp" alt="Sign in Page Mobile" width="50%"/>
 
-#### Sign Out Desktop
+### Sign Out Desktop
 
 <img src="docs/wireframes/signout.webp" alt="Sign out Page Desktop" width="50%"/>
 
-#### Sign Out Mobile
+### Sign Out Mobile
 
 <img src="docs/wireframes/signout_mobile.webp" alt="Sign out Page Mobile" width="50%"/>
 
-#### Subscripton Desktop
+### Subscripton Desktop
 
 <img src="docs/wireframes/subscription.webp" alt="Subscription Page Desktop" width="50%"/>
 
-#### Subscription Mobile
+### Subscription Mobile
 
 <img src="docs/wireframes/subscription_mobile.webp" alt="Subscription Page Mobile" width="50%"/>
 
-#### Thank You Desktop
+### Thank You Desktop
 
 <img src="docs/wireframes/thankyou.webp" alt="Thank You Page Desktop" width="50%"/>
 
-#### Subscription Mobile
+### Subscription Mobile
 
 <img src="docs/wireframes/thankyou_mobile.webp" alt="Thank You Page Mobile" width="50%"/>
 
-#### Wishlist Desktop
+### Wishlist Desktop
 
 <img src="docs/wireframes/wishlist.webp" alt="Wishlist Page Desktop" width="50%"/>
 
-#### Subscription Mobile
+### Subscription Mobile
 
 <img src="docs/wireframes/wishlist_mobile.webp" alt="Wishlist Page Mobile" width="50%"/>
 
-## Agile Methodology
+# Agile Methodology
 
 ### My Approach to Agile Methodology
 As I developed this project, I used the Agile methodology because of its flexibility and iterative process. Agile helped me stay organized and adapt as the project evolved. Working in short, manageable cycles (or "sprints") allowed me to make continuous progress and improve each feature step-by-step. This approach gave me the structure I needed to regularly assess my progress and refine the app as I moved forward.
@@ -185,7 +190,7 @@ I used GitHub Projects to organize my tasks and track my progress. Each project 
 ### Visualizing Progress with the Kanban Board
 I relied on a Kanban board to manage my progress. Seeing my tasks move through different stages—from "To Do" to "Done"—gave me a clear sense of accomplishment and kept me motivated throughout the project. It also helped me ensure that no task was overlooked or forgotten.
 
-## Breaking Down the EPICS
+# EPICS
 Each Epic in my project represented a major feature or functionality of the platform. By breaking these large tasks into smaller, manageable parts, I was able to tackle each piece step-by-step. This ensured that nothing was left incomplete, and every aspect of the app was thoroughly developed.
 
 - [EPIC 1: See Product Details](https://github.com/Nikkig087/RockFitApp/issues/1#issue-2728005130)
@@ -213,11 +218,12 @@ Each Epic in my project represented a major feature or functionality of the plat
 - [EPIC 23:Admin review user reviews](https://github.com/Nikkig087/RockFitApp/issues/23#issue-2758303356)
 - [EPIC 24:Admin manage community updates](https://github.com/Nikkig087/RockFitApp/issues/24#issue-2758304005)
 
-## User Stories
+# User Stories
 
 With an emphasis on delivering a seamless user experience, the goal of this project is to provide a comprehensive platform that serves both visitors and registered users. The platform will allow for the development and maintenance of content, present developer profiles, and provide opportunities for interaction.  The following user stories outline the essential functionalities and the rationale behind them.
 
 *************************************
+
 ## Developer Stories
 
 
@@ -247,6 +253,7 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 - As a **Developer,** I want to **implement inline editing for related models** so that **data relationships can be managed efficiently.**
 
 *************************************************************
+
 ## Visitor Stories
 
 - As a **visitor**, I want to **navigate through the platform effortlessly,** so that **I can find relevant sections and features intuitively.**
@@ -302,7 +309,7 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 - As an **Admin,** I want to **manage community updates** so that **the latest news is visible to users.**
 
 
-## Website Goals and Objectives
+# Website Goals and Objectives
 
 * Enhance User Experience:
    - Build a powerful yet user-friendly interface that reflects the strength and energy of the BullFit brand.
@@ -329,7 +336,7 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
    - Implement rock-solid authentication and authorization to protect users.
    - Regularly test and refine the platform to ensure BullFit stays stable, secure, and reliable.
 
-## Target Audience
+### Target Audience
 
 - Developers
 - Health and Fitness Coaches
@@ -338,10 +345,10 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 
 [Back to top](#contents)
 
-## Typography
+# Typography
 I utilized Times New Roman for my site as this font is the most browser compatible font.
 
-## Colour Scheme
+# Colour Scheme
 I chose the Urban Chic color palette for the website to create a look that is sleek, modern, and dynamic, while still being welcoming and approachable. The black background is the main foundation, demonstrating sophistication. Black is often associated with strength and professionalism, and here it sets the design, creating a sense of seriousness and confidence. It sets the tone for a space where users feel they are engaging with something purposeful and refined.
 
 White and light gray accents, such as #FFFFFF and #F5F5F5, create sense of balance and clarity to the design. These lighter colours ensure the interface remains clean and uncluttered, allowing users to focus on content without feeling overwhelmed. They bring elegance and act as a neutral canvas that highlights key information and visuals, making the website feel organized and intuitive.
@@ -352,7 +359,7 @@ By combining these colours, I wanted to create a design that is both stylish and
 
 <img src="docs/features/colour_palette.webp" alt="Colour Palette" width="50%"/>
 
-## DataBase Diagram
+# DataBase Diagram
 
 The project's data model is based on an Entity-Relationship Diagram (ERD) that maps out the relationships between the different Django models. At the core is the User model, which extends Django's default User class with fields like id, username, password, and email. 
 
@@ -401,166 +408,166 @@ Relationship: 1:N
 
 <img src="docs/design/ERD.webp" alt="ERD Diagram" width="50%"/> 
 
-## Features:
+# Features:
 
-### Navigation
-The Navigation Bar contains the Company Name, links to the Home page, Register Page and Login Page.
-#### Navigation Desktop for user not logged in
+## Navigation
+The Navigation Bar contains the Company Name, links to the Home page, Register Page, Community Updates, Profile and Login Page.
+### Navigation Desktop for user not logged in
 
 <img src="docs/features/nav_desktop_notloggedin.webp" alt="Navigation Desktop" width="50%"/> 
 
-#### Navigation Mobile for user not logged in
+### Navigation Mobile for user not logged in
 
 <img src="docs/features/nav_mobile_notloggedin.webp" alt="Navigation Mobile" width="50%"/> 
 
 
-#### Navigation Desktop for user logged in
+### Navigation Desktop for user logged in
 
 <img src="docs/features/nav_desktop_loggedin.webp" alt="Navigation Desktop Logged In" width="50%"/> 
 
-#### Navigation Mobile for user logged in
+### Navigation Mobile for user logged in
 
 <img src="docs/features/nav_mobile_loggedin.webp" alt="Navigation Mobile Logged In" width="50%"/> 
 
-#### Footer
+### Footer
 
 <img src="docs/features/footer.webp" alt="Footer" width="50%"/> 
 
-#### Home-page Desktop
+### Home-page Desktop
 
 <img src="docs/features/homepage_desktop.webp" alt="Home-page Desktop" width="50%"/> 
 
-#### Home-page Mobile
+### Home-page Mobile
 
 <img src="docs/features/homepage_mobile.webp" alt="Home-page Mobile" width="50%"/> 
 
-#### Products Details Page Desktop
+### Products Details Page Desktop
 
 <img src="docs/features/product_details.webp" alt="Product Details Desktop" width="50%"/>
 
-#### Products Details Page Mobile
+### Products Details Page Mobile
 
 <img src="docs/features/product_details_mobile.webp" alt="Product Details Mobile" width="50%"/>
 
-#### Products Page Desktop
+### Products Page Desktop
 
 <img src="docs/features/products.webp" alt="Products Desktop" width="50%"/>
 
-#### Products Page Mobile
+### Products Page Mobile
 
 <img src="docs/features/products_mobile.webp" alt="Products Mobile" width="50%"/>
 
-#### Cart Page Desktop
+### Cart Page Desktop
 
-<img src="docs/features/cart_desktop.webp" alt="Product Details Desktop" width="50%"/>
+<img src="docs/features/cart_desktop.webp" alt="Cart Page Desktop" width="50%"/>
 
-#### Cart Page Mobile
+### Cart Page Mobile
 
-<img src="docs/features/cart_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/cart_mobile.webp" alt="Cart Page Mobile" width="50%"/>
 
-#### Community Updates Page Desktop
+### Community Updates Page Desktop
 
-<img src="docs/features/community_updates.webp" alt="Product Details Desktop" width="50%"/>
+<img src="docs/features/community_updates.webp" alt="Community Updates Page Desktop" width="50%"/>
 
-#### Community Updates Page Mobile
+### Community Updates Page Mobile
 
-<img src="docs/features/community_updates_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/community_updates_mobile.webp" alt="Community Updates Page Mobile" width="50%"/>
 
-#### Sign in Page Desktop 
+### Sign in Page Desktop 
 
 <img src="docs/features/signin.webp" alt="Sign In Desktop" width="50%"/>
 
-#### Sign in Page Mobile 
+### Sign in Page Mobile 
 
-<img src="docs/features/signin_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/signin_mobile.webp" alt="Sign In Mobile" width="50%"/>
 
-#### Sign Up Page Desktop 
+### Sign Up Page Desktop 
 
 <img src="docs/features/signup.webp" alt="Sign In Desktop" width="50%"/>
 
-#### Sign Up Page Mobile 
+### Sign Up Page Mobile 
 
-<img src="docs/features/signup_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/signup_mobile.webp" alt="SignUp Mobile" width="50%"/>
 
-#### logout Page Desktop
+### logout Page Desktop
 
-<img src="docs/features/logout.webp" alt="Product Details Desktop" width="50%"/>
+<img src="docs/features/logout.webp" alt="logout Desktop" width="50%"/>
 
-#### Logout Page Mobile
+### Logout Page Mobile
 
-<img src="docs/features/logout_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/logout_mobile.webp" alt="Logout Mobile" width="50%"/>
 
-#### Password Reset Page Desktop
+### Password Reset Page Desktop
 
-<img src="docs/features/password_reset.webp" alt="Product Details Desktop" width="50%"/>
+<img src="docs/features/password_reset.webp" alt="Password Reset Desktop" width="50%"/>
 
-#### Password Reset Page Mobile
+### Password Reset Page Mobile
 
-<img src="docs/features/password_reset_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/password_reset_mobile.webp" alt="Password Reset Mobile" width="50%"/>
 
-#### Password Reset Confirmation Page Desktop
+### Password Reset Confirmation Page Desktop
 
-<img src="docs/features/password_reset_confirmation.webp" alt="Product Details Desktop" width="50%"/>
+<img src="docs/features/password_reset_confirmation.webp" alt="Password Reset Confirmation Page Desktop" width="50%"/>
 
-#### Password Reset Confirmation Page Mobile
+### Password Reset Confirmation Page Mobile
 
-<img src="docs/features/password_reset_confirmation_mob.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/password_reset_confirmation_mob.webp" alt="Password Reset Confirmation Page Mobile" width="50%"/>
 
-#### Password Reset Known Email 
+### Password Reset Known Email 
 
-<img src="docs/features/password_reset_known_email.webp" alt="Product Details Desktop" width="50%"/>
+<img src="docs/features/password_reset_known_email.webp" alt="Password Reset known Email" width="50%"/>
 
-#### Password Reset Unknown Email 
+### Password Reset Unknown Email 
 
-<img src="docs/features/password_reset_unknown_email.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/password_reset_unknown_email.webp" alt="Password Reset Unknown Email" width="50%"/>
 
-#### Profile Page Desktop (logged in User)
+### Profile Page Desktop (logged in User)
 
-<img src="docs/features/profile.webp" alt="Profile Desktop" width="50%"/>
+<img src="docs/features/profile.webp" alt="Profile Page Desktop (logged in)" width="50%"/>
 
-#### Profile Page Mobile (logged in User)
+### Profile Page Mobile (logged in User)
 
-<img src="docs/features/profile_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/profile_mobile.webp" alt="Profile Page Mobile (logged in)" width="50%"/>
 
-#### Profile Page Desktop (No logged in User)
+### Profile Page Desktop (No logged in User)
 
-<img src="docs/features/profile_notlogged_in.webp" alt="Profile Desktop" width="50%"/>
+<img src="docs/features/profile_notlogged_in.webp" alt="Profile Page Desktop (Not logged in)" width="50%"/>
 
-#### Profile Page Mobile (No logged in User)
+### Profile Page Mobile (No logged in User)
 
-<img src="docs/features/profile_notlogged_in_mob.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/profile_notlogged_in_mob.webp" alt="Profile Page Mobile (Not logged in)" width="50%"/>
 
-#### Subscription Page Desktop (logged in User)
+### Subscription Page Desktop (logged in User)
 
-<img src="docs/features/subscription.webp" alt="Sign In Desktop" width="50%"/>
+<img src="docs/features/subscription.webp" alt="Subscription Page Desktop (logged in)" width="50%"/>
 
-#### Subscription Page Mobile (logged in User)
+### Subscription Page Mobile (logged in User)
 
-<img src="docs/features/subscription_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/subscription_mobile.webp" alt="Subscription Page Mobile (logged in)" width="50%"/>
 
-#### Subscription Page Desktop (No logged in User)
+### Subscription Page Desktop (No logged in User)
 
-<img src="docs/features/subscription_not_loggedin.webp" alt="Sign In Desktop" width="50%"/>
+<img src="docs/features/subscription_not_loggedin.webp" alt="Subscription Page Desktop (Not logged in)" width="50%"/>
 
-#### Subscription Page Mobile (No logged in User)
+### Subscription Page Mobile (No logged in User)
 
-<img src="docs/features/subscription_not_loggedin_mob.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/subscription_not_loggedin_mob.webp" alt="Subscription Page Mobile (Not logged in)" width="50%"/>
 
-#### Wishlist Page Desktop (logged in User)
+### Wishlist Page Desktop (logged in User)
 
-<img src="docs/features/wishlist.webp" alt="Sign In Desktop" width="50%"/>
+<img src="docs/features/wishlist.webp" alt="Wishlist Page Mobile (logged in)" width="50%"/>
 
-#### Wishlist Page Mobile (logged in User)
+### Wishlist Page Mobile (logged in User)
 
-<img src="docs/features/wishlist_mobile.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/wishlist_mobile.webp" alt="Wishlist Page Mobile (logged in)" width="50%"/>
 
-#### Wishlist Page Desktop (No logged in User)
+### Wishlist Page Desktop (No logged in User)
 
-<img src="docs/features/wishlist_not_loggedin.webp" alt="Sign In Desktop" width="50%"/>
+<img src="docs/features/wishlist_not_loggedin.webp" alt="Wishlist Page Desktop (Not logged in)" width="50%"/>
 
-#### Wishlist Page Mobile (No logged in User)
+### Wishlist Page Mobile (No logged in User)
 
-<img src="docs/features/wishlist_not_loggedin_mob.webp" alt="Product Details Mobile" width="50%"/>
+<img src="docs/features/wishlist_not_loggedin_mob.webp" alt="Wishlist Page Mobile (Not logged in)" width="50%"/>
 
 ### 404 Page Desktop
 
@@ -568,92 +575,100 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 
 ### 404 Page Mobile
 
-<img src="docs/screenshots/page404_mobile.webp" alt="Page 404 Mobile" width="50%"/>
+<img src="docs/features/page404_mobile.webp" alt="Page 404 Mobile" width="50%"/>
 
-### CRUD User
-#### Create Review Desktop Page
+### Contact Form Desktop
+
+<img src="docs/features/contact_desktop.webp" alt="Contact Desktop" width="50%"/>
+
+### Contact Form Mobile
+
+<img src="docs/features/contact_mob.webp" alt="Contact Mobile" width="50%"/>
+
+## CRUD User
+### Create Review Desktop Page
 
 <img src="docs/features/review_desktop.webp" alt="Comments Desktop" width="50%"/>
 
-#### Create Review Mobile Page
+### Create Review Mobile Page
 
 <img src="docs/features/review_mobile.webp" alt="Comments Mobile" width="50%"/>
 
-#### Edit or Delete Review Buttons Desktop Page
+### Edit or Delete Review Buttons Desktop Page
 
 <img src="docs/features/edit_delete_review_desktop.webp" alt="Edit or Delete Review Buttons Desktop" width="50%"/>
 
-#### Edit or Delete Review Buttons Mobile Page
+### Edit or Delete Review Buttons Mobile Page
 
 <img src="docs/features/edit_delete_review_mob.webp" alt="Edit or Delete Review Buttons Mobile" width="50%"/>
 
 
-#### Edit Review Desktop Page
+### Edit Review Desktop Page
 
 <img src="docs/features/edit_review_desktop.webp" alt="Edit Comment Desktop" width="50%"/>
 
-#### Edit Review Mobile Page
+### Edit Review Mobile Page
 
 <img src="docs/features/edit_review_mob.webp" alt="Edit Comment Mobile" width="50%"/>
 
 
-#### Delete Review Desktop Page
+### Delete Review Desktop Page
 
 <img src="docs/features/delete_review.webp" alt="Delete Review" width="50%"/>
 
-#### Delete Review Mobile Page
+### Delete Review Mobile Page
 
 <img src="docs/features/delete_review_mob.webp" alt="Delete Review" width="50%"/>
 
-#### Create a Review
+### Create a Review
 Note you must be a registered User to create a review if not then you will be redirected to the login page as per the view snippet below.  Here you can register or sign in, there is also an option to recover your password if you have forgotten it.
 
 <img src="docs/features/loggedin_review.webp" alt="Code to ensure user is logged in to review product" width="50%"/>
 
 
-### CRUD Admin
+## CRUD Admin
 
-#### Remove Users
+### Remove Users
 
 <img src="docs/features/remove_users_admin.webp" alt="Remove Users in Admin Panel" width="50%"/>
 
-#### Edit Users
+### Edit Users
 
 <img src="docs/features/edit_users_admin.webp" alt="Edit Users in Admin Panel" width="50%"/>
 
-#### Add Users
+### Add Users
 
 <img src="docs/features/add_user_admin.webp" alt="Add Users in Admin Panel" width="50%"/>
 
-#### Create Product Post 
+### Create Product Post 
 
 <img src="docs/features/create_product_admin.webp" alt="Create Product in Admin Panel" width="50%"/>
 
-#### Edit Product  
+### Edit Product  
 
 <img src="docs/features/update_product_admin.webp" alt="Edit Product in Admin Panel" width="50%"/>
 
-#### Delete Review  
+### Delete Review  
 
 <img src="docs/features/delete_review_admin.webp" alt="Delete Review Post in Admin Panel" width="50%"/>
 
-#### Approve Review 
+### Approve Review 
 
 <img src="docs/features/approve_review_admin.webp" alt="Approve Review for Post in Admin Panel" width="50%"/>
 
-#### Login Page Admin
+### Login Page Admin
 
 <img src="docs/features/login_screen_admin.webp" alt="Login Page Admin" width="50%"/>
 
 
-## Technologies Used
+# Technologies Used
 
 * [Python](https://en.wikipedia.org/wiki/Python_(programming_language)) - Provides the backend functionality for the site.
 * [HTML5](https://en.wikipedia.org/wiki/HTML) - Provides the content and structure for the website.
 * [CSS3](https://en.wikipedia.org/wiki/CSS) - Provides the styling for the website.
 * [JavaScript](https://en.wikipedia.org/wiki/JavaScript) - Provides interactive elements of the website
 
-## Frameworks & Software
+# Frameworks & Software
 * [Gitpod](http://gitpod.io) - Cloud based IDE
 * [Bootstrap](https://getbootstrap.com/) - A CSS framework that helps building solid, responsive, mobile-first sites
 * [Django](https://www.djangoproject.com/) - A model-view-template framework used to create the Review | Alliance site
@@ -669,7 +684,7 @@ Note you must be a registered User to create a review if not then you will be re
 * [PEP8 Validation](http://pep8online.com/) - Used to validate code
 * [JSHint Validation](https://jshint.com/) - Used to validate JavaScript code
 
-## Testing
+# Testing
 ### Lighthouse Homepage Desktop Test
 ![Lighthouse Homepage Testing Desktop](docs/testing/lighthouse/homepage_desktop.webp)
 ### Lighthouse Homepage Mobile Test
@@ -686,42 +701,34 @@ Note you must be a registered User to create a review if not then you will be re
 ![Lighthouse Sign in Testing Desktop](docs/testing/lighthouse/login_desktop.webp)
 ### Lighthouse Sign in Mobile Test
 ![Lighthouse Sign in Testing Mobile](docs/testing/lighthouse/signin_mob.webp)
-
-### Lighthouse Payment Cancelled Desktop Test
-![Lighthouse Payment Cancelled Testing Desktop](docs/testing/lighthouse/payment_cancelled_desktop.webp)
-### Lighthouse Payment Cancelled Mobile Test
-![Lighthouse Payment Cancelled Testing Mobile](docs/testing/lighthouse/payment_cancelled_mob.webp)
-
-### Lighthouse Payment Successful Desktop Test
-![Lighthouse Payment Successful Testing Desktop](docs/testing/lighthouse/payment_successful_desktop.webp)
-### Lighthouse Payment Sucessful Mobile Test
-![Lighthouse Payment Successful Testing Mobile](docs/testing/lighthouse/payment_successful_mob.webp)
-
-### Lighthouse Product Details Desktop Test
-![Lighthouse Product Details Testing Desktop](docs/testing/lighthouse/Product_details_desktop.webp)
-### Lighthouse Product Details Mobile Test
-![Lighthouse Product Details Testing Mobile](docs/testing/lighthouse/Product_details_mob.webp)
-
-### Lighthouse Products Desktop Test
-![Lighthouse Products Testing Desktop](docs/testing/lighthouse/products_desktop.webp)
-### Lighthouse Products Mobile Test
-![Lighthouse Products Testing Mobile](docs/testing/lighthouse/product_mob.webp)
-
 ### Lighthouse Profile Desktop Test
 ![Lighthouse Profile Testing Desktop](docs/testing/lighthouse/profile_desktop.webp)
 ### Lighthouse Profile Mobile Test
 ![Lighthouse Profile Testing Mobile](docs/testing/lighthouse/profile_mob.webp)
-
 ### Lighthouse Signout Desktop Test
 ![Lighthouse Signout Testing Desktop](docs/testing/lighthouse/signout_desktop.webp)
 ### Lighthouse Signout Mobile Test
 ![Lighthouse Signout Testing Mobile](docs/testing/lighthouse/signout_mob.webp)
-
+### Lighthouse Payment Cancelled Desktop Test
+![Lighthouse Payment Cancelled Testing Desktop](docs/testing/lighthouse/payment_cancelled_desktop.webp)
+### Lighthouse Payment Cancelled Mobile Test
+![Lighthouse Payment Cancelled Testing Mobile](docs/testing/lighthouse/payment_cancelled_mob.webp)
+### Lighthouse Payment Successful Desktop Test
+![Lighthouse Payment Successful Testing Desktop](docs/testing/lighthouse/payment_successful_desktop.webp)
+### Lighthouse Payment Sucessful Mobile Test
+![Lighthouse Payment Successful Testing Mobile](docs/testing/lighthouse/payment_successful_mob.webp)
+### Lighthouse Product Details Desktop Test
+![Lighthouse Product Details Testing Desktop](docs/testing/lighthouse/Product_details_desktop.webp)
+### Lighthouse Product Details Mobile Test
+![Lighthouse Product Details Testing Mobile](docs/testing/lighthouse/Product_details_mob.webp)
+### Lighthouse Products Desktop Test
+![Lighthouse Products Testing Desktop](docs/testing/lighthouse/products_desktop.webp)
+### Lighthouse Products Mobile Test
+![Lighthouse Products Testing Mobile](docs/testing/lighthouse/product_mob.webp)
 ### Lighthouse Subscription Desktop Test
 ![Lighthouse Subscription Testing Desktop](docs/testing/lighthouse/subscription_desktop.webp)
 ### Lighthouse Subscription Mobile Test
 ![Lighthouse Subscription Testing Mobile](docs/testing/lighthouse/subscription_mob.webp)
-
 ### Lighthouse Wishlist Desktop Test
 ![Lighthouse Wishlist Testing Desktop](docs/testing/lighthouse/wishlist_desktop.webp)
 ### Lighthouse Wishlist Mobile Test
@@ -744,37 +751,37 @@ Note you must be a registered User to create a review if not then you will be re
 
 #### CI Python Linter Testing (pep8)
 ##### admmin.py - fitness
-![Admin.py](docs/testing/adminpy_pep8.webp)
+![admin.py](docs/testing/pylint/admin_py_fitness.webp)
 ##### apps.py - fitness
-![Admin.py](docs/testing/adminpy_pep8.webp)
+![apps.py](docs/testing/pylint/apps_py_fitness.webp)
 ##### forms.py - fitness
-![Forms.py](docs/testing/formspy_pep8.webp)
+![forms.py](docs/testing/pylint/forms_py_fitness.webp)
 ##### Models.py - fitness
-![Models.py](docs/testing/modelspy_pep8.webp)
+![models.py](docs/testing/pylint/models_py_fitness.webp/)
 ##### Urls.py - fitness
-![Urls.py](docs/testing/urlspy_pep8.webp)
+![urls.py](docs/testing/pylint/urls_py_fitness.webp)
 ##### Views.py - fitness
-![Views.py](docs/testing/viewspy_pep8.webp)
+![views.py](docs/testing/pylint/views_py_fitness.webp)
 ##### apps.py - Cart
-![Admin.py](docs/testing/adminpy_pep8.webp)
-##### admmin.py - Cart
-![Admin.py](docs/testing/adminpy_pep8.webp)
+![apps.py - cart](docs/testing/pylint/apps_py_cart.webp)
+##### admin.py - Cart
+![admin.py - cart](docs/testing/pylint/admin_py_cart.webp)
 ##### Models.py - Cart
-![Models.py](docs/testing/modelspy_pep8.webp)
+![models.py - cart](docs/testing/pylint/models_py_cart.webp)
 ##### Urls.py - Cart
-![Urls.py](docs/testing/urlspy_pep8.webp)
+![urls.py - cart](docs/testing/pylint/urls_py_cart.webp)
 ##### Views.py - Cart
-![Views.py](docs/testing/viewspy_pep8.webp)
+![views.py - cart](docs/testing/pylint/views_py_cart.webp)
 ##### Manage.py
-![Views.py](docs/testing/viewspy_pep8.webp)
+![manage.py](docs/testing/pylint/manage_py.webp)
 ##### wgsi.py
-![Views.py](docs/testing/viewspy_pep8.webp)
-##### test_settings.py
-![Views.py](docs/testing/viewspy_pep8.webp)
+![wgsi.py](docs/testing/pylint/wsgi_py.webp)
 ##### context_processors.py
-![Views.py](docs/testing/viewspy_pep8.webp)
+![context_processors.py](docs/testing/pylint/context_processors_py_fitness.webp)
 ##### signals.py
-![Views.py](docs/testing/viewspy_pep8.webp)
+![signals.py](docs/testing/pylint/signals_py_fitness.webp)
+##### test_settings.py
+![test_settings.py](docs/testing/pylint/test_settings_py.webp)
 
 ### Automated Testing
 Refer to Feature Screenshots and also automated testing for confirmation of successful testing.
@@ -826,8 +833,6 @@ Refer to Feature Screenshots and also automated testing for confirmation of succ
 | --- | --- | :---: |
 | Subscription Plans Management | Manage subscription plans with attributes such as name, price, duration, benefits, spotlight status, and activity status. | ✓ |
 | User Profile Extension | Extend the default User model with additional attributes like profile picture, fitness goal, phone, and subscription-related details. | ✓ |
-| Exercise Plans | Provide detailed exercise plans with attributes like title, difficulty, category, and price. | ✓ |
-| Nutrition Plans | Offer nutrition plans with details such as diet type, calories, and pricing. | ✓ |
 | Product Management | Manage a catalog of products with attributes like name, description, price, stock, and spotlight status. | ✓ |
 | Order Management | Record user orders with total cost and order details. | ✓ |
 | Reviews | Allow users to leave product reviews with ratings and comments, subject to admin approval. | ✓ |
@@ -850,13 +855,13 @@ Refer to Feature Screenshots and also automated testing for confirmation of succ
 | Product Spotlight Filtering | Admins can filter and view spotlighted products. | ✓ |
 | Secure User Data | Ensure all sensitive user data is handled securely in models. | ✓ |
 
-## SEO Marketing Overview
+### SEO Marketing Overview
 
 Rockfit offers a seamless and user-friendly platform for fitness enthusiasts to browse and purchase products, explore subscription plans, manage wishlists, and stay connected with community updates. It’s designed to promote an active and healthy lifestyle while offering a personalized shopping experience.
 
 ---
 
-## Features
+### Features
 
 - **Product Catalog**: Browse a curated selection of fitness products, including workout gear, supplements, and equipment.
 - **Subscriptions**: Choose from tailored fitness plans designed to meet individual health goals.
@@ -867,7 +872,7 @@ Rockfit offers a seamless and user-friendly platform for fitness enthusiasts to 
 
 ---
 
-## E-Commerce Business Model
+# E-Commerce Business Model
 
 ### Core Business Model
 Rockfit operates on a **product and subscription-based model**:
@@ -885,7 +890,7 @@ Rockfit operates on a **product and subscription-based model**:
 
 ---
 
-## Marketing Strategies
+# Marketing Strategies
 
 ### Community Engagement
 - Encourage user interaction by sharing fitness tips and updates directly on the platform.
@@ -903,7 +908,7 @@ Rockfit operates on a **product and subscription-based model**:
 
 ---
 
-## To Do
+# To Do
 Images are not high quality therefore I would like to have a professional photographer for a real world website.  Also when password reset is completed, the email functionality is not fully set up however the terminal does confirm the functionality of the submission.
 ![Password Reset Message](docs/testing/password_reset_message.webp)
 
@@ -911,10 +916,10 @@ Also I would like to implement a feature that suggests similiar Products to the 
 - Same category as the viewed product.
 - Shared tags or similar price ranges.
 
-## Bugs
+# Bugs
 I deployed the website on Heroku in the United States region instead of the European region, this can affect performance speeds.
 
-## Deployment
+# Deployment
 This website is deployed to Heroku from a GitHub repository, the following steps were taken:
 
 #### Creating Repository on GitHub
@@ -941,7 +946,7 @@ This website is deployed to Heroku from a GitHub repository, the following steps
 - Below that in the **search for a repository to connect to** search box enter the name of your repository that you created on **GitHub** and click **connect**
 - Once it has been connected scroll down to the **Manual Deploy** and click **Deploy branch** when it has deployed you will see a **view app** button below and this will bring you to your newly deployed app.
 - Please note that when deploying manually you will have to deploy after each change you make to your repository.
-## Credits
+# Credits
 Colour Palette designed using [coolors.co](https://coolors.co/312118-ffffff-d3c27e-000000)
 Icons for social medaia using [fontawesome.com](https://fontawesome.com/search?q=x&o=r)
 Images used from [freepik.com](https://www.freepik.com/) and [pexels.com](https://www.pexels.com/)
