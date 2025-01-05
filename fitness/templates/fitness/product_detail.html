@@ -28,8 +28,6 @@
             <h1 class="card-title">{{ product.name }}</h1>
             <p class="card-text">{{ product.description }}</p>
             <p class="card-text">€{{ product.price }}</p>
-
-            <!-- Action Buttons -->
             <div class="d-flex justify-content-between mt-3">
                 {% if user.is_authenticated %}
                     <form action="{% url 'cart:add_to_cart' product.id 'product' %}" method="post">

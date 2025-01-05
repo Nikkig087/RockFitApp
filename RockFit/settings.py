@@ -89,7 +89,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ADMIN_EMAIL = (
-    "Nikki@Rockfit.com"  # Dummy admin email for testing
+    "Nikki@Rockfit.com"
 )
 
 ROOT_URLCONF = "RockFit.urls"

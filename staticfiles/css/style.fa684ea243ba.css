@@ -42,8 +42,8 @@ body {
 }
 .container.mt-4 img {
   width: 100%;
-  height: auto; /* Adjust as per aspect ratio */
-  min-height: 300px; /* Adjust height to match content */
+  height: auto; 
+  min-height: 300px; 
 }
 
 

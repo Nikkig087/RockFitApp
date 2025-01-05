@@ -92,7 +92,7 @@ Our Store is your go-to source for fitness plans and products. Our website featu
 
 ### Password Reset Confirmation Desktop
 
-<img src="docs/wireframes/password_reset_confirmation.webp" alt="Password Reset Confirmation Page Desktop" width="50%"/>
+<img src="docs/wireframes/password_reset_confirmation_deskop.webp" alt="Password Reset Confirmation Page Desktop" width="50%"/>
 
 ### Password Reset Confirmation Mobile
 
@@ -571,7 +571,7 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 
 ### 404 Page Desktop
 
-<img src="docs/features/page404_desktop.webp" alt="Page 404 Desktop" width="50%"/>
+<img src="docs/features/page404.webp" alt="Page 404 Desktop" width="50%"/>
 
 ### 404 Page Mobile
 
@@ -596,7 +596,7 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 
 ### Edit or Delete Review Buttons Desktop Page
 
-<img src="docs/features/edit_delete_review_desktop.webp" alt="Edit or Delete Review Buttons Desktop" width="50%"/>
+<img src="docs/features/edit_delete_review.webp" alt="Edit or Delete Review Buttons Desktop" width="50%"/>
 
 ### Edit or Delete Review Buttons Mobile Page
 
@@ -605,7 +605,7 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 
 ### Edit Review Desktop Page
 
-<img src="docs/features/edit_review_desktop.webp" alt="Edit Comment Desktop" width="50%"/>
+<img src="docs/features/edit_review.webp" alt="Edit Comment Desktop" width="50%"/>
 
 ### Edit Review Mobile Page
 
@@ -646,7 +646,7 @@ Note you must be a registered User to create a review if not then you will be re
 
 ### Edit Product  
 
-<img src="docs/features/update_product_admin.webp" alt="Edit Product in Admin Panel" width="50%"/>
+<img src="docs/features/change_product_admin.webp" alt="Edit Product in Admin Panel" width="50%"/>
 
 ### Delete Review  
 
@@ -658,7 +658,7 @@ Note you must be a registered User to create a review if not then you will be re
 
 ### Login Page Admin
 
-<img src="docs/features/login_screen_admin.webp" alt="Login Page Admin" width="50%"/>
+<img src="docs/features/admin_login.webp" alt="Login Page Admin" width="50%"/>
 
 
 # Technologies Used

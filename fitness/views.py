@@ -60,9 +60,6 @@ def subscription_plans(request):
     return render(request, "fitness/subscription.html", context)
 
 
-# @login_required
-
-
 def subscription_view(request):
     user = request.user
     subscription_plans = SubscriptionPlan.objects.all()
@@ -72,9 +69,6 @@ def subscription_view(request):
         "subscription_plans": subscription_plans,
     }
     return render(request, "fitness/subscription.html", context)
-
-
-# @login_required
 
 
 def subscribe(request, plan_id):
@@ -108,9 +102,6 @@ def subscribe(request, plan_id):
             f"You've successfully subscribed to the {plan.name} plan!",
         )
     return redirect("profile")
-
-
-# @login_required
 
 
 def cancel_subscription(request):
@@ -370,9 +361,6 @@ def wishlist_view(request):
     )
 
 
-# @login_required
-
-
 def remove_from_wishlist(request, product_id):
     """
     Removes a product from the user's wishlist.
@@ -403,9 +391,6 @@ def wishlist_count(request):
     else:
         count = 0
     return {"wishlist_count": count}
-
-
-# @login_required
 
 
 def post_update(request):
@@ -522,9 +507,6 @@ def update_profile(request):
     )
 
 
-# @login_required
-
-
 def create_review(request, product_id):
     """
     Allow users to create a review for a product.
@@ -621,12 +603,12 @@ def custom_404_view(request, exception):
 def privacy_policy(request):
     return render(
         request, "fitness/privacy_policy.html"
-    )  # Adjust the path if needed
+    )
 
 
 def csp_view(request):
     context = {}
     context.update(
         csrf(request)
-    )  # This adds a nonce to the context
+    )
     return render(request, "base.html", context)
