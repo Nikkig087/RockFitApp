@@ -898,7 +898,9 @@ Rockfit operates on a **product and subscription-based model**:
 
 ### Social Media Presence
 - Leverage platforms like Facebook to connect with users. 
-- For more information, visit the **Rockfit Facebook Page Mockup**: [Facebook Mockup](docs/design/facebook_page.webp).
+- For more information, visit the **Rockfit Facebook Page Mockup**: 
+
+![Facebook Mockup](docs/design/facebook_page.webp).
 
 ### Organic Content Marketing
 - Publish fitness-related articles, product guides, and tips to educate users and improve SEO via the Community updates and Newsletter Signup Options.
