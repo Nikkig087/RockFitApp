@@ -427,6 +427,42 @@ a {
   color: gold;
 }
 
+.modal-header {
+  background-color: silver;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  color: black;
+  z-index: 1;
+  font-weight: bold;
+}
+.modal-body {
+  background-color: silver;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  z-index: 1;
+  color: black;
+}
+.modal-footer {
+  background-color: silver;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  z-index: 1;
+  font-weight: bold;
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+.pop {
+  background-color: gold;
+  color: black;
+
+}
 /* Responsive Styles */
 
 /* Mobile Styles (default for small screens) */
