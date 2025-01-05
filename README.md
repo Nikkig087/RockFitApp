@@ -579,20 +579,20 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 
 ### Contact Form Desktop
 
-<img src="docs/features/contact_desktop.webp" alt="Contact Desktop" width="50%"/>
+<img src="docs/features/contact_desktop.webp" alt="Contact Form Desktop" width="50%"/>
 
 ### Contact Form Mobile
 
-<img src="docs/features/contact_mob.webp" alt="Contact Mobile" width="50%"/>
+<img src="docs/features/contact_mob.webp" alt="Contact Form Mobile" width="50%"/>
 
 ## CRUD User
 ### Create Review Desktop Page
 
-<img src="docs/features/review_desktop.webp" alt="Comments Desktop" width="50%"/>
+<img src="docs/features/review_desktop.webp" alt="Create Review Desktop" width="50%"/>
 
 ### Create Review Mobile Page
 
-<img src="docs/features/review_mobile.webp" alt="Comments Mobile" width="50%"/>
+<img src="docs/features/review_mobile.webp" alt="Create Review Mobile" width="50%"/>
 
 ### Edit or Delete Review Buttons Desktop Page
 
@@ -605,20 +605,20 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 
 ### Edit Review Desktop Page
 
-<img src="docs/features/edit_review.webp" alt="Edit Comment Desktop" width="50%"/>
+<img src="docs/features/edit_review.webp" alt="Edit Review Desktop" width="50%"/>
 
 ### Edit Review Mobile Page
 
-<img src="docs/features/edit_review_mob.webp" alt="Edit Comment Mobile" width="50%"/>
+<img src="docs/features/edit_review_mob.webp" alt="Edit Review Mobile" width="50%"/>
 
 
 ### Delete Review Desktop Page
 
-<img src="docs/features/delete_review.webp" alt="Delete Review" width="50%"/>
+<img src="docs/features/delete_review.webp" alt="Delete Review Desktop" width="50%"/>
 
 ### Delete Review Mobile Page
 
-<img src="docs/features/delete_review_mob.webp" alt="Delete Review" width="50%"/>
+<img src="docs/features/delete_review_mob.webp" alt="Delete Review Mobile" width="50%"/>
 
 ### Create a Review
 Note you must be a registered User to create a review if not then you will be redirected to the login page as per the view snippet below.  Here you can register or sign in, there is also an option to recover your password if you have forgotten it.
