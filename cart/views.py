@@ -10,6 +10,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from django.urls import reverse
 from decimal import Decimal
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils import timezone
 
 
 @login_required(login_url="login")
@@ -85,6 +88,19 @@ def add_to_cart(request, item_id, item_type):
     # Corrected the redirection to use proper names
     return redirect("fitness:products" if item_type == "product" else "fitness:subscription_plans")
 
+@login_required
+def payment_failed(request):
+    user_email = request.user.email  
+
+    send_mail(
+        subject="Payment Failed - Rockfit",
+        message="Unfortunately, your payment was unsuccessful. Please check your payment details and try again.",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email],
+        fail_silently=False,
+    )
+
+    return render(request, "payments/cancel.html")
 
 @login_required
 def remove_from_cart(request, cart_item_id):
@@ -210,7 +226,7 @@ def create_checkout_session(request):
     except Exception as e:
         return HttpResponse(f"Error: {str(e)}")
 
-
+'''
 @login_required
 def payment_success(request):
     """
@@ -232,8 +248,59 @@ def payment_success(request):
         messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
         del request.session["selected_plan_id"]
 
-    return render(request, "cart/payment_success.html")
+        
 
+    return render(request, "cart/payment_success.html")
+'''
+@login_required
+def payment_success(request):
+    """
+    Handle the successful payment response from Stripe, update the user's subscription,
+    and send a confirmation email including order details.
+    """
+    cart = Cart.objects.get(user=request.user)
+    cart_items = cart.items.all()  # Get all cart items before clearing them
+
+    # Construct the order details for the email
+    order_details = "Here is your order summary:\n\n"
+    for item in cart_items:
+        if item.product:
+            order_details += f"- {item.product.name} (x{item.quantity}) - €{item.total_price}\n"
+        elif item.subscription:
+            order_details += f"- {item.subscription.name} (Subscription) - €{item.subscription.price}\n"
+
+    order_details += f"\nTotal Amount: €{cart.total_cost}\n"
+
+    # Clear the cart after successful payment
+    cart.items.all().delete()
+
+    # Handle subscriptions if applicable
+    subscription_plan_id = request.session.get("selected_plan_id")
+    if subscription_plan_id:
+        plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
+        user_profile = request.user.userprofile
+        user_profile.subscription_plan = plan
+        user_profile.subscription_start_date = timezone.now()
+        user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
+        user_profile.save()
+
+        messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
+        del request.session["selected_plan_id"]
+
+        # Add subscription details to email
+        order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
+
+    # Send confirmation email
+    send_mail(
+        subject="Order Confirmation - Rockfit",
+        message=f"Dear {request.user.first_name},\n\nThank you for your purchase!\n\n{order_details}\n\n"
+                "Enjoy your order!\nRockfit Team",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[request.user.email],
+        fail_silently=False,
+    )
+
+    return render(request, "cart/payment_success.html")
 
 def cancel_view(request):
     """
