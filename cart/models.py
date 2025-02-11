@@ -68,7 +68,13 @@ class CartItem(models.Model):
         SubscriptionPlan, null=True, blank=True, on_delete=models.CASCADE
     )
     quantity = models.PositiveIntegerField(default=1)
-
+    def total_price(self):
+        """Calculate the total price of this cart item."""
+        if self.product:
+            return self.product.price * self.quantity
+        elif self.subscription:
+            return self.subscription.price  # Subscriptions may not have quantities
+        return 0 
     def __str__(self):
         """
         Return a string representation of the CartItem.

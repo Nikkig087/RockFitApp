@@ -265,11 +265,12 @@ def payment_success(request):
     order_details = "Here is your order summary:\n\n"
     for item in cart_items:
         if item.product:
-            order_details += f"- {item.product.name} (x{item.quantity}) - €{item.total_price}\n"
+            order_details += f"- {item.product.name} (x{item.quantity}) - €{item.total_price()}\n"  # ✅ FIXED
         elif item.subscription:
             order_details += f"- {item.subscription.name} (Subscription) - €{item.subscription.price}\n"
 
-    order_details += f"\nTotal Amount: €{cart.total_cost}\n"
+    order_total = cart.get_total_cost()  # ✅ FIXED
+    order_details += f"\nTotal Amount: €{order_total}\n"
 
     # Clear the cart after successful payment
     cart.items.all().delete()
@@ -300,7 +301,7 @@ def payment_success(request):
         fail_silently=False,
     )
 
-    return render(request, "cart/payment_success.html")
+    return render(request, "cart/payment_success.html", {"order_total": order_total})
 
 def cancel_view(request):
     """
