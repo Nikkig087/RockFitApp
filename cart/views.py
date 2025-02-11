@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cart, CartItem
-from fitness.models import Product, SubscriptionPlan
+from fitness.models import Product, SubscriptionPlan, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import stripe
@@ -87,20 +87,39 @@ def add_to_cart(request, item_id, item_type):
     
     # Corrected the redirection to use proper names
     return redirect("fitness:products" if item_type == "product" else "fitness:subscription_plans")
-
 @login_required
-def payment_failed(request):
-    user_email = request.user.email  
+def process_payment(request):
+    """
+    Process the payment using Stripe and redirect accordingly.
+    """
+    stripe.api_key = settings.STRIPE_SECRET_KEY
 
-    send_mail(
-        subject="Payment Failed - Rockfit",
-        message="Unfortunately, your payment was unsuccessful. Please check your payment details and try again.",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user_email],
-        fail_silently=False,
-    )
+    try:
+        # Assume `payment_intent_id` is stored in session
+        payment_intent_id = request.session.get("payment_intent_id")
+        if not payment_intent_id:
+            messages.error(request, "Payment session expired. Please try again.")
+            return redirect("cart:cart_view")
 
-    return render(request, "payments/cancel.html")
+        # Retrieve payment status
+        payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+
+        if payment_intent.status == "succeeded":
+            return redirect("cart:payment_success")
+        else:
+            return redirect("cart:payment_failed")
+
+    except stripe.error.CardError as e:
+        messages.error(request, "Your card was declined. Please try another payment method.")
+        return redirect("cart:payment_failed")
+
+    except stripe.error.StripeError as e:
+        messages.error(request, "Payment processing error. Please try again.")
+        return redirect("cart:payment_failed")
+
+    except Exception as e:
+        messages.error(request, "An unexpected error occurred.")
+        return redirect("cart:payment_failed")
 
 @login_required
 def remove_from_cart(request, cart_item_id):
@@ -269,17 +288,18 @@ def payment_success(request):
         elif item.subscription:
             order_details += f"- {item.subscription.name} (Subscription) - €{item.subscription.price}\n"
 
-    order_total = cart.get_total_cost()  # ✅ FIXED
+    order_total = cart.get_total_cost() 
     order_details += f"\nTotal Amount: €{order_total}\n"
 
     # Clear the cart after successful payment
     cart.items.all().delete()
 
-    # Handle subscriptions if applicable
+   # Handle subscriptions if applicable
     subscription_plan_id = request.session.get("selected_plan_id")
     if subscription_plan_id:
         plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
-        user_profile = request.user.userprofile
+        user_profile = get_object_or_404(UserProfile, user=request.user)  # ✅ Corrected
+
         user_profile.subscription_plan = plan
         user_profile.subscription_start_date = timezone.now()
         user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
@@ -294,14 +314,34 @@ def payment_success(request):
     # Send confirmation email
     send_mail(
         subject="Order Confirmation - Rockfit",
-        message=f"Dear {request.user.first_name},\n\nThank you for your purchase!\n\n{order_details}\n\n"
-                "Enjoy your order!\nRockfit Team",
+        message=(
+            f"Dear {request.user.username},\n\n"
+            "Thank you for your purchase!\n\n"
+            f"{order_details}\n\n"
+            "Enjoy your order!\nRockfit Team"
+        ),
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[request.user.email],
         fail_silently=False,
     )
 
     return render(request, "cart/payment_success.html", {"order_total": order_total})
+
+@login_required
+def payment_failed(request):
+    user_email = request.user.email  
+
+    send_mail(
+        subject="Payment Failed - Rockfit",
+        message="Unfortunately, your payment was unsuccessful. Please check your payment details and try again.",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email],
+        fail_silently=False,
+    )
+
+    messages.error(request, "Payment failed. Please check your details and try again.")
+    return render(request, "cart/payment_failed.html")
+
 
 def cancel_view(request):
     """
