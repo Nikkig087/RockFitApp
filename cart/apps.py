@@ -8,7 +8,6 @@ It specifies metadata and default settings related to the app.
 
 from django.apps import AppConfig
 
-
 class CartConfig(AppConfig):
     """
     Configuration class for the cart application.
@@ -27,3 +26,7 @@ class CartConfig(AppConfig):
 
     default_auto_field = "django.db.models.BigAutoField"
     name = "cart"
+
+
+    def ready(self):
+        import cart.signals  # Ensure signals are imported

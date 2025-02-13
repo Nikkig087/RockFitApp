@@ -21,6 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
 
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
@@ -28,7 +31,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net",
     ".herokuapp.com",
-    "8000-nikkig087-rockfitapp-vlfx33iw9of.ws-eu117.gitpod.io"
+    "8000-nikkig087-rockfitapp-vlfx33iw9of.ws-eu117.gitpod.io",
+    '8080-nikkig087-rockfitapp-vlfx33iw9of.ws-eu117.gitpod.io'
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net",
@@ -59,6 +63,7 @@ INSTALLED_APPS = [
     "csp",
     "imagekit",
     "whitenoise.runserver_nostatic",
+   
 ]
 
 MIDDLEWARE = [

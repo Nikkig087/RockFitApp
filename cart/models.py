@@ -84,3 +84,10 @@ class CartItem(models.Model):
         elif self.subscription:
             return f"{self.subscription.name} (x{self.quantity})"
         return "CartItem"
+
+
+
+class FailedPayment(models.Model):
+    email = models.EmailField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
