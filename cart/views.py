@@ -87,38 +87,63 @@ def add_to_cart(request, item_id, item_type):
     
     # Corrected the redirection to use proper names
     return redirect("fitness:products" if item_type == "product" else "fitness:subscription_plans")
-@login_required
+
+
 def process_payment(request):
-    """
-    Process the payment using Stripe and redirect accordingly.
-    """
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
     try:
-        # Assume `payment_intent_id` is stored in session
         payment_intent_id = request.session.get("payment_intent_id")
+
         if not payment_intent_id:
             messages.error(request, "Payment session expired. Please try again.")
             return redirect("cart:cart_view")
 
-        # Retrieve payment status
+        
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+
+        logger.info(f" Payment Intent Status: {payment_intent.status}")
 
         if payment_intent.status == "succeeded":
             return redirect("cart:payment_success")
+
+        elif payment_intent.status in ["requires_payment_method", "requires_action", "canceled"]:
+            logger.error("Payment failed: Insufficient funds or card declined!")
+
+            
+            send_mail(
+                subject="Payment Failed - Rockfit",
+                message="Your payment was unsuccessful. Please check your card details and try again.",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[request.user.email],
+                fail_silently=False,
+            )
+
+            return redirect("cart:payment_failed")
+
         else:
+            logger.error(f"Unexpected payment status: {payment_intent.status}")
+            messages.error(request, "An unexpected payment issue occurred. Please try again.")
             return redirect("cart:payment_failed")
 
     except stripe.error.CardError as e:
-        messages.error(request, "Your card was declined. Please try another payment method.")
-        return redirect("cart:payment_failed")
+        logger.error(f"Stripe CardError: {e.user_message}")
+        messages.error(request, f"Your card was declined: {e.user_message}")
 
-    except stripe.error.StripeError as e:
-        messages.error(request, "Payment processing error. Please try again.")
+        send_mail(
+            subject="Payment Failed - Rockfit",
+            message=f"Dear {request.user.username},\n\nYour payment was unsuccessful. Reason: {e.user_message}. "
+                    "Please check your payment details and try again.",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[request.user.email],
+            fail_silently=False,
+        )
+
         return redirect("cart:payment_failed")
 
     except Exception as e:
-        messages.error(request, "An unexpected error occurred.")
+        logger.error(f"🚨 Unexpected error: {str(e)}")
+        messages.error(request, "An unexpected error occurred. Please try again.")
         return redirect("cart:payment_failed")
 
 @login_required
@@ -177,61 +202,37 @@ def update_cart_item(request, cart_item_id):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+from django.shortcuts import redirect, get_object_or_404, render
+from django.contrib import messages
+from django.core.mail import send_mail
+import stripe
 
 def create_checkout_session(request):
-    """
-    Create a Stripe checkout session with the user's cart items.
-    """
     cart = get_object_or_404(Cart, user=request.user)
-
-    subscription_plan = None
-    line_items = []
-    total_cost = 0
 
     if cart.items.count() == 0:
         messages.error(request, "Your cart is empty.")
-        return redirect("cart:view_cart")  # Redirect back to cart view if empty
+        return redirect("cart:view_cart")  
 
+    line_items = []
     for item in cart.items.all():
-        if item.product:
-            item_total = item.product.price * item.quantity
-            total_cost += item_total
-            line_items.append(
-                {
-                    "price_data": {
-                        "currency": "eur",
-                        "product_data": {
-                            "name": item.product.name,
-                        },
-                        "unit_amount": int(item.product.price * 100),
-                    },
-                    "quantity": item.quantity,
-                }
-            )
-        elif item.subscription:
-            subscription_plan = item.subscription
-            item_total = item.subscription.price
-            total_cost += item_total
-            line_items.append(
-                {
-                    "price_data": {
-                        "currency": "eur",
-                        "product_data": {
-                            "name": item.subscription.name,
-                        },
-                        "unit_amount": int(item.subscription.price * 100),
-                    },
-                    "quantity": 1,
-                }
-            )
+        price = item.product.price if item.product else item.subscription.price
+        line_items.append(
+            {
+                "price_data": {
+                    "currency": "eur",
+                    "product_data": {"name": item.product.name if item.product else item.subscription.name},
+                    "unit_amount": int(price * 100),
+                },
+                "quantity": item.quantity if item.product else 1,
+            }
+        )
 
-    if subscription_plan:
-        request.session["selected_plan_id"] = subscription_plan.id
-    
     try:
         success_url = request.build_absolute_uri(reverse("cart:success"))
         cancel_url = request.build_absolute_uri(reverse("cart:cancel"))
 
+        # No direct "failure_url" in Stripe Checkout, so we use metadata to track user
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=line_items,
@@ -239,11 +240,13 @@ def create_checkout_session(request):
             success_url=success_url,
             cancel_url=cancel_url,
             client_reference_id=request.user.id,
+            metadata={"user_email": request.user.email},  # Store user email in Stripe metadata
         )
 
         return redirect(checkout_session.url)
+
     except Exception as e:
-        return HttpResponse(f"Error: {str(e)}")
+        return render(request, "cart/payment_failed.html", {"error": str(e)})  # Show error directly in failed.html
 
 '''
 @login_required
@@ -271,6 +274,7 @@ def payment_success(request):
 
     return render(request, "cart/payment_success.html")
 '''
+
 @login_required
 def payment_success(request):
     """
@@ -327,6 +331,38 @@ def payment_success(request):
 
     return render(request, "cart/payment_success.html", {"order_total": order_total})
 
+'''
+
+def payment_failed(request):
+    """
+    Handles failed payments by checking Stripe sessions and sending an email.
+    """
+    session_id = request.GET.get("session_id")
+
+    if not session_id:
+        return render(request, "cart/payment_failed.html", {"error": "No session ID provided."})
+
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        # Check if payment was not successful
+        if session.payment_status == "unpaid":
+            user_email = session.metadata.get("user_email")  
+
+            # Send failure email
+            send_mail(
+                "Payment Failed - Rockfit",
+                "Unfortunately, your payment was unsuccessful. Please try again.",
+                "noreply@rockfit.com",
+                [user_email],
+            )
+
+        return render(request, "cart/payment_failed.html")
+
+    except Exception as e:
+        return render(request, "cart/payment_failed.html", {"error": str(e)})
+'''
+
 @login_required
 def payment_failed(request):
     user_email = request.user.email  
@@ -341,8 +377,7 @@ def payment_failed(request):
 
     messages.error(request, "Payment failed. Please check your details and try again.")
     return render(request, "cart/payment_failed.html")
-
-
+    
 def cancel_view(request):
     """
     Handle the canceled payment response from Stripe.
