@@ -50,4 +50,5 @@ urlpatterns = [
     path("cancel/", views.cancel_view, name="cancel"),
    # path('stripe/webhook/', views.stripe_webhook, name='stripe_webhook'),
        path('create-checkout-session/', views.create_checkout_session, name='create_checkout_session'),
+    path('payment-failed/', views.payment_failed, name='payment_failed'),
 ]

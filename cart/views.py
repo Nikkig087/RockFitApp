@@ -202,7 +202,10 @@ def update_cart_item(request, cart_item_id):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-
+from django.shortcuts import redirect, get_object_or_404, render
+from django.contrib import messages
+from django.core.mail import send_mail
+import stripe
 
 def create_checkout_session(request):
     cart = get_object_or_404(Cart, user=request.user)
@@ -227,9 +230,10 @@ def create_checkout_session(request):
 
     try:
         success_url = request.build_absolute_uri(reverse("cart:success"))
-        cancel_url = request.build_absolute_uri(reverse("cart:cancel"))
+        cancel_url = request.build_absolute_uri(reverse("cart:payment_failed"))
 
-        # No direct "failure_url" in Stripe Checkout, so we use metadata to track user
+     
+          # Include metadata when creating the checkout session
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=line_items,
@@ -244,43 +248,6 @@ def create_checkout_session(request):
 
     except Exception as e:
         return render(request, "cart/payment_failed.html", {"error": str(e)})  # Show error directly in failed.html
-
-
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-
-
-@csrf_exempt
-def stripe_webhook(request):
-    payload = request.body
-    signature = request.META['HTTP_STRIPE_SIGNATURE']
-    event = None
-
-    try:
-        event = stripe.Webhook.construct_event(payload, signature, settings.STRIPE_WEBHOOK_SECRET)
-    except ValueError:
-        return JsonResponse({'status': 'invalid payload'}, status=400)
-    except stripe.error.SignatureVerificationError:
-        return JsonResponse({'status': 'invalid signature'}, status=400)
-
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-        if session['payment_status'] == 'paid':
-            # Handle successful payment here
-
-    elif event['type'] == 'checkout.session.async_payment_failed':
-        session = event['data']['object']
-        user_email = session['customer_email']
-
-        send_mail(
-            subject="Payment Failed - Rockfit",
-            message="Your payment was unsuccessful. Please check your card details and try again.",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user_email],
-            fail_silently=False,
-        )
-
-    return JsonResponse({'status': 'success'})
 
 '''
 @login_required
@@ -365,12 +332,7 @@ def payment_success(request):
 
     return render(request, "cart/payment_success.html", {"order_total": order_total})
 
-'''
-
 def payment_failed(request):
-    """
-    Handles failed payments by checking Stripe sessions and sending an email.
-    """
     session_id = request.GET.get("session_id")
 
     if not session_id:
@@ -381,7 +343,7 @@ def payment_failed(request):
 
         # Check if payment was not successful
         if session.payment_status == "unpaid":
-            user_email = session.metadata.get("user_email")  
+            user_email = session.metadata.get("user_email")
 
             # Send failure email
             send_mail(
@@ -395,23 +357,36 @@ def payment_failed(request):
 
     except Exception as e:
         return render(request, "cart/payment_failed.html", {"error": str(e)})
-'
 
-@login_required
-def payment_failed(request):
-    user_email = request.user.email  
 
-    send_mail(
-        subject="Payment Failed - Rockfit",
-        message="Unfortunately, your payment was unsuccessful. Please check your payment details and try again.",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user_email],
-        fail_silently=False,
-    )
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    signature = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
 
-    messages.error(request, "Payment failed. Please check your details and try again.")
-    return render(request, "cart/payment_failed.html")
- '''   
+    try:
+        event = stripe.Webhook.construct_event(payload, signature, settings.STRIPE_WEBHOOK_SECRET)
+    except ValueError:
+        return JsonResponse({'status': 'invalid payload'}, status=400)
+    except stripe.error.SignatureVerificationError:
+        return JsonResponse({'status': 'invalid signature'}, status=400)
+
+    if event['type'] == 'checkout.session.async_payment_failed':
+        session = event['data']['object']
+        user_email = session['metadata']['user_email']
+
+        send_mail(
+            subject="Payment Failed - Rockfit",
+            message="Your payment was unsuccessful. Please check your card details and try again.",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user_email],
+            fail_silently=False,
+        )
+
+    return JsonResponse({'status': 'success'})
+
+    
 def cancel_view(request):
     """
     Handle the canceled payment response from Stripe.

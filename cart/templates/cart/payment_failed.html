@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+<head>
+  {% block extra_title %} - Payment failed {% endblock %}
+</head>
+
+<body>
+  {% block content %}
+  <div class="cancel-container container py-5">
+    <header class="text-center mb-4">
+      <h1 class="cancel">Payment Canceled</h1>
+    </header>
+    <main class="text-center">
+      <p class="cancel mb-4">It looks like your payment failed. What would you like to do next?</p>
+      <div class="button-group d-grid gap-3 d-md-flex justify-content-center">
+        <a href="{% url 'cart:view_cart' %}" class="btn btn-primary w-100 w-md-auto">Go Back to Cart</a>
+        <a href="{% url 'product_list' %}" class="btn btn-secondary w-100 w-md-auto">Go to Product List</a>
+      </div>
+    </main>
+  </div>
+  {% endblock %}
+</body>
