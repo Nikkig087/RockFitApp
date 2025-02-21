@@ -30,8 +30,10 @@
             <p class="card-text">€{{ product.price }}</p>
             <div class="d-flex justify-content-between mt-3">
                 {% if user.is_authenticated %}
-                    <form action="{% url 'cart:add_to_cart' product.id 'product' %}" method="post">
-                        {% csrf_token %}
+                
+                
+                <form action="{% url 'cart:add_to_cart' product.id 'product' %}" method="post" class="mt-2">
+                {% csrf_token %}
                         <button type="submit" class="btn btn-success">Add to Cart</button>
                     </form>
                     <form method="POST" action="{% url 'add_to_wishlist' product.id %}">

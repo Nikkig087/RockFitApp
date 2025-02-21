@@ -23,6 +23,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+STRIPE_PUBLISHABLE_KEY = ('STRIPE_PUBLISHABLE_KEY')
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -79,14 +80,16 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
-#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "sandbox.smtp.mailtrap.io"
-EMAIL_PORT = 2525
-EMAIL_HOST_USER = "6ca26c09b06434"
-EMAIL_HOST_PASSWORD = "728b24367df913"
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Rockfit <no-reply@rockfit.com>"
+
+
+EMAIL_BACKEND = 'anymail.backends.sendinblue.EmailBackend'
+ANYMAIL = {
+    "SENDINBLUE_API_KEY":"REMOVED",  
+}
+DEFAULT_FROM_EMAIL = 'rockfitt1907@gmail.com'  
+
+
+
 
 ACCOUNT_PASSWORD_RESET_REDIRECT_URL = (
     "/accounts/password_reset_done/"
