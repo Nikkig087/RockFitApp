@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>Shopping Cart | Rockfit App</title>
-    <meta name="description" content="{% if cart_items %}View and manage your shopping cart, check the products and subscriptions you've added to your cart, and proceed to checkout with ease.{% else %}Your cart is empty. Browse and add products to your cart for a smooth shopping experience.{% endif %}">
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="Your Shopping Cart | Rockfit">
-    <meta property="og:description" content="{% if cart_items %}Review your cart items, update quantities, and proceed to checkout.{% else %}Your cart is currently empty. Start shopping now!{% endif %}">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:type" content="website">
+<title>Shopping Cart | Rockfit App</title>
+<meta name="description" content="{% if cart_items %}View and manage your shopping cart, check the products and subscriptions you've added to your cart, and proceed to checkout with ease.{% else %}Your cart is empty. Browse and add products to your cart for a smooth shopping experience.{% endif %}">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Your Shopping Cart | Rockfit">
+<meta property="og:description" content="{% if cart_items %}Review your cart items, update quantities, and proceed to checkout.{% else %}Your cart is currently empty. Start shopping now!{% endif %}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:type" content="website">
 {% endblock %}
 
 {% block content %}
@@ -102,7 +101,13 @@
                 <strong>Final Total: €{{ final_total }}</strong>
             </div>
 
-            <a href="{% url 'cart:checkout' %}" class="btn btn-primary btn-lg stripe-button w-100">Checkout with Stripe</a>
+            <!-- Order Form Section -->
+            <h3>Enter Your Details</h3>
+            <form method="POST" action="{% url 'cart:process_checkout' %}">
+                {% csrf_token %}
+                {{ order_form.as_p }}  <!-- Renders the form fields -->
+                <button type="submit" class="btn btn-success btn-lg w-100">Place Order</button>
+            </form>
 
         {% else %}
             <p class="cart_status">Your cart is currently empty. Please add some items to your cart.</p>
@@ -126,4 +131,3 @@
 </script>
 
 {% endblock %}
-</body>

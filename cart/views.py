@@ -15,24 +15,359 @@ from django.conf import settings
 from django.utils import timezone
 
 
-@login_required(login_url="login")
-def view_cart(request):
+import stripe
+import json
+from django.conf import settings
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from .models import Order
+
+# Configure Stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+from django.core.mail import send_mail
+from django.http import HttpResponseServerError
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
+from django.contrib import messages
+#from .models import Cart, Order, OrderItem, SubscriptionPlan, UserProfile
+
+
+
+@login_required
+def payment_success(request):
     """
-    Display the user's cart with all cart items and the total cost.
+    Handle the successful payment response from Stripe, update the user's subscription,
+    and send a confirmation email including order details.
     """
-    cart, created = Cart.objects.get_or_create(user=request.user)
-    cart_items = cart.items.all()
-    total_cost = sum(
-        (item.product.price if item.product else item.subscription.price)
-        * item.quantity
-        for item in cart_items
+    try:
+        logger.info("Retrieving cart for the logged-in user...")
+        cart = Cart.objects.get(user=request.user)
+        cart_items = cart.items.all()
+
+        order_details = "Here is your order summary:\n\n"
+        for item in cart_items:
+            if item.product:
+                order_details += f"- {item.product.name} (x{item.quantity}) - €{item.product.price * item.quantity}\n"
+            elif item.subscription:
+                order_details += f"- {item.subscription.name} (Subscription) - €{item.subscription.price}\n"
+
+        order_total = cart.get_total_cost()
+        order_details += f"\nTotal Amount: €{order_total}\n"
+
+        logger.info("Clearing the cart after successful payment...")
+        cart.items.all().delete()
+
+        subscription_plan_id = request.session.get("selected_plan_id")
+        if subscription_plan_id:
+            logger.info("Handling subscription plan...")
+            plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
+            user_profile = get_object_or_404(UserProfile, user=request.user)
+
+            user_profile.subscription_plan = plan
+            user_profile.subscription_start_date = timezone.now()
+            user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
+            user_profile.save()
+
+            messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
+            del request.session["selected_plan_id"]
+
+            order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
+
+        logger.info("Sending confirmation email...")
+        send_mail(
+            subject="Order Confirmation - Rockfit",
+            message=(
+                f"Dear {request.user.username},\n\n"
+                "Thank you for your purchase!\n\n"
+                f"{order_details}\n\n"
+                "Enjoy your order!\nRockfit Team"
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[request.user.email],
+            fail_silently=False,
+        )
+
+        logger.info("Rendering success page...")
+        return render(request, "cart/success.html", {"order_total": order_total})
+
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        return HttpResponseServerError(f"An error occurred: {str(e)}")
+
+
+# Checkout Page
+from django.shortcuts import render, get_object_or_404
+from .models import Order
+
+def checkout(request, order_id):
+    """
+    Display the checkout page where the user can proceed with payment.
+    """
+    order = get_object_or_404(Order, id=order_id)
+
+    # If the order exists, render the checkout page (use order details as needed)
+    return render(request, 'cart/checkout.html', {'order': order})
+
+
+import stripe
+import json
+import logging
+from django.http import JsonResponse
+from django.conf import settings
+from django.core.mail import send_mail
+from .models import Order
+
+# Initialize logger
+logger = logging.getLogger(__name__)
+
+# Set Stripe API key
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+import stripe
+import json
+from .models import Order  # Import the Order model
+from django.conf import settings
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY  # Your Stripe secret key from environment variables
+
+from django.http import JsonResponse
+import stripe
+from django.conf import settings
+from .models import Order
+
+
+# Set your secret key from Stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+import stripe
+from django.conf import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+import stripe
+import json
+from django.conf import settings
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+import stripe
+import json
+from django.conf import settings
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from .models import Order, CartItem  # Adjust the import to your actual model if needed
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+import stripe
+import json
+from django.conf import settings
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from .models import Order  # Adjust the import to your actual model
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+import stripe
+from django.conf import settings
+from django.http import JsonResponse
+from django.core.mail import send_mail
+import json
+from .models import Order
+from decimal import Decimal
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+from django.core.mail import send_mail
+
+def send_success_email(order):
+    subject = "Your Order Has Been Confirmed!"
+    message = f"""
+    Hi {order.full_name},  
+
+    Thank you for your purchase! Your order #{order.id} has been successfully placed.  
+
+    Order Summary:  
+    ------------------------  
+    {format_order_items(order)}  
+    ------------------------  
+
+    Total Paid: €{order.total_price}  
+
+    Your order will be processed shortly.  
+
+    Thanks for shopping with us!  
+    RockFit Team
+    """
+    send_mail(subject, message, "noreply@rockfit.com", [order.user.email])
+
+def format_order_items(order):
+    return "\n".join(
+        [f"{item.quantity}x {item.product.name} - €{item.product.price * item.quantity}" for item in order.items.all()]
     )
 
-    if total_cost >= Decimal("50.00"):
-        delivery_fee = Decimal("0.00")
-    else:
-        delivery_fee = Decimal("5.00")
+
+def send_failed_email(email, error_message):
+    subject = "Payment Failed"
+    message = f"Your payment attempt failed with the following error: {error_message}"
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+
+import json
+import stripe
+from django.http import JsonResponse
+from django.conf import settings
+from django.shortcuts import get_object_or_404
+from .models import Cart, Order, CartItem
+#from .emails import send_success_email  # Import the email function
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+# views.py
+from .models import Order, OrderItem, CartItem, Cart
+from django.core.mail import send_mail
+
+from django.http import JsonResponse
+from .models import Order, OrderItem, Cart, CartItem
+import stripe
+
+# Your stripe secret key setup
+stripe.api_key = 'your-stripe-secret-key'
+
+def process_payment(request):
+    data = json.loads(request.body)
+    payment_method_id = data.get("payment_method_id")
+    email = data.get("email")
+    full_name = data.get("full_name")
+
+    try:
+        # Get the cart for the logged-in user
+        cart = Cart.objects.get(user=request.user)
+
+        # Create the order
+        order = Order.objects.create(
+            user=request.user,
+            total_price=cart.get_total_cost(),
+            status='pending',
+            full_name=full_name,
+            email=email
+        )
+
+        # Create the order items
+        for cart_item in cart.items.all():
+            print(f"DEBUG - Cart Item: {cart_item}")
+            print(f"DEBUG - Product: {cart_item.product} (Type: {type(cart_item.product)})")
+
+            if isinstance(cart_item.product, Product):
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity
+                )
+
+            elif cart_item.subscription:
+                OrderItem.objects.create(
+                    order=order,
+                    subscription=cart_item.subscription,
+                    quantity=cart_item.quantity
+                )
+
+        # Create Stripe PaymentIntent
+        payment_intent = stripe.PaymentIntent.create(
+            amount=int(order.total_price * 100),  # Convert to cents
+            currency="eur",
+            payment_method=payment_method_id,
+            confirmation_method="manual",
+            confirm=True,
+            return_url=request.build_absolute_uri(reverse("cart:success")),  # Redirect URL after payment success
+        )
+
+        # Clear the cart after successful payment intent creation
+        cart.items.all().delete()  
+
+        # Return success response with client_secret
+        return JsonResponse({"status": "success", "client_secret": payment_intent.client_secret})
+
+    except stripe.error.CardError as e:
+        send_failed_email(email, str(e))
+        return JsonResponse({"status": "failed", "error": str(e)})
+
+    except Exception as e:
+        send_failed_email(email, str(e))
+        return JsonResponse({"status": "failed", "error": str(e)})
+
+
+##return JsonResponse({"status": "success", "client_secret": payment_intent.client_secret})
+
+    except stripe.error.CardError as e:
+        send_failed_email(email, str(e))  # Send failure email with the general error message
+        return JsonResponse({"status": "failed", "error": str(e)})
+
+    except Exception as e:
+        send_failed_email(email, str(e))  # Send failure email with the general error message
+        return JsonResponse({"status": "failed", "error": str(e)})
+
+
+
+
+'''
+def send_success_email(email, order):
+    subject = "Your Order Payment Was Successful"
+    message = f"Dear Customer,\n\nYour payment for Order #{order.id} was successful. Total: €{order.total_price}. Thank you for your purchase!"
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False,
+    )
+
+def send_failed_email(email, order=None):
+    subject = "Payment Failed for Your Order"
+    message = "Dear Customer,\n\nUnfortunately, your payment has failed. Please try again or contact support."
+    if order:
+        message += f"\n\nOrder Details: Order #{order.id} with total €{order.total_price}."
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False,
+    )
+'''
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Cart, CartItem, Order
+from decimal import Decimal
+
+@login_required(login_url="login")
+def view_cart(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = cart.items.all()
+
+    # Calculate the total cost and delivery fee as needed
+    total_cost = sum(
+        (item.product.price if item.product else item.subscription.price) * item.quantity
+        for item in cart_items
+    )
+    
+    delivery_fee = Decimal("5.00") if total_cost < Decimal("50.00") else Decimal("0.00")
     final_total = total_cost + delivery_fee
+
+    # Retrieve the pending order (if any) for the logged-in user
+    order = Order.objects.filter(user=request.user, status="pending").first()
 
     return render(
         request,
@@ -42,30 +377,48 @@ def view_cart(request):
             "total_cost": total_cost,
             "delivery_fee": delivery_fee,
             "final_total": final_total,
+            "order": order,  # Pass order to template for checkout button
         },
     )
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from .models import Product, SubscriptionPlan, Cart, CartItem
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Product, SubscriptionPlan, Cart, CartItem
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Product, SubscriptionPlan, Cart, CartItem
+from fitness.models import Product  # Ensure this import is present
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Product, SubscriptionPlan, Cart, CartItem
+
 
 def add_to_cart(request, item_id, item_type):
-    """
-    Add a product or subscription to the user's cart.
+    from fitness.models import Product  # Ensure import
+    print(f"Item ID: {item_id}, Item Type: {item_type}")
+    
+    # Debugging: Print all products
+    print("Available product IDs:", list(Product.objects.values_list("id", flat=True)))
+    
+    if item_type == "product":
+        item = get_object_or_404(Product, id=item_id)  # Error happens here
 
-    Args:
-        request (HttpRequest): The HTTP request object.
-        item_id (int): The ID of the product or subscription.
-        item_type (str): Either "product" or "subscription".
-
-    Returns:
-        HttpResponse: Redirects to the appropriate page.
-    """
+    print(f"Item ID: {item_id}, Item Type: {item_type}")  # Debugging
     if item_type == "product":
         item = get_object_or_404(Product, id=item_id)
     elif item_type == "subscription":
         return add_subscription_to_cart(request, item_id)
     else:
         messages.error(request, "Invalid item type.")
-        return redirect("fitness:products")  # Corrected the URL name here
+        return redirect("fitness:products") 
     
+    # Rest of your function...
+
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
         if item_type == "product":
@@ -87,65 +440,41 @@ def add_to_cart(request, item_id, item_type):
     
     # Corrected the redirection to use proper names
     return redirect("fitness:products" if item_type == "product" else "fitness:subscription_plans")
-
-
+'''
+@login_required
 def process_payment(request):
+    """
+    Process the payment using Stripe and redirect accordingly.
+    """
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
     try:
+        # Assume `payment_intent_id` is stored in session
         payment_intent_id = request.session.get("payment_intent_id")
-
         if not payment_intent_id:
             messages.error(request, "Payment session expired. Please try again.")
             return redirect("cart:cart_view")
 
-        
+        # Retrieve payment status
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
-
-        logger.info(f" Payment Intent Status: {payment_intent.status}")
 
         if payment_intent.status == "succeeded":
             return redirect("cart:payment_success")
-
-        elif payment_intent.status in ["requires_payment_method", "requires_action", "canceled"]:
-            logger.error("Payment failed: Insufficient funds or card declined!")
-
-            
-            send_mail(
-                subject="Payment Failed - Rockfit",
-                message="Your payment was unsuccessful. Please check your card details and try again.",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[request.user.email],
-                fail_silently=False,
-            )
-
-            return redirect("cart:payment_failed")
-
         else:
-            logger.error(f"Unexpected payment status: {payment_intent.status}")
-            messages.error(request, "An unexpected payment issue occurred. Please try again.")
             return redirect("cart:payment_failed")
 
     except stripe.error.CardError as e:
-        logger.error(f"Stripe CardError: {e.user_message}")
-        messages.error(request, f"Your card was declined: {e.user_message}")
+        messages.error(request, "Your card was declined. Please try another payment method.")
+        return redirect("cart:payment_failed")
 
-        send_mail(
-            subject="Payment Failed - Rockfit",
-            message=f"Dear {request.user.username},\n\nYour payment was unsuccessful. Reason: {e.user_message}. "
-                    "Please check your payment details and try again.",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[request.user.email],
-            fail_silently=False,
-        )
-
+    except stripe.error.StripeError as e:
+        messages.error(request, "Payment processing error. Please try again.")
         return redirect("cart:payment_failed")
 
     except Exception as e:
-        logger.error(f"🚨 Unexpected error: {str(e)}")
-        messages.error(request, "An unexpected error occurred. Please try again.")
+        messages.error(request, "An unexpected error occurred.")
         return redirect("cart:payment_failed")
-
+'''
 @login_required
 def remove_from_cart(request, cart_item_id):
     """
@@ -202,38 +531,61 @@ def update_cart_item(request, cart_item_id):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-from django.shortcuts import redirect, get_object_or_404, render
-from django.contrib import messages
-from django.core.mail import send_mail
-import stripe
-
+'''
 def create_checkout_session(request):
+    """
+    Create a Stripe checkout session with the user's cart items.
+    """
     cart = get_object_or_404(Cart, user=request.user)
+
+    subscription_plan = None
+    line_items = []
+    total_cost = 0
 
     if cart.items.count() == 0:
         messages.error(request, "Your cart is empty.")
-        return redirect("cart:view_cart")  
+        return redirect("cart:view_cart")  # Redirect back to cart view if empty
 
-    line_items = []
     for item in cart.items.all():
-        price = item.product.price if item.product else item.subscription.price
-        line_items.append(
-            {
-                "price_data": {
-                    "currency": "eur",
-                    "product_data": {"name": item.product.name if item.product else item.subscription.name},
-                    "unit_amount": int(price * 100),
-                },
-                "quantity": item.quantity if item.product else 1,
-            }
-        )
+        if item.product:
+            item_total = item.product.price * item.quantity
+            total_cost += item_total
+            line_items.append(
+                {
+                    "price_data": {
+                        "currency": "eur",
+                        "product_data": {
+                            "name": item.product.name,
+                        },
+                        "unit_amount": int(item.product.price * 100),
+                    },
+                    "quantity": item.quantity,
+                }
+            )
+        elif item.subscription:
+            subscription_plan = item.subscription
+            item_total = item.subscription.price
+            total_cost += item_total
+            line_items.append(
+                {
+                    "price_data": {
+                        "currency": "eur",
+                        "product_data": {
+                            "name": item.subscription.name,
+                        },
+                        "unit_amount": int(item.subscription.price * 100),
+                    },
+                    "quantity": 1,
+                }
+            )
 
+    if subscription_plan:
+        request.session["selected_plan_id"] = subscription_plan.id
+    
     try:
         success_url = request.build_absolute_uri(reverse("cart:success"))
-        cancel_url = request.build_absolute_uri(reverse("cart:payment_failed"))
+        cancel_url = request.build_absolute_uri(reverse("cart:cancel"))
 
-     
-          # Include metadata when creating the checkout session
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=line_items,
@@ -241,14 +593,12 @@ def create_checkout_session(request):
             success_url=success_url,
             cancel_url=cancel_url,
             client_reference_id=request.user.id,
-            metadata={"user_email": request.user.email},  # Store user email in Stripe metadata
         )
 
         return redirect(checkout_session.url)
-
     except Exception as e:
-        return render(request, "cart/payment_failed.html", {"error": str(e)})  # Show error directly in failed.html
-
+        return HttpResponse(f"Error: {str(e)}")
+'''
 '''
 @login_required
 def payment_success(request):
@@ -275,7 +625,7 @@ def payment_success(request):
 
     return render(request, "cart/payment_success.html")
 '''
-
+'''
 @login_required
 def payment_success(request):
     """
@@ -332,61 +682,22 @@ def payment_success(request):
 
     return render(request, "cart/payment_success.html", {"order_total": order_total})
 
+@login_required
 def payment_failed(request):
-    session_id = request.GET.get("session_id")
+    user_email = request.user.email  
 
-    if not session_id:
-        return render(request, "cart/payment_failed.html", {"error": "No session ID provided."})
+    send_mail(
+        subject="Payment Failed - Rockfit",
+        message="Unfortunately, your payment was unsuccessful. Please check your payment details and try again.",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email],
+        fail_silently=False,
+    )
 
-    try:
-        session = stripe.checkout.Session.retrieve(session_id)
+    messages.error(request, "Payment failed. Please check your details and try again.")
+    return render(request, "cart/payment_failed.html")
 
-        # Check if payment was not successful
-        if session.payment_status == "unpaid":
-            user_email = session.metadata.get("user_email")
-
-            # Send failure email
-            send_mail(
-                "Payment Failed - Rockfit",
-                "Unfortunately, your payment was unsuccessful. Please try again.",
-                "noreply@rockfit.com",
-                [user_email],
-            )
-
-        return render(request, "cart/payment_failed.html")
-
-    except Exception as e:
-        return render(request, "cart/payment_failed.html", {"error": str(e)})
-
-
-@csrf_exempt
-def stripe_webhook(request):
-    payload = request.body
-    signature = request.META['HTTP_STRIPE_SIGNATURE']
-    event = None
-
-    try:
-        event = stripe.Webhook.construct_event(payload, signature, settings.STRIPE_WEBHOOK_SECRET)
-    except ValueError:
-        return JsonResponse({'status': 'invalid payload'}, status=400)
-    except stripe.error.SignatureVerificationError:
-        return JsonResponse({'status': 'invalid signature'}, status=400)
-
-    if event['type'] == 'checkout.session.async_payment_failed':
-        session = event['data']['object']
-        user_email = session['metadata']['user_email']
-
-        send_mail(
-            subject="Payment Failed - Rockfit",
-            message="Your payment was unsuccessful. Please check your card details and try again.",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user_email],
-            fail_silently=False,
-        )
-
-    return JsonResponse({'status': 'success'})
-
-    
+'''
 def cancel_view(request):
     """
     Handle the canceled payment response from Stripe.
