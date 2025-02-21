@@ -1,9 +1,33 @@
 <!DOCTYPE html>
-<html>
-<head><title>Order Confirmation</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+</head>
 <body>
-    <h2>Thank you for your order!</h2>
-    <p>Your order <strong>#{{ order.id }}</strong> has been successfully processed.</p>
-    <p>Total: €{{ order.total_price }}</p>
+    <h2>Order Confirmation - Rockfit</h2>
+    <p>Dear {{ user.username }},</p>
+    <p>Thank you for your purchase!</p>
+    <p>Your order details are as follows:</p>
+    
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                {% if item.product %}
+                    {{ item.product.name }} (x{{ item.quantity }}) - €{{ item.get_cost }}
+                {% elif item.subscription %}
+                    {{ item.subscription.name }} (x{{ item.quantity }}) - €{{ item.get_cost }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Subtotal:</strong> €{{ total_cost }}</p>
+    <p><strong>Delivery Fee:</strong> €{{ delivery_fee }}</p>
+    <p><strong>Final Total:</strong> €{{ final_total }}</p>
+
+    <p>Thank you for shopping with us!</p>
+    <p>Best regards,<br>Rockfit Team</p>
 </body>
 </html>

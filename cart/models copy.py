@@ -28,8 +28,8 @@ class Cart(models.Model):
     def get_total_cost(self):
         """Returns the total cost of all items in the cart."""
         return sum(
-            ((item.product.price * item.quantity) if item.product else 0) +
-            ((item.subscription.price * item.quantity) if item.subscription else 0)
+            (item.product.price * item.quantity) if item.product else 0 +
+            (item.subscription.price * item.quantity) if item.subscription else 0
             for item in self.items.all()
         )
 

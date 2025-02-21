@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import dj_database_url
 from django.contrib.messages import constants as messages
+from dotenv import load_dotenv
 
 if os.path.isfile("env.py"):
     import env
@@ -82,11 +83,14 @@ MIDDLEWARE = [
 
 
 
-EMAIL_BACKEND = 'anymail.backends.sendinblue.EmailBackend'
+load_dotenv()  # This will load variables from a .env file if it exists.
+
+# Use the environment variables
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 ANYMAIL = {
-    "SENDINBLUE_API_KEY":"REMOVED",  
+    "SENDINBLUE_API_KEY": os.getenv('SENDINBLUE_API_KEY'),
 }
-DEFAULT_FROM_EMAIL = 'rockfitt1907@gmail.com'  
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL') 
 
 
 
