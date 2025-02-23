@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+
+    <h2>Checkout</h2>
+
+    <form id="payment-form">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <input type="text" id="full-name" placeholder="Full Name" required />
+        <input type="text" id="cardholder-name" placeholder="Cardholder Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <div id="card-element"><!-- Stripe will mount card input here --></div>
+        <button id="pay-now-button" type="submit">Pay Now</button>
+    </form>
+    
+    <script>
+        // Ensure Stripe is initialized
+        const stripe = Stripe("REMOVED");
+        const elements = stripe.elements();
+        const cardElement = elements.create("card");
+        cardElement.mount("#card-element");
+    
+        document.getElementById("payment-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            console.log("Pay Now button clicked!");  // Debugging Log
+    
+            let fullName = document.getElementById("full-name")?.value.trim();
+            let cardholderName = document.getElementById("cardholder-name")?.value.trim();
+            let email = document.getElementById("email")?.value.trim();
+    
+            if (!fullName || !cardholderName || !email) {
+                alert("Please fill in all fields.");
+                return;
+            }
+    
+            stripe.createPaymentMethod({
+                type: "card",
+                card: cardElement,
+                billing_details: { name: cardholderName, email: email },
+            }).then(function (result) {
+                if (result.error) {
+                    alert(result.error.message);
+                } else {
+                    fetch("/cart/process_payment/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                        },
+                        body: JSON.stringify({
+                            payment_method_id: result.paymentMethod.id,
+                            email: email,
+                            full_name: fullName,
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "requires_action") {
+                            stripe.confirmCardPayment(data.client_secret).then(function(result) {
+                                if (result.error) {
+                                    alert("Payment failed: " + result.error.message);
+                                } else {
+                                    window.location.href = "/cart/success/";
+                                }
+                            });
+                        } else if (data.status === "success") {
+                            alert("Payment successful!");
+                            localStorage.removeItem("cart");
+                            sessionStorage.removeItem("cart");
+                            window.location.href = "/cart/success/";
+                        } else {
+                            // ❌ Payment failed – display error message and email user
+                            alert("Payment Failed: " + data.error);
+                            console.error("Payment Failure:", data.error);
+                            
+                            // Send failure email to the user
+                            fetch("/cart/send_failure_email/", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                                },
+                                body: JSON.stringify({
+                                    email: email,
+                                    full_name: fullName,
+                                    error_message: data.error
+                                }),
+                            }).catch(error => console.error("Email Error:", error));
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+                }
+            });
+        });
+    </script>
+    
+    
+</body>
+</html>
