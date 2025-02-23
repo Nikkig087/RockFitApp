@@ -1,8 +1,21 @@
 {% extends "base.html" %}
+<<<<<<< HEAD
 {% load static %}
 
 {% block head %}
     <title>Shopping Cart | Rockfit App</title>
+=======
+
+{% block head %}
+    <title>Shopping Cart | Rockfit App</title>
+    <meta name="description" content="{% if cart_items %}View and manage your shopping cart, check the products and subscriptions you've added to your cart, and proceed to checkout with ease.{% else %}Your cart is empty. Browse and add products to your cart for a smooth shopping experience.{% endif %}">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Your Shopping Cart | Rockfit">
+    <meta property="og:description" content="{% if cart_items %}Review your cart items, update quantities, and proceed to checkout.{% else %}Your cart is currently empty. Start shopping now!{% endif %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
 {% endblock %}
 
 {% block content %}
@@ -96,9 +109,13 @@
                 <strong>Final Total: €{{ final_total }}</strong>
             </div>
 
+<<<<<<< HEAD
             <a href="{% url 'cart:checkout' order_id=order.id %}" class="btn btn-primary">Proceed to Checkout</a>
 
 
+=======
+            <a href="{% url 'cart:checkout' %}" class="btn btn-primary btn-lg stripe-button w-100">Checkout with Stripe</a>
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
 
         {% else %}
             <p class="cart_status">Your cart is currently empty. Please add some items to your cart.</p>
@@ -106,4 +123,24 @@
         {% endif %}
     </main>
 </div>
+<<<<<<< HEAD
 {% endblock %}
+=======
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const subscriptionInCart = Array.from(document.querySelectorAll('.cart-item')).some(item => item.dataset.itemType === 'subscription');
+        
+        const subscriptionButtons = document.querySelectorAll('.add-to-cart-subscription'); 
+        if (subscriptionInCart) {
+            subscriptionButtons.forEach(button => {
+                button.disabled = true;
+                button.title = "You already have a subscription in your cart!";
+            });
+        }
+    });
+</script>
+
+{% endblock %}
+</body>
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0

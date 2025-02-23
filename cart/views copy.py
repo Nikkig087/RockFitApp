@@ -289,7 +289,11 @@ def payment_success(request):
             order_details += f"- {item.subscription.name} (Subscription) - €{item.subscription.price}\n"
 
     order_total = cart.get_total_cost() 
+<<<<<<< HEAD
     order_details += f"- {item.product.name} (x{item.quantity}) - €{item.product.price * item.quantity}\n"
+=======
+    order_details += f"\nTotal Amount: €{order_total}\n"
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
 
     # Clear the cart after successful payment
     cart.items.all().delete()

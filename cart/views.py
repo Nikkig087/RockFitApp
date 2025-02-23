@@ -15,6 +15,7 @@ from django.conf import settings
 from django.utils import timezone
 
 
+<<<<<<< HEAD
 import stripe
 import json
 from django.conf import settings
@@ -401,6 +402,26 @@ def view_cart(request):
 
     # Retrieve the pending order (if any) for the logged-in user
     order = Order.objects.filter(user=request.user, status="pending").first()
+=======
+@login_required(login_url="login")
+def view_cart(request):
+    """
+    Display the user's cart with all cart items and the total cost.
+    """
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = cart.items.all()
+    total_cost = sum(
+        (item.product.price if item.product else item.subscription.price)
+        * item.quantity
+        for item in cart_items
+    )
+
+    if total_cost >= Decimal("50.00"):
+        delivery_fee = Decimal("0.00")
+    else:
+        delivery_fee = Decimal("5.00")
+    final_total = total_cost + delivery_fee
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
 
     return render(
         request,
@@ -410,6 +431,7 @@ def view_cart(request):
             "total_cost": total_cost,
             "delivery_fee": delivery_fee,
             "final_total": final_total,
+<<<<<<< HEAD
             "order": order,  # Pass order to template for checkout button
         },
     )
@@ -442,16 +464,39 @@ def add_to_cart(request, item_id, item_type):
         item = get_object_or_404(Product, id=item_id)  # Error happens here
 
     print(f"Item ID: {item_id}, Item Type: {item_type}")  # Debugging
+=======
+        },
+    )
+
+
+def add_to_cart(request, item_id, item_type):
+    """
+    Add a product or subscription to the user's cart.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        item_id (int): The ID of the product or subscription.
+        item_type (str): Either "product" or "subscription".
+
+    Returns:
+        HttpResponse: Redirects to the appropriate page.
+    """
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
     if item_type == "product":
         item = get_object_or_404(Product, id=item_id)
     elif item_type == "subscription":
         return add_subscription_to_cart(request, item_id)
     else:
         messages.error(request, "Invalid item type.")
+<<<<<<< HEAD
         return redirect("fitness:products") 
     
     # Rest of your function...
 
+=======
+        return redirect("fitness:products")  # Corrected the URL name here
+    
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
         if item_type == "product":
@@ -473,6 +518,7 @@ def add_to_cart(request, item_id, item_type):
     
     # Corrected the redirection to use proper names
     return redirect("fitness:products" if item_type == "product" else "fitness:subscription_plans")
+<<<<<<< HEAD
 '''
 @login_required
 def process_payment(request):
@@ -484,10 +530,21 @@ def process_payment(request):
     try:
         # Assume `payment_intent_id` is stored in session
         payment_intent_id = request.session.get("payment_intent_id")
+=======
+
+
+def process_payment(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    try:
+        payment_intent_id = request.session.get("payment_intent_id")
+
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
         if not payment_intent_id:
             messages.error(request, "Payment session expired. Please try again.")
             return redirect("cart:cart_view")
 
+<<<<<<< HEAD
         # Retrieve payment status
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
 
@@ -508,6 +565,55 @@ def process_payment(request):
         messages.error(request, "An unexpected error occurred.")
         return redirect("cart:payment_failed")
 '''
+=======
+        
+        payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+
+        logger.info(f" Payment Intent Status: {payment_intent.status}")
+
+        if payment_intent.status == "succeeded":
+            return redirect("cart:payment_success")
+
+        elif payment_intent.status in ["requires_payment_method", "requires_action", "canceled"]:
+            logger.error("Payment failed: Insufficient funds or card declined!")
+
+            
+            send_mail(
+                subject="Payment Failed - Rockfit",
+                message="Your payment was unsuccessful. Please check your card details and try again.",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[request.user.email],
+                fail_silently=False,
+            )
+
+            return redirect("cart:payment_failed")
+
+        else:
+            logger.error(f"Unexpected payment status: {payment_intent.status}")
+            messages.error(request, "An unexpected payment issue occurred. Please try again.")
+            return redirect("cart:payment_failed")
+
+    except stripe.error.CardError as e:
+        logger.error(f"Stripe CardError: {e.user_message}")
+        messages.error(request, f"Your card was declined: {e.user_message}")
+
+        send_mail(
+            subject="Payment Failed - Rockfit",
+            message=f"Dear {request.user.username},\n\nYour payment was unsuccessful. Reason: {e.user_message}. "
+                    "Please check your payment details and try again.",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[request.user.email],
+            fail_silently=False,
+        )
+
+        return redirect("cart:payment_failed")
+
+    except Exception as e:
+        logger.error(f"🚨 Unexpected error: {str(e)}")
+        messages.error(request, "An unexpected error occurred. Please try again.")
+        return redirect("cart:payment_failed")
+
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
 @login_required
 def remove_from_cart(request, cart_item_id):
     """
@@ -564,6 +670,7 @@ def update_cart_item(request, cart_item_id):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+<<<<<<< HEAD
 '''
 def create_checkout_session(request):
     """
@@ -619,6 +726,40 @@ def create_checkout_session(request):
         success_url = request.build_absolute_uri(reverse("cart:success"))
         cancel_url = request.build_absolute_uri(reverse("cart:cancel"))
 
+=======
+from django.shortcuts import redirect, get_object_or_404, render
+from django.contrib import messages
+from django.core.mail import send_mail
+import stripe
+
+def create_checkout_session(request):
+    cart = get_object_or_404(Cart, user=request.user)
+
+    if cart.items.count() == 0:
+        messages.error(request, "Your cart is empty.")
+        return redirect("cart:view_cart")  
+
+    line_items = []
+    for item in cart.items.all():
+        price = item.product.price if item.product else item.subscription.price
+        line_items.append(
+            {
+                "price_data": {
+                    "currency": "eur",
+                    "product_data": {"name": item.product.name if item.product else item.subscription.name},
+                    "unit_amount": int(price * 100),
+                },
+                "quantity": item.quantity if item.product else 1,
+            }
+        )
+
+    try:
+        success_url = request.build_absolute_uri(reverse("cart:success"))
+        cancel_url = request.build_absolute_uri(reverse("cart:payment_failed"))
+
+     
+          # Include metadata when creating the checkout session
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=line_items,
@@ -626,12 +767,23 @@ def create_checkout_session(request):
             success_url=success_url,
             cancel_url=cancel_url,
             client_reference_id=request.user.id,
+<<<<<<< HEAD
         )
 
         return redirect(checkout_session.url)
     except Exception as e:
         return HttpResponse(f"Error: {str(e)}")
 '''
+=======
+            metadata={"user_email": request.user.email},  # Store user email in Stripe metadata
+        )
+
+        return redirect(checkout_session.url)
+
+    except Exception as e:
+        return render(request, "cart/payment_failed.html", {"error": str(e)})  # Show error directly in failed.html
+
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
 '''
 @login_required
 def payment_success(request):
@@ -658,7 +810,11 @@ def payment_success(request):
 
     return render(request, "cart/payment_success.html")
 '''
+<<<<<<< HEAD
 '''
+=======
+
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
 @login_required
 def payment_success(request):
     """
@@ -715,6 +871,7 @@ def payment_success(request):
 
     return render(request, "cart/payment_success.html", {"order_total": order_total})
 
+<<<<<<< HEAD
 @login_required
 def payment_failed(request):
     user_email = request.user.email  
@@ -731,6 +888,63 @@ def payment_failed(request):
     return render(request, "cart/payment_failed.html")
 
 '''
+=======
+def payment_failed(request):
+    session_id = request.GET.get("session_id")
+
+    if not session_id:
+        return render(request, "cart/payment_failed.html", {"error": "No session ID provided."})
+
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        # Check if payment was not successful
+        if session.payment_status == "unpaid":
+            user_email = session.metadata.get("user_email")
+
+            # Send failure email
+            send_mail(
+                "Payment Failed - Rockfit",
+                "Unfortunately, your payment was unsuccessful. Please try again.",
+                "noreply@rockfit.com",
+                [user_email],
+            )
+
+        return render(request, "cart/payment_failed.html")
+
+    except Exception as e:
+        return render(request, "cart/payment_failed.html", {"error": str(e)})
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    signature = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(payload, signature, settings.STRIPE_WEBHOOK_SECRET)
+    except ValueError:
+        return JsonResponse({'status': 'invalid payload'}, status=400)
+    except stripe.error.SignatureVerificationError:
+        return JsonResponse({'status': 'invalid signature'}, status=400)
+
+    if event['type'] == 'checkout.session.async_payment_failed':
+        session = event['data']['object']
+        user_email = session['metadata']['user_email']
+
+        send_mail(
+            subject="Payment Failed - Rockfit",
+            message="Your payment was unsuccessful. Please check your card details and try again.",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user_email],
+            fail_silently=False,
+        )
+
+    return JsonResponse({'status': 'success'})
+
+    
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
 def cancel_view(request):
     """
     Handle the canceled payment response from Stripe.

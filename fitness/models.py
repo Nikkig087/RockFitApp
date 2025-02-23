@@ -222,10 +222,15 @@ class Order(models.Model):
         order_date (datetime): The date and time when the order was placed.
         total_amount (Decimal): The total cost of the order.
     """
+<<<<<<< HEAD
   
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='fitness_orders')
  
     #user = models.ForeignKey(User, on_delete=models.CASCADE)
+=======
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+>>>>>>> 67b3728577e46b4c4146ea7bcfb871fd555ed2a0
     order_date = models.DateTimeField(default=timezone.now)
     total_amount = models.DecimalField(
         max_digits=10, decimal_places=2
