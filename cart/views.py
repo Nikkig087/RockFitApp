@@ -34,101 +34,68 @@ from django.utils import timezone
 from django.contrib import messages
 #from .models import Cart, Order, OrderItem, SubscriptionPlan, UserProfile
 
-from django.core.mail import send_mail
-from django.conf import settings
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseServerError
-from django.contrib import messages
-from django.utils import timezone
-from django.contrib.auth.decorators import login_required
-
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-
-from django.shortcuts import render
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from .models import Cart, Order, CartItem
-
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.shortcuts import render
-from django.conf import settings
-from .models import Cart, Order, OrderItem
 
 
+@login_required
 def payment_success(request):
-    # Ensure the user is logged in
-    user = request.user
+    """
+    Handle the successful payment response from Stripe, update the user's subscription,
+    and send a confirmation email including order details.
+    """
+    try:
+        logger.info("Retrieving cart for the logged-in user...")
+        cart = Cart.objects.get(user=request.user)
+        cart_items = cart.items.all()
 
-    # Get the user's cart
-    cart = Cart.objects.get(user=user)
+        order_details = "Here is your order summary:\n\n"
+        for item in cart_items:
+            if item.product:
+                order_details += f"- {item.product.name} (x{item.quantity}) - €{item.product.price * item.quantity}\n"
+            elif item.subscription:
+                order_details += f"- {item.subscription.name} (Subscription) - €{item.subscription.price}\n"
 
-    # Get the cart items for this user
-    cart_items = cart.items.all()
+        order_total = cart.get_total_cost()
+        order_details += f"\nTotal Amount: €{order_total}\n"
 
-    # Construct the order details for the email
-    order_details = "Here is your order summary:\n\n"
-    for item in cart_items:
-        if item.product:
-            order_details += f"- {item.product.name} (x{item.quantity}) - €{item.get_cost()}\n"  # ✅ FIXED
-        elif item.subscription:
-            order_details += f"- {item.subscription.name} (Subscription) - €{item.get_cost()}\n"
+        logger.info("Clearing the cart after successful payment...")
+        cart.items.all().delete()
 
-    # Create the order after payment
-    order = Order.objects.create(
-        user=user,
-        total_price=cart.get_total_cost(),
-        status='completed',  # Set order status to 'completed'
-    )
+        subscription_plan_id = request.session.get("selected_plan_id")
+        if subscription_plan_id:
+            logger.info("Handling subscription plan...")
+            plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
+            user_profile = get_object_or_404(UserProfile, user=request.user)
 
-    # Create OrderItems from the cart items
-    for cart_item in cart_items:
-        OrderItem.objects.create(
-            order=order,
-            product=cart_item.product,
-            subscription=cart_item.subscription,
-            quantity=cart_item.quantity,
+            user_profile.subscription_plan = plan
+            user_profile.subscription_start_date = timezone.now()
+            user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
+            user_profile.save()
+
+            messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
+            del request.session["selected_plan_id"]
+
+            order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
+
+        logger.info("Sending confirmation email...")
+        send_mail(
+            subject="Order Confirmation - Rockfit",
+            message=(
+                f"Dear {request.user.username},\n\n"
+                "Thank you for your purchase!\n\n"
+                f"{order_details}\n\n"
+                "Enjoy your order!\nRockfit Team"
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[request.user.email],
+            fail_silently=False,
         )
 
-    # Calculate the final total (include delivery fee)
-    total_cost = cart.get_total_cost()
-    delivery_fee = 5.00  # Fixed delivery fee or calculate dynamically
-    final_total = total_cost + delivery_fee  # Final total including delivery fee
+        logger.info("Rendering success page...")
+        return render(request, "cart/success.html", {"order_total": order_total})
 
-    # Send confirmation email
-    email_subject = "Order Confirmation - Rockfit"
-    
-    # Create email content with HTML template
-    email_content = render_to_string('cart/success_email.html', {
-        'cart_items': cart_items,
-        'total_cost': total_cost,
-        'delivery_fee': delivery_fee,
-        'final_total': final_total,
-        'user': user,
-    })
-
-    # Send the email
-    send_mail(
-        subject=email_subject,
-        message="This is a plain text fallback email.",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user.email],
-        html_message=email_content,  # Send HTML email content
-        fail_silently=False,
-    )
-
-    # Clear the cart after successful payment
-    cart.items.all().delete()
-
-    # Render the success page (optional)
-    return render(request, 'cart/success.html', {
-        'order': order,
-        'cart_items': cart_items,
-        'total_cost': total_cost,
-        'final_total': final_total,
-    })
-
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        return HttpResponseServerError(f"An error occurred: {str(e)}")
 
 
 # Checkout Page
@@ -225,7 +192,7 @@ from decimal import Decimal
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 from django.core.mail import send_mail
-''''
+
 def send_success_email(order):
     subject = "Your Order Has Been Confirmed!"
     message = f"""
@@ -252,7 +219,7 @@ def format_order_items(order):
         [f"{item.quantity}x {item.product.name} - €{item.product.price * item.quantity}" for item in order.items.all()]
     )
 
-'''
+
 def send_failed_email(email, error_message):
     subject = "Payment Failed"
     message = f"Your payment attempt failed with the following error: {error_message}"

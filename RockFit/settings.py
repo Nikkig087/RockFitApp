@@ -35,6 +35,8 @@ ALLOWED_HOSTS = [
     ".herokuapp.com",
     "8000-nikkig087-rockfitapp-vlfx33iw9of.ws-eu117.gitpod.io",
     '8080-nikkig087-rockfitapp-vlfx33iw9of.ws-eu117.gitpod.io'
+    '8000-nikkig087-rockfitapp-vlfx33iw9of.ws-eu118.gitpod.io',
+    '8000-nikkig087-rockfitapp-vlfx33iw9of.ws-eu118.gitpod.io',
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://8000-nikkig087-rockfitapp-fisk89uva99.ws.codeinstitute-ide.net",
