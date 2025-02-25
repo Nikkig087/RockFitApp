@@ -1,9 +1,11 @@
+
 {% extends "base.html" %}
+
 {% load static %}
 
 {% block head %}
     <title>Shopping Cart | Rockfit App</title>
-{% endblock %}
+
 
 {% block content %}
 <div class="cart-container container py-5">
@@ -96,8 +98,8 @@
                 <strong>Final Total: €{{ final_total }}</strong>
             </div>
 
-            <a href="{% url 'cart:checkout' order_id=order.id %}" class="btn btn-primary">Proceed to Checkout</a>
 
+            <a href="{% url 'cart:checkout' order_id=order.id %}" class="btn btn-primary">Proceed to Checkout</a>
 
 
         {% else %}
@@ -106,4 +108,23 @@
         {% endif %}
     </main>
 </div>
+
 {% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const subscriptionInCart = Array.from(document.querySelectorAll('.cart-item')).some(item => item.dataset.itemType === 'subscription');
+        
+        const subscriptionButtons = document.querySelectorAll('.add-to-cart-subscription'); 
+        if (subscriptionInCart) {
+            subscriptionButtons.forEach(button => {
+                button.disabled = true;
+                button.title = "You already have a subscription in your cart!";
+            });
+        }
+    });
+</script>
+
+{% endblock %}
+</body>
+

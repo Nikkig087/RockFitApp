@@ -32,7 +32,6 @@
 
         <button id="submit" type="submit">Pay</button>
     </form>
-
     <script>
         // Get the CSRF token from the meta tag
         const csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -79,7 +78,7 @@
                     submitButton.disabled = false;
                 } else {
                     // Send data to backend without auto-confirmation
-                    fetch("/cart/create-payment-intent/", {
+                    fetch("/cart/process_payment/", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -139,6 +138,7 @@
             });
         });
     </script>
+    
     
     
     

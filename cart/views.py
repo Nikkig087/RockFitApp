@@ -34,35 +34,52 @@ from django.utils import timezone
 from django.contrib import messages
 #from .models import Cart, Order, OrderItem, SubscriptionPlan, UserProfile
 
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseServerError
+from django.contrib import messages
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
+from django.shortcuts import render
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from .models import Cart, Order, CartItem
+
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.shortcuts import render
+from django.conf import settings
+from .models import Cart, Order, OrderItem
 
 @login_required
+@login_required
 def payment_success(request):
-    """
-    Handle the successful payment response from Stripe, update the user's subscription,
-    and send a confirmation email including order details.
-    """
     try:
-        logger.info("Retrieving cart for the logged-in user...")
-        cart = Cart.objects.get(user=request.user)
-        cart_items = cart.items.all()
-
+        # Retrieve cart items from session
+        session_cart = request.session.get("cart_items", [])
         order_details = "Here is your order summary:\n\n"
-        for item in cart_items:
-            if item.product:
-                order_details += f"- {item.product.name} (x{item.quantity}) - €{item.product.price * item.quantity}\n"
-            elif item.subscription:
-                order_details += f"- {item.subscription.name} (Subscription) - €{item.subscription.price}\n"
+        total_cost = 0
 
-        order_total = cart.get_total_cost()
-        order_details += f"\nTotal Amount: €{order_total}\n"
+        # Construct the order details for the email
+        for item in session_cart:
+            price = Decimal(item['price'])  # Convert price back to decimal
+            order_details += f"- {item['name']} (x{item['quantity']}) - €{price * item['quantity']}\n"
+            total_cost += price * item['quantity']
 
-        logger.info("Clearing the cart after successful payment...")
-        cart.items.all().delete()
+        order_details += f"\nTotal Amount: €{total_cost}\n"
 
+        # Clear session cart after successful payment
+        request.session["cart_items"] = []
+        request.session.modified = True
+
+        # Handle subscriptions if applicable
         subscription_plan_id = request.session.get("selected_plan_id")
         if subscription_plan_id:
-            logger.info("Handling subscription plan...")
             plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
             user_profile = get_object_or_404(UserProfile, user=request.user)
 
@@ -74,9 +91,10 @@ def payment_success(request):
             messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
             del request.session["selected_plan_id"]
 
+            # Add subscription details to email
             order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
 
-        logger.info("Sending confirmation email...")
+        # Send confirmation email
         send_mail(
             subject="Order Confirmation - Rockfit",
             message=(
@@ -90,13 +108,12 @@ def payment_success(request):
             fail_silently=False,
         )
 
-        logger.info("Rendering success page...")
-        return render(request, "cart/success.html", {"order_total": order_total})
+        # Return a rendered success page
+        return render(request, "cart/success.html", {"total_cost": total_cost})
 
     except Exception as e:
-        logger.error(f"An error occurred: {str(e)}")
+        print(f"An error occurred: {str(e)}")
         return HttpResponseServerError(f"An error occurred: {str(e)}")
-
 
 # Checkout Page
 from django.shortcuts import render, get_object_or_404
@@ -192,7 +209,7 @@ from decimal import Decimal
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 from django.core.mail import send_mail
-
+''''
 def send_success_email(order):
     subject = "Your Order Has Been Confirmed!"
     message = f"""
@@ -219,7 +236,7 @@ def format_order_items(order):
         [f"{item.quantity}x {item.product.name} - €{item.product.price * item.quantity}" for item in order.items.all()]
     )
 
-
+'''
 def send_failed_email(email, error_message):
     subject = "Payment Failed"
     message = f"Your payment attempt failed with the following error: {error_message}"
@@ -398,26 +415,19 @@ from django.contrib import messages
 from .models import Product, SubscriptionPlan, Cart, CartItem
 
 
-def add_to_cart(request, item_id, item_type):
-    from fitness.models import Product  # Ensure import
-    print(f"Item ID: {item_id}, Item Type: {item_type}")
-    
-    # Debugging: Print all products
-    print("Available product IDs:", list(Product.objects.values_list("id", flat=True)))
-    
-    if item_type == "product":
-        item = get_object_or_404(Product, id=item_id)  # Error happens here
 
-    print(f"Item ID: {item_id}, Item Type: {item_type}")  # Debugging
+
+@login_required
+def add_to_cart(request, item_id, item_type):
+    from fitness.models import Product, SubscriptionPlan  # Ensure import
+
     if item_type == "product":
         item = get_object_or_404(Product, id=item_id)
     elif item_type == "subscription":
-        return add_subscription_to_cart(request, item_id)
+        item = get_object_or_404(SubscriptionPlan, id=item_id)
     else:
         messages.error(request, "Invalid item type.")
-        return redirect("fitness:products") 
-    
-    # Rest of your function...
+        return redirect("fitness:products")
 
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
@@ -426,8 +436,20 @@ def add_to_cart(request, item_id, item_type):
             if not created:
                 cart_item.quantity += 1
             cart_item.save()
+        
+        # Store item details in session for email
+        session_cart = request.session.get("cart_items", [])
+        session_cart.append({
+            "name": item.name,
+            "quantity": cart_item.quantity,
+            "price": str(item.price)  # Convert price to string
+        })
+        request.session["cart_items"] = session_cart
+        request.session.modified = True
+
         messages.success(request, f"{item.name} has been added to your cart!")
     else:
+        # Handle unauthenticated users (similar logic for session storage)
         cart = request.session.get("cart", {})
         key = f"{item_type}_{item_id}"
         if key in cart:
@@ -437,9 +459,8 @@ def add_to_cart(request, item_id, item_type):
         request.session["cart"] = cart
         request.session.modified = True
         messages.success(request, "Item added to your cart!")
-    
-    # Corrected the redirection to use proper names
-    return redirect("fitness:products" if item_type == "product" else "fitness:subscription_plans")
+
+    return redirect("fitness:products")
 '''
 @login_required
 def process_payment(request):
@@ -681,7 +702,7 @@ def payment_success(request):
     )
 
     return render(request, "cart/payment_success.html", {"order_total": order_total})
-
+'''
 @login_required
 def payment_failed(request):
     user_email = request.user.email  
@@ -697,7 +718,6 @@ def payment_failed(request):
     messages.error(request, "Payment failed. Please check your details and try again.")
     return render(request, "cart/payment_failed.html")
 
-'''
 def cancel_view(request):
     """
     Handle the canceled payment response from Stripe.

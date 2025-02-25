@@ -107,6 +107,7 @@ class Product(models.Model):
 
 # models.py
 # models.py
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_orders')
     order_date = models.DateTimeField(default=timezone.now)
