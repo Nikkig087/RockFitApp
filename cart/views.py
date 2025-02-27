@@ -263,6 +263,10 @@ import stripe
 # Your stripe secret key setup
 stripe.api_key = 'your-stripe-secret-key'
 
+
+'''
+last cmted out 1212 2702
+@login_required(login_url="login")
 def process_payment(request):
     data = json.loads(request.body)
     payment_method_id = data.get("payment_method_id")
@@ -294,12 +298,29 @@ def process_payment(request):
                     quantity=cart_item.quantity
                 )
 
+                # Send product email
+                print("DEBUG - Sending product email")
+                send_product_email(request.user, cart_item.product)
+
             elif cart_item.subscription:
                 OrderItem.objects.create(
                     order=order,
                     subscription=cart_item.subscription,
                     quantity=cart_item.quantity
                 )
+
+        # Update user profile with subscription if any
+        for cart_item in cart.items.all():
+            if cart_item.subscription:
+                user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+                user_profile.subscription_plan = cart_item.subscription
+                user_profile.subscription_start_date = timezone.now()
+                user_profile.is_active = True
+                user_profile.save()
+
+                # Send subscription email
+                print("DEBUG - Sending subscription email")
+                send_subscription_email(request.user, cart_item.subscription)
 
         # Create Stripe PaymentIntent
         payment_intent = stripe.PaymentIntent.create(
@@ -312,7 +333,7 @@ def process_payment(request):
         )
 
         # Clear the cart after successful payment intent creation
-        cart.items.all().delete()  
+        cart.items.all().delete()
 
         # Return success response with client_secret
         return JsonResponse({"status": "success", "client_secret": payment_intent.client_secret})
@@ -325,17 +346,137 @@ def process_payment(request):
         send_failed_email(email, str(e))
         return JsonResponse({"status": "failed", "error": str(e)})
 
+def send_subscription_email(user, plan):
+    subject = 'Subscription Confirmation'
+    message = f'Thank you for subscribing to {plan.name}. Your subscription is now active.'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [user.email]
+    print(f"DEBUG - Subscription Email: {subject}, {message}, {from_email}, {recipient_list}")
+    send_mail(subject, message, from_email, recipient_list)
 
-##return JsonResponse({"status": "success", "client_secret": payment_intent.client_secret})
+def send_product_email(user, product):
+    subject = 'Product Purchase Confirmation'
+    message = f'Thank you for purchasing {product.name}. We hope you enjoy your product!'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [user.email]
+    print(f"DEBUG - Product Email: {subject}, {message}, {from_email}, {recipient_list}")
+    send_mail(subject, message, from_email, recipient_list)
+
+def send_failed_email(email, error_message):
+    subject = 'Payment Failed'
+    message = f'There was an error processing your payment: {error_message}. Please try again.'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [email]
+    print(f"DEBUG - Failed Email: {subject}, {message}, {from_email}, {recipient_list}")
+    send_mail(subject, message, from_email, recipient_list)
+'''
+
+@login_required(login_url="login")
+def process_payment(request):
+    data = json.loads(request.body)
+    payment_method_id = data.get("payment_method_id")
+    email = data.get("email")
+    full_name = data.get("full_name")
+
+    try:
+        # Get the cart for the logged-in user
+        cart = Cart.objects.get(user=request.user)
+
+        # Calculate final total including delivery fee
+        total_cost = sum(item.get_cost() for item in cart.items.all())
+        delivery_fee = Decimal("5.00") if total_cost < Decimal("50.00") else Decimal("0.00")
+        final_total = total_cost + delivery_fee
+
+        # Create the order
+        order = Order.objects.create(
+            user=request.user,
+            final_total=final_total,  # Use final total
+            status='pending',
+            full_name=full_name,
+            email=email
+        )
+
+        # Create the order items
+        for cart_item in cart.items.all():
+            print(f"DEBUG - Cart Item: {cart_item}")
+            print(f"DEBUG - Product: {cart_item.product} (Type: {type(cart_item.product)})")
+
+            if cart_item.product:
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity
+                )
+
+                # Send product email
+                print("DEBUG - Sending product email")
+                send_product_email(request.user, cart_item.product, final_total)
+
+            elif cart_item.subscription:
+                OrderItem.objects.create(
+                    order=order,
+                    subscription=cart_item.subscription,
+                    quantity=cart_item.quantity
+                )
+
+                # Update user profile with subscription if any
+                user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+                user_profile.subscription_plan = cart_item.subscription
+                user_profile.subscription_start_date = timezone.now()
+                user_profile.is_active = True
+                user_profile.save()
+
+                # Send subscription email
+                print("DEBUG - Sending subscription email")
+                send_subscription_email(request.user, cart_item.subscription, final_total)
+
+        # Create Stripe PaymentIntent
+        payment_intent = stripe.PaymentIntent.create(
+            amount=int(order.final_total * 100),  # Convert to cents
+            currency="eur",
+            payment_method=payment_method_id,
+            confirmation_method="manual",
+            confirm=True,
+            return_url=request.build_absolute_uri(reverse("cart:success")),  # Redirect URL after payment success
+        )
+
+        # Clear the cart after successful payment intent creation
+        cart.items.all().delete()
+
+        # Return success response with client_secret
+        return JsonResponse({"status": "success", "client_secret": payment_intent.client_secret})
 
     except stripe.error.CardError as e:
-        send_failed_email(email, str(e))  # Send failure email with the general error message
+        send_failed_email(email, str(e))
         return JsonResponse({"status": "failed", "error": str(e)})
 
     except Exception as e:
-        send_failed_email(email, str(e))  # Send failure email with the general error message
+        send_failed_email(email, str(e))
         return JsonResponse({"status": "failed", "error": str(e)})
 
+def send_subscription_email(user, plan, final_total):
+    subject = 'Subscription Confirmation'
+    message = f'Thank you for subscribing to {plan.name}. Your subscription is now active.\nFinal Total: €{final_total}'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [user.email]
+    print(f"DEBUG - Subscription Email: {subject}, {message}, {from_email}, {recipient_list}")
+    send_mail(subject, message, from_email, recipient_list)
+    
+def send_product_email(user, product, final_total):
+    subject = 'Product Purchase Confirmation'
+    message = f'Thank you for purchasing {product.name}. We hope you enjoy your product!\nFinal Total: €{final_total}'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [user.email]
+    print(f"DEBUG - Product Email: {subject}, {message}, {from_email}, {recipient_list}")
+    send_mail(subject, message, from_email, recipient_list)
+
+def send_failed_email(email, error_message):
+    subject = 'Payment Failed'
+    message = f'There was an error processing your payment: {error_message}. Please try again.'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [email]
+    print(f"DEBUG - Failed Email: {subject}, {message}, {from_email}, {recipient_list}")
+    send_mail(subject, message, from_email, recipient_list)
 
 
 
@@ -369,6 +510,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Cart, CartItem, Order
 from decimal import Decimal
 
+
+'''
+cmted 1105 2702
 @login_required(login_url="login")
 def view_cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
@@ -402,8 +546,84 @@ def view_cart(request):
             "order": order,  # Pass order to template for checkout button
         },
     )
+'''
 
+'''
+last cmted out 1212 2702
+@login_required(login_url="login")
+def view_cart(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = cart.items.all()
 
+    # Calculate the total cost and delivery fee as needed
+    total_cost = sum(
+        (item.product.price if item.product else item.subscription.price) * item.quantity
+        for item in cart_items
+    )
+
+    delivery_fee = Decimal("5.00") if total_cost < Decimal("50.00") else Decimal("0.00")
+    final_total = total_cost + delivery_fee
+
+    # Retrieve or create the first pending order for the logged-in user
+    orders = Order.objects.filter(user=request.user, status="pending")
+    if orders.exists():
+        order = orders.first()
+        # Delete any additional pending orders
+        orders.exclude(id=order.id).delete()
+    else:
+        order = Order(user=request.user, status="pending", total_price=final_total)
+        order.save()
+    
+    order.total_price = final_total
+    order.save()
+
+    return render(
+        request,
+        "cart/cart.html",
+        {
+            "cart_items": cart_items,
+            "total_cost": total_cost,
+            "delivery_fee": delivery_fee,
+            "final_total": final_total,
+            "order": order,  # Pass order to template for checkout button
+        },
+    )
+'''
+@login_required(login_url="login")
+def view_cart(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = cart.items.all()
+
+    # Calculate the total cost and delivery fee as needed
+    total_cost = sum(item.get_cost() for item in cart_items)
+
+    delivery_fee = Decimal("5.00") if total_cost < Decimal("50.00") else Decimal("0.00")
+    final_total = total_cost + delivery_fee
+
+    # Retrieve or create the first pending order for the logged-in user
+    orders = Order.objects.filter(user=request.user, status="pending")
+    if orders.exists():
+        order = orders.first()
+        # Delete any additional pending orders
+        orders.exclude(id=order.id).delete()
+    else:
+        order = Order(user=request.user, status="pending", final_total=final_total)
+        order.save()
+    
+    order.final_total = final_total
+    order.save()
+
+    return render(
+        request,
+        "cart/cart.html",
+        {
+            "cart_items": cart_items,
+            "total_cost": total_cost,
+            "delivery_fee": delivery_fee,
+            "final_total": final_total,
+            "order": order,  # Pass order to template for checkout button
+        },
+    )
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Product, SubscriptionPlan, Cart, CartItem
