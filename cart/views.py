@@ -383,8 +383,13 @@ def view_cart(request):
     delivery_fee = Decimal("5.00") if total_cost < Decimal("50.00") else Decimal("0.00")
     final_total = total_cost + delivery_fee
 
-    # Retrieve the pending order (if any) for the logged-in user
-    order = Order.objects.filter(user=request.user, status="pending").first()
+    # Retrieve the pending order for the logged-in user, create if it doesn't exist
+    order, created = Order.objects.get_or_create(user=request.user, status="pending", defaults={'total_price': final_total})
+
+    # If the order was retrieved (not created) update the total_price
+    if not created:
+        order.total_price = final_total
+        order.save()
 
     return render(
         request,
@@ -397,6 +402,7 @@ def view_cart(request):
             "order": order,  # Pass order to template for checkout button
         },
     )
+
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
