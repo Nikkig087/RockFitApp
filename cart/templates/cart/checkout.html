@@ -1,49 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
-    <script src="https://js.stripe.com/v3/"></script>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h2>Checkout</h2>
+{% block title %}Checkout{% endblock %}
 
-    <form id="payment-form">
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-        <input type="text" id="full-name" placeholder="Full Name" required />
-        <input type="text" id="cardholder-name" placeholder="Cardholder Name" required />
-        <input type="email" id="email" placeholder="Email" required />
-        <div id="card-element"><!-- Stripe will mount card input here --></div>
-        <button id="pay-now-button" type="submit">Pay Now</button>
-    </form>
-    
+{% block content %}
+<h2 class="text-center">Secure Checkout</h2>
 
-    <script>
-        // Ensure Stripe is initialized
+<form id="payment-form" class="checkout-form">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+    <label for="full-name">Full Name</label>
+    <input type="text" id="full-name" placeholder="John Doe" required />
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" placeholder="you@example.com" required />
+
+    <label for="cardholder-name">Cardholder Name</label>
+    <input type="text" id="cardholder-name" placeholder="John Doe" required />
+
+    <label for="address-1">Address Line 1</label>
+    <input type="text" id="address-1" placeholder="123 Main St" required />
+
+    <label for="address-2">Address Line 2 (Optional)</label>
+    <input type="text" id="address-2" placeholder="Apartment, Suite, etc." />
+
+    <label for="address-3">Address Line 3 (Optional)</label>
+    <input type="text" id="address-3" placeholder="Additional Address Details" />
+
+    <label for="card-element">Credit or Debit Card</label>
+    <div id="card-element" class="StripeElement"></div>
+    <div id="card-errors" role="alert" class="error-message"></div>
+
+    <button id="pay-now-button" type="submit">Pay Now</button>
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Ensure Stripe is loaded -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Stripe Checkout Script Loaded");
+
+        if (!window.Stripe) {
+            console.error("Stripe is not loaded!");
+            return;
+        }
+
         const stripe = Stripe("REMOVED");
         const elements = stripe.elements();
-        const cardElement = elements.create("card");
+
+        // Custom styling for Stripe card input field
+        const style = {
+            base: {
+                fontSize: "18px",
+                color: "#32325d",
+                fontFamily: "Arial, sans-serif",
+                letterSpacing: "1px",
+                "::placeholder": {
+                    color: "#aab7c4",
+                },
+            },
+            invalid: {
+                color: "#fa755a",
+            },
+        };
+
+        const cardElement = elements.create("card", { style });
         cardElement.mount("#card-element");
-    
+
         document.getElementById("payment-form").addEventListener("submit", function (event) {
             event.preventDefault();
-            console.log("Pay Now button clicked!");  // Debugging Log
-    
+            console.log("Pay Now button clicked!");
+
             let fullName = document.getElementById("full-name")?.value.trim();
             let cardholderName = document.getElementById("cardholder-name")?.value.trim();
             let email = document.getElementById("email")?.value.trim();
-    
-            if (!fullName || !cardholderName || !email) {
-                alert("Please fill in all fields.");
+            let address1 = document.getElementById("address-1")?.value.trim();
+            let address2 = document.getElementById("address-2")?.value.trim();
+            let address3 = document.getElementById("address-3")?.value.trim();
+
+            if (!fullName || !cardholderName || !email || !address1) {
+                alert("Please fill in all required fields.");
                 return;
             }
-    
+
             stripe.createPaymentMethod({
                 type: "card",
                 card: cardElement,
-                billing_details: { name: cardholderName, email: email },
+                billing_details: { 
+                    name: cardholderName, 
+                    email: email,
+                    address: {
+                        line1: address1,
+                        line2: address2 || "",
+                        city: address3 || "", 
+                        country: "US"
+                    }
+                },
             }).then(function (result) {
                 if (result.error) {
                     alert(result.error.message);
@@ -58,6 +113,9 @@
                             payment_method_id: result.paymentMethod.id,
                             email: email,
                             full_name: fullName,
+                            address_1: address1,
+                            address_2: address2,
+                            address_3: address3
                         }),
                     })
                     .then(response => response.json())
@@ -66,26 +124,26 @@
                             stripe.confirmCardPayment(data.client_secret).then(function(result) {
                                 if (result.error) {
                                     alert("Payment failed: " + result.error.message);
+                                    window.location.href = "/cart/payment_failed/";
                                 } else {
                                     alert("Payment successful!");
-    
-                                    // ✅ Clear the frontend cart storage
                                     localStorage.removeItem("cart");
                                     sessionStorage.removeItem("cart");
-    
-                                    // ✅ Redirect to the success page
                                     window.location.href = "/cart/success/";
                                 }
                             });
                         } else {
                             alert("Payment Failed: " + data.error);
+                            window.location.href = "/cart/payment_failed/";
                         }
                     })
-                    .catch(error => console.error("Error:", error));
+                    .catch(error => {
+                        console.error("Error:", error);
+                        window.location.href = "/cart/payment_failed/";
+                    });
                 }
             });
         });
-    </script>
-    
-</body>
-</html>
+    });
+</script>
+{% endblock %}

@@ -57,7 +57,7 @@ from django.conf import settings
 from .models import Cart, Order, OrderItem
 
 @login_required
-@login_required
+
 def payment_success(request):
     try:
         # Retrieve cart items from session
@@ -93,7 +93,7 @@ def payment_success(request):
 
             # Add subscription details to email
             order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
-
+        '''
         # Send confirmation email
         send_mail(
             subject="Order Confirmation - Rockfit",
@@ -107,7 +107,7 @@ def payment_success(request):
             recipient_list=[request.user.email],
             fail_silently=False,
         )
-
+        '''
         # Return a rendered success page
         return render(request, "cart/success.html", {"total_cost": total_cost})
 
@@ -371,6 +371,9 @@ def send_failed_email(email, error_message):
     send_mail(subject, message, from_email, recipient_list)
 '''
 
+
+'''
+cmtd 2702 1452
 @login_required(login_url="login")
 def process_payment(request):
     data = json.loads(request.body)
@@ -449,14 +452,16 @@ def process_payment(request):
     except stripe.error.CardError as e:
         send_failed_email(email, str(e))
         return JsonResponse({"status": "failed", "error": str(e)})
+        return redirect('cart:payment_failed')
 
     except Exception as e:
         send_failed_email(email, str(e))
         return JsonResponse({"status": "failed", "error": str(e)})
+        return redirect('cart:payment_failed')
 
 def send_subscription_email(user, plan, final_total):
     subject = 'Subscription Confirmation'
-    message = f'Thank you for subscribing to {plan.name}. Your subscription is now active.\nFinal Total: €{final_total}'
+    message = f' Dear {user}, thank you for subscribing to {plan.name}. Your subscription is now active.\nFinal Total: €{final_total}'
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [user.email]
     print(f"DEBUG - Subscription Email: {subject}, {message}, {from_email}, {recipient_list}")
@@ -464,7 +469,7 @@ def send_subscription_email(user, plan, final_total):
     
 def send_product_email(user, product, final_total):
     subject = 'Product Purchase Confirmation'
-    message = f'Thank you for purchasing {product.name}. We hope you enjoy your product!\nFinal Total: €{final_total}'
+    message = f'Dear {user},thank you for purchasing {product.name}. We hope you enjoy your product!\nFinal Total: €{final_total}'
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [user.email]
     print(f"DEBUG - Product Email: {subject}, {message}, {from_email}, {recipient_list}")
@@ -472,9 +477,199 @@ def send_product_email(user, product, final_total):
 
 def send_failed_email(email, error_message):
     subject = 'Payment Failed'
-    message = f'There was an error processing your payment: {error_message}. Please try again.'
+    message = f'Sorry there was an error processing your payment: {error_message}. Please try again.'
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [email]
+    print(f"DEBUG - Failed Email: {subject}, {message}, {from_email}, {recipient_list}")
+    send_mail(subject, message, from_email, recipient_list)
+'''
+
+@login_required(login_url="login")
+def process_payment(request):
+    data = json.loads(request.body)
+    payment_method_id = data.get("payment_method_id")
+    email = data.get("email")
+    full_name = data.get("full_name")
+    address_1 = data.get("address_1", "")
+    address_2 = data.get("address_2", "")
+    city = data.get("city", "")
+
+    try:
+        # Get the cart for the logged-in user
+        cart = Cart.objects.get(user=request.user)
+        
+        # Separate products and subscriptions
+        products = []  # List to store product details for email
+        subscription = None  # Store subscription details if any
+
+        total_product_cost = 0  # To calculate the total product cost
+        total_subscription_cost = 0  # To calculate the total subscription cost
+        
+        for cart_item in cart.items.all():
+            if cart_item.product:
+                total_product_cost += cart_item.product.price * cart_item.quantity
+                products.append({
+                    'product': cart_item.product,
+                    'quantity': cart_item.quantity,
+                    'total': cart_item.product.price * cart_item.quantity
+                })
+            elif cart_item.subscription:
+                total_subscription_cost += cart_item.subscription.price * cart_item.quantity
+                subscription = {
+                    'plan': cart_item.subscription,
+                    'quantity': cart_item.quantity,
+                    'total': cart_item.subscription.price * cart_item.quantity
+                }
+                
+                # Add subscription to user profile
+                user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+                user_profile.subscription_plan = cart_item.subscription
+                user_profile.subscription_start_date = timezone.now()
+                user_profile.is_active = True
+                user_profile.save()
+
+        # Calculate the delivery fee for products only (if the product cost is less than €50)
+        delivery_fee = Decimal("5.00") if total_product_cost < Decimal("50.00") else Decimal("0.00")
+        final_product_total = total_product_cost + delivery_fee
+        
+        # Final totals
+        final_subscription_total = total_subscription_cost  # No delivery fee for subscriptions
+        final_total = final_product_total + final_subscription_total  # Sum of products and subscription totals
+        
+        # Create the order
+        order = Order.objects.create(
+            user=request.user,
+            final_total=final_total,  # Use final total for order
+            status='pending',
+            full_name=full_name,
+            email=email,
+            address_line1=address_1,
+            address_line2=address_2,
+            city=city,
+        )
+        
+        # Create order items for products
+        for cart_item in cart.items.all():
+            if cart_item.product:
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity
+                )
+            elif cart_item.subscription:
+                OrderItem.objects.create(
+                    order=order,
+                    subscription=cart_item.subscription,
+                    quantity=cart_item.quantity
+                )
+
+        # Handle payment intent creation and confirmation
+        payment_intent = stripe.PaymentIntent.create(
+            amount=int(final_total * 100),  # Convert to cents
+            currency="eur",
+            payment_method=payment_method_id,
+            confirmation_method="manual",
+            confirm=True,
+            return_url=request.build_absolute_uri(reverse("cart:success"))
+        )
+
+        if payment_intent.status != "succeeded":
+            # PaymentIntent not succeeded, confirm it
+            payment_intent = stripe.PaymentIntent.confirm(payment_intent.id)
+
+        if payment_intent.status == "succeeded":
+            # Payment successful, send the emails
+            if products:
+                send_product_email(request.user, products, final_product_total, delivery_fee)  # Send email with delivery fee for products
+
+            if subscription:
+                send_subscription_email(request.user, subscription, final_subscription_total)  # Send separate email for subscription
+
+            # Clear the cart after payment and email sending
+            cart.items.all().delete()
+
+            # Return a success response
+            return JsonResponse({"status": "success", "client_secret": payment_intent.client_secret})
+        else:
+            # Payment failed, handle failure
+            return redirect('cart:payment_failed')
+
+    except stripe.error.CardError as e:
+        send_failed_email(email, str(e))
+        return redirect('cart:payment_failed')
+    except Exception as e:
+        send_failed_email(email, str(e))
+        return redirect('cart:payment_failed')
+
+
+def send_subscription_email(user, subscription, final_subscription_total):
+    print(f"DEBUG - Type of subscription: {type(subscription)}")
+
+    try:
+        subscription_plan = subscription['plan']  # Extract subscription plan from dict
+
+        if not subscription_plan:
+            print("Error: Subscription plan not found.")
+            return
+
+        # Prepare the email for the subscription
+        subject = 'Subscription Confirmation - Rockfit'
+        message = f"Dear {user.username},\n\nThank you for subscribing to the {subscription_plan.name} plan. Your subscription is now active.\n\n" \
+                  f"Quantity: {subscription['quantity']}\nTotal Cost for Subscription: €{subscription['total']}\n\n" \
+                  f"Final Subscription Total: €{final_subscription_total}\n\n"
+
+        # Add Subscription Info from UserProfile (Only if there's a subscription)
+        user_profile, created = UserProfile.objects.get_or_create(user=user)  # Ensure we have the UserProfile
+        if user_profile.subscription_plan:
+            # Ensure start and end dates are not None before using strftime
+            subscription_details = (
+                f"\n📅 **Subscription Details:**\n"
+                f"Plan: {user_profile.subscription_plan.name}\n"
+                f"Price: €{user_profile.subscription_plan.price}\n"
+                f"Duration: {user_profile.subscription_plan.duration} days\n"
+                f"Start Date: {user_profile.subscription_start_date.strftime('%Y-%m-%d') if user_profile.subscription_start_date else 'Not Available'}\n"
+                f"End Date: {user_profile.subscription_end_date.strftime('%Y-%m-%d') if user_profile.subscription_end_date else 'Not Available'}\n"
+            )
+            message += subscription_details  # Append subscription details to the message
+
+        # Finish the email body
+        message += "\nEnjoy your subscription!\nRockfit Team"
+
+        # Define the sender and recipient email
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [user.email]
+
+        # Debug print for checking email content
+        print(f"DEBUG - Subscription Email: {subject}, {message}, {from_email}, {recipient_list}")
+        
+        # Send the email
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+    except Exception as e:
+        print(f"Error sending subscription email: {e}")
+
+
+def send_product_email(user, products, final_product_total, delivery_fee):
+    # Build a product list to include in the email message
+    product_details = "\n".join([f"Product: {product['product'].name}, Quantity: {product['quantity']}, Total: €{product['total']}" for product in products])
+    
+    subject = 'Product Purchase Confirmation'
+    message = f"Dear {user.username},\n\nThank you for purchasing the following products:\n\n" \
+              f"{product_details}\n\nFinal Total for Products: €{final_product_total}\n" \
+              f"Delivery Fee: €{delivery_fee}\n\nWe hope you enjoy your products!\n\nRockfit Team"
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [user.email]
+
+    print(f"DEBUG - Product Email: {subject}, {message}, {from_email}, {recipient_list}")
+    send_mail(subject, message, from_email, recipient_list)
+
+
+def send_failed_email(email, error_message):
+    subject = 'Payment Failed'
+    message = f'Sorry, there was an error processing your payment: {error_message}. Please try again.'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [email]
+
     print(f"DEBUG - Failed Email: {subject}, {message}, {from_email}, {recipient_list}")
     send_mail(subject, message, from_email, recipient_list)
 
@@ -932,7 +1127,7 @@ def payment_success(request):
 @login_required
 def payment_failed(request):
     user_email = request.user.email  
-
+    '''
     send_mail(
         subject="Payment Failed - Rockfit",
         message="Unfortunately, your payment was unsuccessful. Please check your payment details and try again.",
@@ -940,7 +1135,7 @@ def payment_failed(request):
         recipient_list=[user_email],
         fail_silently=False,
     )
-
+    '''
     messages.error(request, "Payment failed. Please check your details and try again.")
     return render(request, "cart/payment_failed.html")
 

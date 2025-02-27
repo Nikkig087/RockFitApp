@@ -48,6 +48,11 @@ class Order(models.Model):
     full_name = models.CharField(max_length=255)  # Add full_name
     email = models.EmailField()  # Add email
 
+      # Add address fields to the Order model
+    address_line1 = models.CharField(max_length=255, blank=True, null=True)
+    address_line2 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+
     def get_total_cost(self):
         """Returns the total cost of all order items."""
         return sum(item.get_cost() for item in self.items.all())
