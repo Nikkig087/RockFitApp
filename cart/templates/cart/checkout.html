@@ -62,16 +62,7 @@
 <script src="{% static 'fitness/js/lazyload.js' %}"></script>
 
 <script>
-    var contactFormUrl = "{% url 'contact_form' %}";
-</script>
-<script src="https://kit.fontawesome.com/38e26af2b7.js" crossorigin="anonymous" defer></script>
-<script>
     document.addEventListener('DOMContentLoaded', function () {
-        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
-        var toastList = toastElList.map(function (toastEl) {
-            return new bootstrap.Toast(toastEl).show();
-        });
-
         console.log("Stripe Checkout Script Loaded");
 
         if (!window.Stripe) {
@@ -79,7 +70,7 @@
             return;
         }
 
-        const stripe = Stripe("REMOVED");
+        const stripe = Stripe("{{ stripe_publishable_key }}");
         const elements = stripe.elements();
 
         // Custom styling for Stripe card input field
@@ -177,5 +168,5 @@
         });
     });
 </script>
-{% endblock %}
 
+{% endblock %}

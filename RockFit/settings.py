@@ -15,6 +15,16 @@ import os
 import dj_database_url
 from django.contrib.messages import constants as messages
 from dotenv import load_dotenv
+import environ
+
+# settings.py
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+
 
 if os.path.isfile("env.py"):
     import env
