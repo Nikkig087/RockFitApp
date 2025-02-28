@@ -398,47 +398,30 @@ p {
 }
 
 
-
 /* Checkout Styling */
 .checkout-form {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  border: 1px solid #ddd;
+  background-color: #f8f9fa;
   border-radius: 10px;
-  background-color: #f9f9f9;
-}
-
-.checkout-form .form-group {
-  margin-bottom: 15px;
-}
-
-.checkout-form .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.checkout-form .form-control {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .StripeElement {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ced4da;
   border-radius: 5px;
   background-color: #fff;
-  box-sizing: border-box;
 }
 
 .error-message {
   color: #fa755a;
-  margin-top: 10px;
+}
+
+.btn-lg {
+  padding: 10px 20px;
+  font-size: 1.25rem;
 }
 
 
@@ -502,7 +485,6 @@ a {
   justify-content: space-around;
   flex-direction: column;
 }
-
 .pop {
   background-color: gold;
   color: black;
@@ -514,6 +496,7 @@ a {
 .contact {
   color: black;
 }
+
 /* Responsive Styles */
 
 /* Mobile Styles (default for small screens) */

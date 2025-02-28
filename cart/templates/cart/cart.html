@@ -60,9 +60,9 @@
                             <td>
                                 €{% if item.product %}{{ item.product.price }}{% elif item.subscription %}{{ item.subscription.price }}{% endif %}
                             </td>
-
+                            
                             <td>
-                                €{{ item.total_price }}
+                                €{{ item.product.price }}
                             </td>
 
                             <td>

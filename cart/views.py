@@ -488,7 +488,6 @@ def send_failed_email(email, error_message):
 def process_payment(request):
     data = json.loads(request.body)
     payment_method_id = data.get("payment_method_id")
-    email = data.get("email")
     full_name = data.get("full_name")
     address_1 = data.get("address_1", "")
     address_2 = data.get("address_2", "")
@@ -542,7 +541,7 @@ def process_payment(request):
             final_total=final_total,  # Use final total for order
             status='pending',
             full_name=full_name,
-            email=email,
+            email=request.user.email,
             address_line1=address_1,
             address_line2=address_2,
             city=city,
@@ -592,14 +591,16 @@ def process_payment(request):
             return JsonResponse({"status": "success", "client_secret": payment_intent.client_secret})
         else:
             # Payment failed, handle failure
+            send_failed_email(request.user, "Payment not succeeded")
             return redirect('cart:payment_failed')
 
     except stripe.error.CardError as e:
-        send_failed_email(email, str(e))
+        send_failed_email(request.user, str(e))
         return redirect('cart:payment_failed')
     except Exception as e:
-        send_failed_email(email, str(e))
+        send_failed_email(request.user, str(e))
         return redirect('cart:payment_failed')
+
 
 
 def send_subscription_email(user, subscription, final_subscription_total):
@@ -664,14 +665,15 @@ def send_product_email(user, products, final_product_total, delivery_fee):
     send_mail(subject, message, from_email, recipient_list)
 
 
-def send_failed_email(email, error_message):
+def send_failed_email(user, error_message):
     subject = 'Payment Failed'
     message = f'Sorry, there was an error processing your payment: {error_message}. Please try again.'
     from_email = settings.DEFAULT_FROM_EMAIL
-    recipient_list = [email]
+    recipient_list = [user.email]
 
     print(f"DEBUG - Failed Email: {subject}, {message}, {from_email}, {recipient_list}")
     send_mail(subject, message, from_email, recipient_list)
+
 
 
 
@@ -868,7 +870,7 @@ def add_to_cart(request, item_id, item_type):
         request.session["cart_items"] = session_cart
         request.session.modified = True
 
-        messages.success(request, f"{item.name} has been added to your cart!")
+        
     else:
         # Handle unauthenticated users (similar logic for session storage)
         cart = request.session.get("cart", {})
@@ -879,7 +881,7 @@ def add_to_cart(request, item_id, item_type):
             cart[key] = {"type": item_type, "quantity": 1}
         request.session["cart"] = cart
         request.session.modified = True
-        messages.success(request, "Item added to your cart!")
+       
 
     return redirect("fitness:products")
 '''
@@ -1124,6 +1126,7 @@ def payment_success(request):
 
     return render(request, "cart/payment_success.html", {"order_total": order_total})
 '''
+''
 @login_required
 def payment_failed(request):
     user_email = request.user.email  
@@ -1136,7 +1139,7 @@ def payment_failed(request):
         fail_silently=False,
     )
     '''
-    messages.error(request, "Payment failed. Please check your details and try again.")
+   
     return render(request, "cart/payment_failed.html")
 
 def cancel_view(request):
