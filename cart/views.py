@@ -1,3 +1,4 @@
+'''
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cart, CartItem
 from fitness.models import Product, SubscriptionPlan, UserProfile
@@ -13,8 +14,6 @@ from decimal import Decimal
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
-
-
 import stripe
 import json
 from django.conf import settings
@@ -23,6 +22,10 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from .models import Order
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Cart, CartItem, Order
+from decimal import Decimal
 
 # Configure Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -55,80 +58,6 @@ from django.template.loader import render_to_string
 from django.shortcuts import render
 from django.conf import settings
 from .models import Cart, Order, OrderItem
-
-@login_required
-
-def payment_success(request):
-    try:
-        # Retrieve cart items from session
-        session_cart = request.session.get("cart_items", [])
-        order_details = "Here is your order summary:\n\n"
-        total_cost = 0
-
-        # Construct the order details for the email
-        for item in session_cart:
-            price = Decimal(item['price'])  # Convert price back to decimal
-            order_details += f"- {item['name']} (x{item['quantity']}) - €{price * item['quantity']}\n"
-            total_cost += price * item['quantity']
-
-        order_details += f"\nTotal Amount: €{total_cost}\n"
-
-        # Clear session cart after successful payment
-        request.session["cart_items"] = []
-        request.session.modified = True
-
-        # Handle subscriptions if applicable
-        subscription_plan_id = request.session.get("selected_plan_id")
-        if subscription_plan_id:
-            plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
-            user_profile = get_object_or_404(UserProfile, user=request.user)
-
-            user_profile.subscription_plan = plan
-            user_profile.subscription_start_date = timezone.now()
-            user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
-            user_profile.save()
-
-            messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
-            del request.session["selected_plan_id"]
-
-            # Add subscription details to email
-            order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
-        '''
-        # Send confirmation email
-        send_mail(
-            subject="Order Confirmation - Rockfit",
-            message=(
-                f"Dear {request.user.username},\n\n"
-                "Thank you for your purchase!\n\n"
-                f"{order_details}\n\n"
-                "Enjoy your order!\nRockfit Team"
-            ),
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[request.user.email],
-            fail_silently=False,
-        )
-        '''
-        # Return a rendered success page
-        return render(request, "cart/success.html", {"total_cost": total_cost})
-
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
-        return HttpResponseServerError(f"An error occurred: {str(e)}")
-
-# Checkout Page
-from django.shortcuts import render, get_object_or_404
-from .models import Order
-
-def checkout(request, order_id):
-    """
-    Display the checkout page where the user can proceed with payment.
-    """
-    order = get_object_or_404(Order, id=order_id)
-
-    # If the order exists, render the checkout page (use order details as needed)
-    return render(request, 'cart/checkout.html', {'order': order})
-
-
 import stripe
 import json
 import logging
@@ -136,10 +65,6 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.core.mail import send_mail
 from .models import Order
-
-# Initialize logger
-logger = logging.getLogger(__name__)
-
 # Set Stripe API key
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -209,6 +134,109 @@ from decimal import Decimal
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 from django.core.mail import send_mail
+'''
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Cart, CartItem, Order, OrderItem
+from fitness.models import Product, SubscriptionPlan, UserProfile
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+import stripe
+from django.utils import timezone
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
+from django.urls import reverse
+from decimal import Decimal
+from django.core.mail import send_mail
+from django.utils import timezone
+import json
+from django.template.loader import render_to_string
+from django.http import HttpResponseServerError
+import logging
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.html import strip_tags
+from decimal import Decimal
+
+stripe.api_key = settings.STRIPE_SECRET_KEY 
+
+@login_required
+
+def payment_success(request):
+    try:
+        # Retrieve cart items from session
+        session_cart = request.session.get("cart_items", [])
+        order_details = "Here is your order summary:\n\n"
+        total_cost = 0
+
+        # Construct the order details for the email
+        for item in session_cart:
+            price = Decimal(item['price'])  # Convert price back to decimal
+            order_details += f"- {item['name']} (x{item['quantity']}) - €{price * item['quantity']}\n"
+            total_cost += price * item['quantity']
+
+        order_details += f"\nTotal Amount: €{total_cost}\n"
+
+        # Clear session cart after successful payment
+        request.session["cart_items"] = []
+        request.session.modified = True
+
+        # Handle subscriptions if applicable
+        subscription_plan_id = request.session.get("selected_plan_id")
+        if subscription_plan_id:
+            plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
+            user_profile = get_object_or_404(UserProfile, user=request.user)
+
+            user_profile.subscription_plan = plan
+            user_profile.subscription_start_date = timezone.now()
+            user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
+            user_profile.save()
+
+            #messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
+            del request.session["selected_plan_id"]
+
+            # Add subscription details to email
+            order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
+        '''
+        # Send confirmation email
+        send_mail(
+            subject="Order Confirmation - Rockfit",
+            message=(
+                f"Dear {request.user.username},\n\n"
+                "Thank you for your purchase!\n\n"
+                f"{order_details}\n\n"
+                "Enjoy your order!\nRockfit Team"
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[request.user.email],
+            fail_silently=False,
+        )
+        '''
+        # Return a rendered success page
+        return render(request, "cart/success.html", {"total_cost": total_cost})
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return HttpResponseServerError(f"An error occurred: {str(e)}")
+
+# Checkout Page
+from django.shortcuts import render, get_object_or_404
+from .models import Order
+
+def checkout(request, order_id):
+    """
+    Display the checkout page where the user can proceed with payment.
+    """
+    order = get_object_or_404(Order, id=order_id)
+
+    # If the order exists, render the checkout page (use order details as needed)
+    return render(request, 'cart/checkout.html', {'order': order})
+
+
+
+# Initialize logger
+logger = logging.getLogger(__name__)
+
+
 ''''
 def send_success_email(order):
     subject = "Your Order Has Been Confirmed!"
@@ -250,7 +278,7 @@ from django.shortcuts import get_object_or_404
 from .models import Cart, Order, CartItem
 #from .emails import send_success_email  # Import the email function
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 # views.py
 from .models import Order, OrderItem, CartItem, Cart
@@ -260,8 +288,7 @@ from django.http import JsonResponse
 from .models import Order, OrderItem, Cart, CartItem
 import stripe
 
-# Your stripe secret key setup
-stripe.api_key = 'your-stripe-secret-key'
+
 
 
 '''
@@ -702,10 +729,7 @@ def send_failed_email(email, order=None):
         fail_silently=False,
     )
 '''
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Cart, CartItem, Order
-from decimal import Decimal
+
 
 
 '''
@@ -821,21 +845,6 @@ def view_cart(request):
             "order": order,  # Pass order to template for checkout button
         },
     )
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from .models import Product, SubscriptionPlan, Cart, CartItem
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
-from .models import Product, SubscriptionPlan, Cart, CartItem
-
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
-from .models import Product, SubscriptionPlan, Cart, CartItem
-from fitness.models import Product  # Ensure this import is present
-
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
-from .models import Product, SubscriptionPlan, Cart, CartItem
 
 
 
@@ -938,7 +947,7 @@ def remove_from_cart(request, cart_item_id):
         CartItem, id=cart_item_id, cart__user=request.user
     )
     cart_item.delete()
-    messages.success(request, "Item removed from your cart!")
+   # messages.success(request, "Item removed from your cart!")
     return redirect("cart:view_cart")
 
 
@@ -968,7 +977,7 @@ def update_cart_item(request, cart_item_id):
         else:
             cart_item.quantity = new_quantity
             cart_item.save()
-            messages.success(request, "Items updated in your cart!")
+            
     
     return redirect("cart:view_cart")
 
