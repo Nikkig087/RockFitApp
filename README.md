@@ -292,7 +292,14 @@ With an emphasis on delivering a seamless user experience, the goal of this proj
 - As a **Registered User,** I want to **see the cart icon in the navigation bar update dynamically,** so that **I always know how many items are in my cart.**
 
 - As a **Registered User,** I want to **subscribe to a plan,** so that **I can access premium features or content.**
- 
+
+- As a **Registered Logged** in Customer, I want to **receive an email notification if my payment attempt fails** so **that I can investigate the reason**
+
+- As a **Registered Logged in Customer,** I want to **receive an email with confirmation details for the Subscription I have purchased,** so that **I am aware of what I bought and how much I paid**
+
+-As a **Registered Logged in Customer,** I want to **receive an email with confirmation details for the Products I have purchased,** so that **I am aware of what I bought and how much I paid**
+
+
 
 ## Admin User Stories
 
@@ -790,7 +797,6 @@ Refer to Feature Screenshots and also automated testing for confirmation of succ
 
 | **User Story** | **Test** | **Pass** |
 | --- | --- | :---: |
-| As a Registered user, I want to log in to my account, so that I can access my personalized information. | The user clicks on "Log In" in the navigation bar. <br>The app presents a login form for the user to enter their credential. | ✓ |
 | As a Registered User, I want to create, edit, and delete my customer reviews once it is approved, so that I can help other customers when reviewing products. | Registered users can contribute helpful information by submitting reviews in the dedicated section below the product description. | ✓ |
 | As a Registered User, I want to view and edit my account details, so that I can keep my information up to date. | The user navigates to the "Profile" page via the navigation bar. <br>The app displays editable account fields for the user to update. | ✓ |
 | As a Registered User, I want to add products to my cart, so that I can purchase them later. | The user clicks the "Add to Cart" button on the product list or detail page. <br>The app updates the cart icon in the navigation bar to reflect the new quantity. | ✓ |
@@ -804,6 +810,9 @@ Refer to Feature Screenshots and also automated testing for confirmation of succ
 | As a user, I want to sort products by price, name, or date added, so that I can organize the product list in a way that suits my needs. | The user selects a sort option (e.g., "Sort by Price") from a dropdown menu on the product page. <br>The app reloads the product list with the selected sorting applied. | ✓ |
 | As a user, I want to see images of products, so that I can visualize what I may be buying. | The app displays product images on the product list and detail pages. <br>The user can click on an image to view a larger version. | ✓ |
 | As a user, I want to view customer reviews and ratings for each product, so that I can evaluate the quality of the product. | The product detail page includes a section for reviews and ratings, visible below the product description. | ✓ |
+| As a Registered Logged in Customer, I want to receive an email with confirmation details for the Products I have purchased, so that I am aware of what I bought and how much I paid | The Customer recieves a detailed email containing information on the purchase they have made, including Product Name, Quantity, Price and Total Price. | ✓ |
+| As a Registered Logged in Customer, I want to receive an email with confirmation details for the Subscription I have purchased, so that I am aware of what I bought and how much I paid| The Customer recieves a detailed email containing information on the purchase they have made, including Subscription Name, Duration, Price and Start Date. | ✓ |
+| As a Registered Logged in Customer, I want to receive an email notification if my payment attempt fails so that I can investigate the reason| The Customer recieves an email informing them that their payment has failed which includes a unique reference and a failure reason. | ✓ |
 | As a Developer, I want to enable actions like approving or rejecting pause requests so that admins can efficiently manage user subscriptions. | The developer creates custom actions approve_pause and reject_pause in the UserProfileAdmin class. <br>The actions update the pause_requested and pause_approved fields correctly. <br>Actions are tested with different querysets to validate functionality. | ✓ |
 | As a Developer, I want to implement inline editing for related models so that data relationships can be managed efficiently. | The developer adds the UserProfileInline to the custom UserAdmin. <br>The inline feature is tested for data integrity. | ✓ |
 | As an Admin, I want to moderate user reviews so that only appropriate feedback is displayed. | The admin opens the "Reviews" section in the dashboard. <br>The admin edits or deletes inappropriate reviews directly from the interface. | ✓ |
