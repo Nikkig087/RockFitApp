@@ -77,13 +77,8 @@ def checkout(request, order_id):
     """
     order = get_object_or_404(Order, id=order_id)
 
-    # Make sure to pass the Stripe public key into the template context
-    context = {
-        'order': order,
-        'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY,  # Add this line
-    }
-    
-    return render(request, 'cart/checkout.html', context)
+    # If the order exists, render the checkout page (use order details as needed)
+    return render(request, 'cart/checkout.html', {'order': order})
 
 
 
