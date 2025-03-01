@@ -70,15 +70,19 @@ def payment_success(request):
 # Checkout Page
 from django.shortcuts import render, get_object_or_404
 from .models import Order
-
 def checkout(request, order_id):
     """
     Display the checkout page where the user can proceed with payment.
     """
     order = get_object_or_404(Order, id=order_id)
 
-    # If the order exists, render the checkout page (use order details as needed)
-    return render(request, 'cart/checkout.html', {'order': order})
+    # Pass the order and Stripe publishable key to the template
+    context = {
+        'order': order,
+        'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY,  # Add the Stripe key here
+    }
+    
+    return render(request, 'cart/checkout.html', context)
 
 
 

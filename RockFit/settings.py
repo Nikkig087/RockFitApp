@@ -15,13 +15,13 @@ import os
 import dj_database_url
 from django.contrib.messages import constants as messages
 from dotenv import load_dotenv
+load_dotenv()
 
-if os.path.isfile("env.py"):
-    import env
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
-
+load_dotenv() 
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 STRIPE_PUBLISHABLE_KEY = ('STRIPE_PUBLISHABLE_KEY')
@@ -84,15 +84,33 @@ MIDDLEWARE = [
 ]
 
 
+dotenv_path = '/workspace/RockFitApp/RockFit/.env'  # Adjust the path if necessary
 
-load_dotenv()  # This will load variables from a .env file if it exists.
 
-# Use the environment variables
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+# Load .env variables
+load_dotenv()
+print("SENDINBLUE_API_KEY:", os.getenv("SENDINBLUE_API_KEY"))
+
+
+# Ensure proper Anymail configuration
+EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
+
 ANYMAIL = {
-    "SENDINBLUE_API_KEY": os.getenv('SENDINBLUE_API_KEY'),
+    "SENDINBLUE_API_KEY": os.getenv("SENDINBLUE_API_KEY"),
 }
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL') 
+
+
+SENDINBLUE_API_KEY = os.getenv("SENDINBLUE_API_KEY")
+
+# Anymail configuration for SendinBlue
+ANYMAIL = {
+    "SENDINBLUE": {
+        "API_KEY": SENDINBLUE_API_KEY,
+    }
+}
+
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+
 
 
 
