@@ -98,6 +98,7 @@ DATABASES = {
     "default": dj_database_url.parse(os.getenv("DATABASE_URL"))
 }
 
+
 # Stripe configuration
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
@@ -124,6 +125,8 @@ CLOUDINARY_STORAGE = {
     "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
     "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
 }
+
+
 
 # Storage settings
 STORAGES = {

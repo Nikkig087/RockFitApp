@@ -89,7 +89,7 @@ dotenv_path = '/workspace/RockFitApp/RockFit/.env'  # Adjust the path if necessa
 
 # Load .env variables
 load_dotenv()
-print("SENDINBLUE_API_KEY:", os.getenv("SENDINBLUE_API_KEY"))
+
 
 
 # Ensure proper Anymail configuration

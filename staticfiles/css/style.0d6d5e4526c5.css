@@ -398,7 +398,6 @@ p {
 }
 
 
-
 /* Checkout Styling */
 .checkout-form {
   max-width: 600px;
@@ -425,18 +424,20 @@ p {
 
 
 #payment-form input {
-  color: black !important; 
+  color: #000000 !important; 
 }
 
 
 #payment-form input::placeholder {
-  color: gray !important;  
+  color: #000000 !important;  
 }
 
 
 #card-element input::placeholder {
-  color: gray !important;  
+  color: #000000 !important;  
 }
+
+
 .checkout-form .form-control {
   width: 100%;
   padding: 10px;
@@ -520,7 +521,6 @@ a {
   justify-content: space-around;
   flex-direction: column;
 }
-
 .pop {
   background-color: gold;
   color: black;
@@ -532,6 +532,7 @@ a {
 .contact {
   color: black;
 }
+
 /* Responsive Styles */
 
 /* Mobile Styles (default for small screens) */

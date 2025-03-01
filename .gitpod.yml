@@ -10,10 +10,6 @@ tasks:
 
 
  
-  - init: |
-      echo "export SENDINBLUE_API_KEY='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'" >> ~/.bashrc
-  - command: |
-      source ~/.bashrc
-
+  
 
 
