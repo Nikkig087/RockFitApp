@@ -79,7 +79,7 @@ def checkout(request, order_id):
     # Pass the order and Stripe publishable key to the template
     context = {
         'order': order,
-        'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY,  # Add the Stripe key here
+        'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY,  # Add the Stripe key here
     }
     
     return render(request, 'cart/checkout.html', context)

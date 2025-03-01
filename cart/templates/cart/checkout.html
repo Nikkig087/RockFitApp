@@ -68,8 +68,8 @@
             console.error("Stripe is not loaded!");
             return;
         }
-
-        const stripe = Stripe("{{stripe_publishable_key}}");
+        //const stripe = Stripe(STRIPE_PUBLISHABLE_KEY); // Use dynamic key
+        const stripe = Stripe("{{STRIPE_PUBLISHABLE_KEY}}");
         const elements = stripe.elements();
 
         // Custom styling for Stripe card input field
