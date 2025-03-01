@@ -99,6 +99,12 @@ ANYMAIL = {
     "SENDINBLUE_API_KEY": os.getenv("SENDINBLUE_API_KEY"),
 }
 
+# Configure the default email backend
+EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"  # Use Anymail's Sendinblue backend
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")  # Your default sender email
 
 SENDINBLUE_API_KEY = os.getenv("SENDINBLUE_API_KEY")
 
