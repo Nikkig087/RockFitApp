@@ -1,140 +1,3 @@
-'''
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Cart, CartItem
-from fitness.models import Product, SubscriptionPlan, UserProfile
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-import stripe
-from django.utils import timezone
-from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse
-from django.urls import reverse
-from decimal import Decimal
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils import timezone
-import stripe
-import json
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.template.loader import render_to_string
-from .models import Order
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Cart, CartItem, Order
-from decimal import Decimal
-
-# Configure Stripe
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-from django.core.mail import send_mail
-from django.http import HttpResponseServerError
-from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
-from django.contrib import messages
-#from .models import Cart, Order, OrderItem, SubscriptionPlan, UserProfile
-
-from django.core.mail import send_mail
-from django.conf import settings
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseServerError
-from django.contrib import messages
-from django.utils import timezone
-from django.contrib.auth.decorators import login_required
-
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-
-from django.shortcuts import render
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from .models import Cart, Order, CartItem
-
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.shortcuts import render
-from django.conf import settings
-from .models import Cart, Order, OrderItem
-import stripe
-import json
-import logging
-from django.http import JsonResponse
-from django.conf import settings
-from django.core.mail import send_mail
-from .models import Order
-# Set Stripe API key
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
-import stripe
-import json
-from .models import Order  # Import the Order model
-from django.conf import settings
-
-
-stripe.api_key = settings.STRIPE_SECRET_KEY  # Your Stripe secret key from environment variables
-
-from django.http import JsonResponse
-import stripe
-from django.conf import settings
-from .models import Order
-
-
-# Set your secret key from Stripe
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-import stripe
-from django.conf import settings
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-import stripe
-import json
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import JsonResponse
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-import stripe
-import json
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import JsonResponse
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from .models import Order, CartItem  # Adjust the import to your actual model if needed
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
-import stripe
-import json
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import JsonResponse
-from .models import Order  # Adjust the import to your actual model
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-import stripe
-from django.conf import settings
-from django.http import JsonResponse
-from django.core.mail import send_mail
-import json
-from .models import Order
-from decimal import Decimal
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-from django.core.mail import send_mail
-'''
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cart, CartItem, Order, OrderItem
 from fitness.models import Product, SubscriptionPlan, UserProfile
@@ -163,24 +26,24 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def payment_success(request):
     try:
-        # Retrieve cart items from session
+        
         session_cart = request.session.get("cart_items", [])
         order_details = "Here is your order summary:\n\n"
         total_cost = 0
 
-        # Construct the order details for the email
+        
         for item in session_cart:
-            price = Decimal(item['price'])  # Convert price back to decimal
+            price = Decimal(item['price'])  
             order_details += f"- {item['name']} (x{item['quantity']}) - €{price * item['quantity']}\n"
             total_cost += price * item['quantity']
 
         order_details += f"\nTotal Amount: €{total_cost}\n"
 
-        # Clear session cart after successful payment
+        
         request.session["cart_items"] = []
         request.session.modified = True
 
-        # Handle subscriptions if applicable
+        
         subscription_plan_id = request.session.get("selected_plan_id")
         if subscription_plan_id:
             plan = get_object_or_404(SubscriptionPlan, id=subscription_plan_id)
@@ -191,26 +54,12 @@ def payment_success(request):
             user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
             user_profile.save()
 
-            #messages.success(request, f"Successfully subscribed to the {plan.name} plan!")
+            
             del request.session["selected_plan_id"]
 
-            # Add subscription details to email
+           
             order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
-        '''
-        # Send confirmation email
-        send_mail(
-            subject="Order Confirmation - Rockfit",
-            message=(
-                f"Dear {request.user.username},\n\n"
-                "Thank you for your purchase!\n\n"
-                f"{order_details}\n\n"
-                "Enjoy your order!\nRockfit Team"
-            ),
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[request.user.email],
-            fail_silently=False,
-        )
-        '''
+        
         # Return a rendered success page
         return render(request, "cart/success.html", {"total_cost": total_cost})
 
@@ -242,34 +91,6 @@ def checkout(request, order_id):
 logger = logging.getLogger(__name__)
 
 
-''''
-def send_success_email(order):
-    subject = "Your Order Has Been Confirmed!"
-    message = f"""
-    Hi {order.full_name},  
-
-    Thank you for your purchase! Your order #{order.id} has been successfully placed.  
-
-    Order Summary:  
-    ------------------------  
-    {format_order_items(order)}  
-    ------------------------  
-
-    Total Paid: €{order.total_price}  
-
-    Your order will be processed shortly.  
-
-    Thanks for shopping with us!  
-    RockFit Team
-    """
-    send_mail(subject, message, "noreply@rockfit.com", [order.user.email])
-
-def format_order_items(order):
-    return "\n".join(
-        [f"{item.quantity}x {item.product.name} - €{item.product.price * item.quantity}" for item in order.items.all()]
-    )
-
-'''
 def send_failed_email(email, error_message):
     subject = "Payment Failed"
     message = f"Your payment attempt failed with the following error: {error_message}"
@@ -281,7 +102,7 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from .models import Cart, Order, CartItem
-#from .emails import send_success_email  # Import the email function
+
 
 
 
