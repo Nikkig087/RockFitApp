@@ -118,7 +118,7 @@ EMAIL_HOST = 'smtp-relay.sendinblue.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# Cloudinary settings
+# Cloudinary configuration
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
     "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
