@@ -69,7 +69,7 @@
             return;
         }
 
-        const stripe = Stripe("{{ stripe_publishable_key }}");
+        const stripe = Stripe("{{stripe_publishable_key}}");
         const elements = stripe.elements();
 
         // Custom styling for Stripe card input field
