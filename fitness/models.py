@@ -7,7 +7,8 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 from PIL import Image
-
+from cloudinary.models import CloudinaryField
+from django.utils.html import format_html
 
 class SubscriptionPlan(models.Model):
     """
@@ -165,7 +166,7 @@ class NutritionPlan(models.Model):
     def __str__(self):
         return self.title
 
-
+'''
 class Product(models.Model):
     """
     Represents a product available for purchase.
@@ -174,7 +175,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to="products/")
+    image = CloudinaryField('image', blank=True, null=True)
     image_thumbnail = ImageSpecField(
         source="image",
         processors=[ResizeToFill(300, 300)],
@@ -212,6 +213,38 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+'''
+class Product(models.Model):
+    """
+    Represents a product available for purchase.
+    """
+
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    # ✅ Use CloudinaryField instead of ImageField
+    image = CloudinaryField("image", blank=True, null=True)
+
+    stock_quantity = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_spotlight = models.BooleanField(default=False)
+
+    def image_tag(self):
+        """Display image thumbnail in Django Admin"""
+        if self.image:
+            return format_html(
+                f'<img src="{self.image.url}" width="50" height="50" style="object-fit: cover;"/>'
+            )
+        return "No Image"
+
+    image_tag.short_description = "Image"
+
+    def get_absolute_url(self):
+        return reverse("product_detail", kwargs={"id": self.id})
+
+    def __str__(self):
+        return self.name
 
 class Order(models.Model):
     """

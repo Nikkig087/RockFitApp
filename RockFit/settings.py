@@ -3,6 +3,7 @@ import os
 import dj_database_url
 from dotenv import load_dotenv
 
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -12,9 +13,12 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
 # Secret key
 SECRET_KEY = os.getenv("SECRET_KEY")
+load_dotenv()
 
 # Debug
 DEBUG = os.getenv("DEBUG", "True") == "True"
+
+
 
 # Allowed hosts
 ALLOWED_HOSTS = [
@@ -23,6 +27,8 @@ ALLOWED_HOSTS = [
     "8000-nikkig087-rockfitapp-vlfx33iw9of.ws-eu117.gitpod.io",
     '8080-nikkig087-rockfitapp-vlfx33iw9of.ws-eu117.gitpod.io',
     '8000-nikkig087-rockfitapp-vlfx33iw9of.ws-eu118.gitpod.io',
+    '8080-nikkig087-rockfitapp-vlfx33iw9of.ws-eu118.gitpod.io',
+    
 ]
 
 # CSRF trusted origins

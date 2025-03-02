@@ -519,7 +519,9 @@ def send_product_email(user, products, final_product_total, delivery_fee):
 
 def send_failed_email(user, error_message):
     subject = 'Payment Failed'
-    message = f'Sorry, there was an error processing your payment: {error_message}. Please try again.'
+    message = f"Dear {user.username}, \n\n" \
+              f"There was an error processing your payment: {error_message}.\n\n" \
+              f" Please try again."
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [user.email]
 
