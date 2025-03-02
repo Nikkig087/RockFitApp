@@ -1,10 +1,28 @@
 {% extends "base.html" %}
 
 {% load static %}
-
 {% block head %}
-    <title>Shopping Cart | Rockfit App</title>
-{% endblock %}
+    
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Review and manage your shopping cart at Rockfit. Your cart contains {{ cart_items|length }} items. Secure checkout with fast delivery options.">
+    <meta name="keywords" content="shopping cart, fitness products, gym equipment, online shopping, workout gear, cart management, checkout, Rockfit">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Your Shopping Cart - Rockfit">
+    <meta property="og:description" content="Review your cart with {{ cart_items|length }} items. Secure your order today with fast shipping and easy returns.">
+    <meta property="og:image" content="{% if cart_items %}{{ cart_items.0.product.image.url }}{% else %}{% static 'images/logo.png' %}{% endif %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Your Shopping Cart - Rockfit">
+    <meta name="twitter:description" content="Your cart contains {{ cart_items|length }} items. Secure your checkout with free shipping on orders over €50.">
+    <meta name="twitter:image" content="{% if cart_items %}{{ cart_items.0.product.image.url }}{% else %}{% static 'images/logo.png' %}{% endif %}">
+
+    <title>Your Shopping Cart | Rockfit App</title>
+
+    {% endblock %}
 
 {% block content %}
 <div class="cart-container container py-5">

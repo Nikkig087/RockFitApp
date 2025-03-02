@@ -1,7 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
+{% block head %}
+    <meta name="description" content="Checkout your order with {{ product.name }}. Buy {{ product.name }} for €{{ product.price }}. High-quality product with reliable delivery options.">
+    <meta name="keywords" content="{{ product.name }}, buy {{ product.name }}, fitness products, gym equipment, workout gear, online store, product details, {{ product.category }}">
 
-{% block title %}Checkout{% endblock %}
+    <meta property="og:title" content="{{ product.name }} - Buy Online at Our Store">
+    <meta property="og:description" content="Checkout your order for {{ product.name }} for €{{ product.price }}. Fast shipping and easy returns.">
+    <meta property="og:image" content="{{ product.image.url }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ product.name }} - Buy Online at Our Store">
+    <meta name="twitter:description" content="Checkout your order for {{ product.name }} for €{{ product.price }}. Get your {{ product.name }} now.">
+    <meta name="twitter:image" content="{{ product.image.url }}">
+
+    <title>Checkout | Rockfit App</title>
+{% endblock %}
+
 
 {% block content %}
 <h2 class="text-center text-white">Secure Checkout</h2>

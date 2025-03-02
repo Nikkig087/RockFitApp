@@ -1,9 +1,24 @@
 {% extends "base.html" %}
+{% load static %}
+{% block head %}
+  <title>Payment Successful | Rockfit App</title>
 
-<head>
-  {% block extra_title %} - Payment Success {% endblock %}
-</head>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Thank you for your purchase! Your order has been completed successfully. Shop more fitness products and gear now.">
+  <meta name="keywords" content="payment success, order confirmation, checkout complete, online shopping, fitness products, gym equipment, Rockfit order">
 
+  <!-- Open Graph Meta Tags (for Facebook, LinkedIn, etc.) -->
+  <meta property="og:title" content="Payment Successful - Rockfit">
+  <meta property="og:description" content="Your payment was successful! Your order is now complete. Browse more fitness gear and products.">
+  <meta property="og:image" content="{% static 'images/logo.png' %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Payment Successful - Rockfit">
+  <meta name="twitter:description" content="Your order has been processed successfully! Thank you for shopping with Rockfit.">
+  <meta name="twitter:image" content="{% static 'images/logo.png' %}">
+{% endblock %}
 <body>
   {% block content %}
   <div class="success-container">

@@ -1,8 +1,25 @@
 {% extends "base.html" %}
+{% load static %}
 
-<head>
-  {% block extra_title %} - Payment Cancelled {% endblock %}
-</head>
+{% block head %}
+  <title>Payment Canceled | Rockfit App</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Your payment was canceled. If you need assistance, go back to your cart or explore our product list. Rockfit offers secure payments and fast shipping for all fitness products.">
+  <meta name="keywords" content="payment canceled, shopping cart, checkout, fitness products, gym equipment, online shopping, Rockfit">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Payment Canceled - Rockfit">
+  <meta property="og:description" content="Your payment was canceled. You can return to your cart or browse our products. We offer secure checkout and fast delivery on all orders.">
+  <meta property="og:image" content="{% static 'images/logo.png' %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Payment Canceled - Rockfit">
+  <meta name="twitter:description" content="Your payment was canceled. Return to your cart or browse our products for fitness gear and equipment.">
+  <meta name="twitter:image" content="{% static 'images/logo.png' %}">
+{% endblock %}
 
 <body>
   {% block content %}

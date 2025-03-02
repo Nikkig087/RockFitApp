@@ -1,8 +1,24 @@
 {% extends "base.html" %}
+{% load static %}
+{% block head %}
+  <title>Payment Failed | Rockfit App</title>
 
-<head>
-  {% block extra_title %} - Payment failed {% endblock %}
-</head>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Your payment failed. Please check your available funds and ensure you're using a valid card. You can return to your cart or explore our products.">
+  <meta name="keywords" content="payment failed, checkout error, payment issue, online shopping, fitness products, gym equipment, Rockfit checkout">
+
+  <!-- Open Graph Meta Tags (for Facebook, LinkedIn, etc.) -->
+  <meta property="og:title" content="Payment Failed - Rockfit">
+  <meta property="og:description" content="Your payment was unsuccessful. Please verify your payment details and try again. You can return to your cart or browse our products.">
+  <meta property="og:image" content="{% static 'images/logo.png' %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Payment Failed - Rockfit">
+  <meta name="twitter:description" content="Your payment could not be processed. Check your funds and payment details. Return to your cart or browse our products.">
+  <meta name="twitter:image" content="{% static 'images/logo.png' %}">
+{% endblock %}
 
 <body>
   {% block content %}
