@@ -1,60 +1,267 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-  <url>
-    <loc>https://rockfit-8312b918d693.herokuapp.com/</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
 
-  <url>
-    <loc>https://rockfit-8312b918d693.herokuapp.com/product_list</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
 
-  <url>
-    <loc>https://rockfit-8312b918d693.herokuapp.com/cart/view_cart</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product_list/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/cart/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/subscription/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/wishlist/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/community-updates/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/profile/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/accounts/login/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/accounts/signup/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/products/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/10/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/15/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/14/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/13/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/12/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/11/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/4/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/5/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/6/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/7/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/8/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/9/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/privacy-policy/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/accounts/login/?next=/product_list/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/2/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product_list/?page=2&amp;sort=&amp;search=</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/accounts/password/reset/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/accounts/login/?next=/products/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/products/?page=2&amp;sort=&amp;search=</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/10/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/15/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/14/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/13/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/12/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/11/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/4/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/5/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/6/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/7/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/8/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/9/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/2/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/3/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product_list/?page=1&amp;sort=&amp;search=</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product_list/?page=3&amp;sort=&amp;search=</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/products/?page=1&amp;sort=&amp;search=</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/products/?page=3&amp;sort=&amp;search=</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/3/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.41</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/product/1/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.41</priority>
+</url>
+<url>
+  <loc>https://rockfit-8312b918d693.herokuapp.com/login/?next=/product/1/</loc>
+  <lastmod>2025-03-02T21:32:59+00:00</lastmod>
+  <priority>0.33</priority>
+</url>
 
-  <url>
-    <loc>https://rockfit-8312b918d693.herokuapp.com/subscription</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://rockfit-8312b918d693.herokuapp.com/wishlist_view</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://rockfit-8312b918d693.herokuapp.com/community_updates</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://rockfit-8312b918d693.herokuapp.com/profile</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://rockfit-8312b918d693.herokuapp.com/privacy_policy</loc>
-    <lastmod>2025-01-04</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
 
 </urlset>

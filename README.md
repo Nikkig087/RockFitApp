@@ -729,12 +729,13 @@ Note you must be a registered User to create a review if not then you will be re
 * [Heroku](https://en.wikipedia.org/wiki/Heroku) - A cloud platform that the application is deployed to.
 * [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) - Used to test performance of site.
 * [Am I responsive](https://ui.dev/amiresponsive) - Used for responsiveness check.
-* [Font Awesome](https://fontawesome.com/search?q=x&o=r)) - Used to create the social media icons.
+* [Font Awesome](https://fontawesome.com/search?q=x&o=r) - Used to create the social media icons.
 * [Google Chrome DevTools](https://developer.chrome.com/docs/devtools/) - Used to debug and test responsiveness.
 * [HTML Validation](https://validator.w3.org/) - Used to validate HTML code
 * [CSS Validation](https://jigsaw.w3.org/css-validator/) - Used to validate CSS code
 * [PEP8 Validation](http://pep8online.com/) - Used to validate code
 * [JSHint Validation](https://jshint.com/) - Used to validate JavaScript code
+* [Free Online Sitemap Generator](www.xml-sitemaps.com) - Used to generate site map
 
 # Testing
 ### Lighthouse Homepage Desktop Test
