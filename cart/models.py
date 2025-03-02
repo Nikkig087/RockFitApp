@@ -22,6 +22,19 @@ class Cart(models.Model):
         return f"Cart for {self.user.username}"
 
 class CartItem(models.Model):
+    """
+    Represents an item in the shopping cart, which can either be a product or a subscription plan.
+
+    Attributes:
+        cart (ForeignKey): The cart that this item belongs to.
+        product (ForeignKey, nullable): The product associated with this cart item.
+        subscription (ForeignKey, nullable): The subscription plan associated with this cart item.
+        quantity (PositiveIntegerField): The quantity of the item in the cart.
+
+    Methods:
+        get_cost(): Returns the cost of this cart item based on the product or subscription.
+    """
+
     cart = models.ForeignKey(Cart, related_name="items", on_delete=models.CASCADE)
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.CASCADE)
     subscription = models.ForeignKey(SubscriptionPlan, null=True, blank=True, on_delete=models.CASCADE)
@@ -36,19 +49,31 @@ class CartItem(models.Model):
         return 0
 
 class FailedPayment(models.Model):
+    """
+    Stores information about failed payments, including the user's email and the amount.
+    
+    Attributes:
+        email (EmailField): The email address associated with the failed payment.
+        amount (DecimalField): The amount of money associated with the failed payment.
+        created_at (DateTimeField): The timestamp when the failed payment occurred.
+    """
     email = models.EmailField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Order(models.Model):
+    """
+    Represents a user's order, which contains information about the products purchased, the total amount, 
+    and the status of the order.
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_orders')
     order_date = models.DateTimeField(default=timezone.now)
-    final_total = models.DecimalField(max_digits=10, decimal_places=2)  # Add final_total
-    status = models.CharField(max_length=20, default='pending')  # Add status
-    full_name = models.CharField(max_length=255)  # Add full_name
-    email = models.EmailField()  # Add email
+    final_total = models.DecimalField(max_digits=10, decimal_places=2)  
+    status = models.CharField(max_length=20, default='pending')  
+    full_name = models.CharField(max_length=255)  
+    email = models.EmailField()  
 
-      # Add address fields to the Order model
+      
     address_line1 = models.CharField(max_length=255, blank=True, null=True)
     address_line2 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)

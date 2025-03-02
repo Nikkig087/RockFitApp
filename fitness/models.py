@@ -166,54 +166,7 @@ class NutritionPlan(models.Model):
     def __str__(self):
         return self.title
 
-'''
-class Product(models.Model):
-    """
-    Represents a product available for purchase.
-    """
 
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = CloudinaryField('image', blank=True, null=True)
-    image_thumbnail = ImageSpecField(
-        source="image",
-        processors=[ResizeToFill(300, 300)],
-        format="JPEG",
-        options={"quality": 85},
-    )
-    stock_quantity = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_spotlight = models.BooleanField(default=False)
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        if self.image:
-            img = Image.open(self.image.path)
-
-            max_size = (800, 800)
-            img.thumbnail(max_size, Image.ANTIALIAS)
-
-            img.save(self.image.path, quality=85, optimize=True)
-
-            webp_image_path = (
-                os.path.splitext(self.image.path)[0] + ".webp"
-            )
-            img.save(webp_image_path, format="WebP", quality=85)
-
-            self.image.name = os.path.relpath(
-                webp_image_path, start="media/"
-            )
-            super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse("product_detail", kwargs={"id": self.id})
-
-    def __str__(self):
-        return self.name
-
-'''
 class Product(models.Model):
     """
     Represents a product available for purchase.
@@ -223,7 +176,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
-    # ✅ Use CloudinaryField instead of ImageField
+   
     image = CloudinaryField("image", blank=True, null=True)
 
     stock_quantity = models.IntegerField()
@@ -258,7 +211,7 @@ class Order(models.Model):
   
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='fitness_orders')
  
-    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
     order_date = models.DateTimeField(default=timezone.now)
     total_amount = models.DecimalField(
         max_digits=10, decimal_places=2
