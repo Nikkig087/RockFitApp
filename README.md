@@ -209,14 +209,18 @@ Each Epic in my project represented a major feature or functionality of the plat
 - [EPIC 14: Reset Password ](https://github.com/Nikkig087/RockFitApp/issues/14#issue-2728314129)
 - [EPIC 15: View Subscription Plans](https://github.com/Nikkig087/RockFitApp/issues/15#issue-2730868702)
 - [EPIC 16: Subscribe to a plan](https://github.com/Nikkig087/RockFitApp/issues/16#issue-2730875344)
-- [EPIC 17: ](https://github.com/Nikkig087/RockFitApp/issues/16#issue-2730875344)
+- [EPIC 17: Custom Subcription Plans](https://github.com/Nikkig087/RockFitApp/issues/17#issue-2730880693)
 - [EPIC 18: Implement inline Editing](https://github.com/Nikkig087/RockFitApp/issues/18#issue-2758224442)
 - [EPIC 19: Approve Pause Request](https://github.com/Nikkig087/RockFitApp/issues/19#issue-2758228112)
 - [EPIC 20: Admin review and edit subscription plans](https://github.com/Nikkig087/RockFitApp/issues/20#issue-2758300512)
 - [EPIC 21: Admin filter Products by Spotlight Status](https://github.com/Nikkig087/RockFitApp/issues/21#issue-2758301655)
-- [EPIC 22:Admin read user-submitted contact messages](https://github.com/Nikkig087/RockFitApp/issues/22#issue-2758302575)
-- [EPIC 23:Admin review user reviews](https://github.com/Nikkig087/RockFitApp/issues/23#issue-2758303356)
-- [EPIC 24:Admin manage community updates](https://github.com/Nikkig087/RockFitApp/issues/24#issue-2758304005)
+- [EPIC 22: Admin read user-submitted contact messages](https://github.com/Nikkig087/RockFitApp/issues/22#issue-2758302575)
+- [EPIC 23: Admin review user reviews](https://github.com/Nikkig087/RockFitApp/issues/23#issue-2758303356)
+- [EPIC 24: Admin manage community updates](https://github.com/Nikkig087/RockFitApp/issues/24#issue-2758304005)
+- [EPIC 25: Similar Product Suggestion](https://github.com/Nikkig087/RockFitApp/issues/25#issue-2760016940)
+- [EPIC 26: Email Send to Customer Detailing Products Purchased](https://github.com/Nikkig087/RockFitApp/issues/26#issue-2887026196)
+- [EPIC 27: Email Send to Customer Detailing Subscription Purchased](https://github.com/Nikkig087/RockFitApp/issues/27#issue-2887036641)
+- [EPIC 28: Email Sent to Customer if payment fails](https://github.com/Nikkig087/RockFitApp/issues/28#issue-2887113919)
 
 # User Stories
 
@@ -419,6 +423,7 @@ Relationship: 1:N
 
 ## Navigation
 The Navigation Bar contains the Company Name, links to the Home page, Register Page, Community Updates, Profile and Login Page.
+
 ### Navigation Desktop for user not logged in
 
 <img src="docs/features/nav_desktop_notloggedin.webp" alt="Navigation Desktop" width="50%"/> 
@@ -436,9 +441,11 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 
 <img src="docs/features/nav_mobile_loggedin.webp" alt="Navigation Mobile Logged In" width="50%"/> 
 
-### Footer
+## Footer
 
 <img src="docs/features/footer.webp" alt="Footer" width="50%"/> 
+
+## Pages 
 
 ### Home-page Desktop
 
@@ -591,6 +598,44 @@ The Navigation Bar contains the Company Name, links to the Home page, Register P
 ### Contact Form Mobile
 
 <img src="docs/features/contact_mob.webp" alt="Contact Form Mobile" width="50%"/>
+
+### Checkout Page Desktop
+
+<img src="docs/features/checkout_form_desktop.webp" alt="Checkout Form Desktop" width="50%"/>
+
+### Checkout Page Mobile
+
+<img src="docs/features/checkout_form_mobile.webp" alt="Checkout Form Mobile" width="50%"/>
+
+### Payment Successful Desktop
+
+<img src="docs/features/payment_success_desktop.webp" alt="Payment Successful Page Desktop" width="50%"/>
+
+### Payment Successful Mobile
+
+<img src="docs/features/payment_success_mob.webp" alt="Payment Successful Page Mobile" width="50%"/>
+
+### Payment Failed Desktop
+
+<img src="docs/features/payment_failed_desktop.webp" alt="Payment Failed Page Desktop" width="50%"/>
+
+### Payment Failed Mobile
+
+<img src="docs/features/payment_failed_mob.webp" alt="Payment Failed Page Mobile" width="50%"/>
+
+## Email Confirmation of Payment or Unsuccessful Payment
+
+### Payment For Product Email 
+
+<img src="docs/features/payment_product_email.webp" alt="Payment For Product Email" width="50%"/>
+
+### Payment For Subscription Email 
+
+<img src="docs/features/payment_subscription_email.webp" alt="Payment For Subscription Email" width="50%"/>
+
+### Payment Failed Email 
+
+<img src="docs/features/payment_failed_email.webp" alt="Payment Failed Email" width="50%"/>
 
 ## CRUD User
 ### Create Review Desktop Page
