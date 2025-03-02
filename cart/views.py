@@ -5,14 +5,13 @@ from fitness.models import Product, SubscriptionPlan, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import stripe
-from django.utils import timezone
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from django.urls import reverse
-from decimal import Decimal
 from django.core.mail import send_mail
 from django.utils import timezone
+from datetime import timedelta
 import json
 from django.template.loader import render_to_string
 from django.http import HttpResponseServerError
@@ -64,14 +63,14 @@ def payment_success(request):
 
             user_profile.subscription_plan = plan
             user_profile.subscription_start_date = timezone.now()
-            user_profile.subscription_end_date = timezone.now() + timezone.timedelta(days=plan.duration)
+            
             user_profile.save()
 
             
             del request.session["selected_plan_id"]
 
            
-            order_details += f"\nYour subscription is valid until {user_profile.subscription_end_date.strftime('%Y-%m-%d')}."
+            
         
         
         return render(request, "cart/success.html", {"total_cost": total_cost})
@@ -253,7 +252,7 @@ def send_subscription_email(user, subscription, final_subscription_total):
                 f"Price: €{user_profile.subscription_plan.price}\n"
                 f"Duration: {user_profile.subscription_plan.duration} days\n"
                 f"Start Date: {user_profile.subscription_start_date.strftime('%Y-%m-%d') if user_profile.subscription_start_date else 'Not Available'}\n"
-                f"End Date: {user_profile.subscription_end_date.strftime('%Y-%m-%d') if user_profile.subscription_end_date else 'Not Available'}\n"
+              
             )
             message += subscription_details  
 
