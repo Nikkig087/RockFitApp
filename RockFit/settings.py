@@ -16,7 +16,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 load_dotenv()
 
 # Debug
-#DEBUG = os.getenv("DEBUG", "True") == "True"
+
 DEBUG = False
 
 

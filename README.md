@@ -993,7 +993,7 @@ This website is deployed to Heroku from a GitHub repository, the following steps
 - Log into [CIdatabase maker](https://www.heroku.com/](https://dbs.ci-dbs.net/))
 - add your email address in input field and submit the form
 - open database link in your email
-- paste dabase URL in your DATABASE_URL variable in env.py file and in Heroku config vars
+- paste database URL in your DATABASE_URL variable in .env file and in Heroku config vars
 
 #### Deploying to Heroku.
 - Head back over to [heroku](https://www.heroku.com/) and click on your **app** and then go to the **Settings tab**
